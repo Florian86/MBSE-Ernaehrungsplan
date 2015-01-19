@@ -32,8 +32,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel,
  de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.impl,
- de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.util,
- metamodel,
- metamodel.impl,
- metamodel.util
+ de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.util
 
