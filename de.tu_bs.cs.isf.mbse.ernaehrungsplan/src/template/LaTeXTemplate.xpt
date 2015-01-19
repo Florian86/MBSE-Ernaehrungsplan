@@ -1,0 +1,39 @@
+«IMPORT metamodel»
+«DEFINE main FOR Ernaehrungsplan»
+	«FILE "Ernaehrungsplan.latex"»
+	\documentclass[12pt]{article}
+	
+	\usepackage[utf8]{inputenc}
+	\usepackage[ngerman,english]{babel}
+	
+	\begin{document}
+		\section*{Ernährungsplan}
+		«EXPAND gericht FOREACH gerichte»
+	\end{document}
+	«ENDFILE»
+«ENDDEFINE»
+
+
+
+«DEFINE gericht FOR Gericht»
+	\subsection*{Gericht ''«this.name»''}
+	«EXPAND zutat FOREACH this.zutaten»
+«ENDDEFINE»
+
+
+
+«DEFINE zutat FOR Zutat»
+	«ERROR "should not happen"»
+«ENDDEFINE»
+«DEFINE zutat FOR Hauptbestandteil»
+        Hauptbestandteil: «this.name» («this.kcal»kcal)\\
+«ENDDEFINE»
+«DEFINE zutat FOR Beilage»
+        Beilage: «this.name» («this.kcal»kcal)\\
+«ENDDEFINE»
+«DEFINE zutat FOR Sosse»
+        Soße: «this.name» («this.kcal»kcal)\\
+«ENDDEFINE»
+«DEFINE zutat FOR Salat»
+        Salat: «this.name» («this.kcal»kcal)\\
+«ENDDEFINE»
