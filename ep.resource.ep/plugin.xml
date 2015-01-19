@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension point="org.emftext.access.syntax">
+		<metaInformationProvider class="ep.resource.ep.mopp.EpMetaInformation" id="ep.resource.ep.mopp.EpMetaInformation">
+		</metaInformationProvider>
+	</extension>
+	
+	<extension id="ep.resource.ep.problem" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="org.eclipse.core.resources.problemmarker">
+		</super>
+		<super type="org.eclipse.core.resources.textmarker">
+		</super>
+		<super type="org.eclipse.emf.ecore.diagnostic">
+		</super>
+	</extension>
+	
+	<extension id="ep.resource.ep.problem.syntax_error" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="ep.resource.ep.problem">
+		</super>
+	</extension>
+	
+	<extension id="ep.resource.ep.problem.print_problem" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="ep.resource.ep.problem">
+		</super>
+	</extension>
+	
+	<extension id="ep.resource.ep.problem.unresolved_reference" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="ep.resource.ep.problem">
+		</super>
+	</extension>
+	
+	<extension id="ep.resource.ep.problem.analysis_problem" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="ep.resource.ep.problem">
+		</super>
+	</extension>
+	
+	<extension id="ep.resource.ep.problem.builder_error" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="ep.resource.ep.problem">
+		</super>
+	</extension>
+	
+	<extension id="ep.resource.ep.nature" name="ep nature" point="org.eclipse.core.resources.natures">
+		<runtime>
+			<run class="ep.resource.ep.mopp.EpNature">
+			</run>
+		</runtime>
+		<builder id="ep.resource.ep.builder">
+		</builder>
+	</extension>
+	
+	<extension point="org.eclipse.core.resources.builders" id="ep.resource.ep.builder" name="ep Builder">
+		<builder hasNature="true">
+			<run class="ep.resource.ep.mopp.EpBuilderAdapter">
+			</run>
+		</builder>
+	</extension>
+	
+	<extension-point id="ep.resource.ep.default_load_options" name="Default Load Options" schema="schema/default_load_options.exsd">
+	</extension-point>
+	
+	<extension point="org.eclipse.emf.ecore.extension_parser">
+		<parser class="ep.resource.ep.mopp.EpResourceFactoryDelegator" type="ep">
+		</parser>
+	</extension>
+	
+	<extension-point id="ep.resource.ep.additional_extension_parser" name="Additional Extension Parser" schema="schema/additional_extension_parser.exsd">
+	</extension-point>
+	
+	<extension point="org.eclipse.debug.core.breakpoints">
+		<breakpoint class="ep.resource.ep.debug.EpLineBreakpoint" id="ep.resource.ep.debug.breakpoint" markerType="ep.resource.ep.debug.lineBreakpoint.marker" name="ep Breakpoint">
+		</breakpoint>
+	</extension>
+	
+	<extension id="ep.resource.ep.debug.lineBreakpoint.marker" point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.debug.core.lineBreakpointMarker">
+		</super>
+		<super type="org.eclipse.core.resources.textmarker">
+		</super>
+		<persistent value="true">
+		</persistent>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType id="ep.resource.ep.ui.launchConfigurationType" delegate="ep.resource.ep.launch.EpLaunchConfigurationDelegate" modes="run,debug" name="ep Application" sourceLocatorId="ep.resource.ep.ui.sourceLocator" sourcePathComputerId="ep.resource.ep.ui.sourcePathComputer" delegateName="ep Launch Tooling" delegateDescription="This will run or debug .ep files.">
+		</launchConfigurationType>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.sourcePathComputers">
+		<sourcePathComputer class="ep.resource.ep.debug.EpSourcePathComputerDelegate" id="ep.resource.ep.ui.sourcePathComputer">
+		</sourcePathComputer>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.sourceLocators">
+		<sourceLocator id="ep.resource.ep.ui.sourceLocator" class="ep.resource.ep.debug.EpSourceLocator" name="ep Source Locator">
+		</sourceLocator>
+	</extension>
+	
+</plugin>

@@ -1,0 +1,30 @@
+/**
+ * <copyright>
+ * </copyright>
+ *
+ * 
+ */
+package ep.resource.ep.mopp;
+
+public class EpSyntaxCoverageInformationProvider {
+	
+	public org.eclipse.emf.ecore.EClass[] getClassesWithSyntax() {
+		return new org.eclipse.emf.ecore.EClass[] {
+			ep.MetamodelPackage.eINSTANCE.getEpElement(),
+			ep.MetamodelPackage.eINSTANCE.getPerson(),
+			ep.MetamodelPackage.eINSTANCE.getHauptbestandteil(),
+			ep.MetamodelPackage.eINSTANCE.getBeilage(),
+			ep.MetamodelPackage.eINSTANCE.getSauce(),
+			ep.MetamodelPackage.eINSTANCE.getGericht(),
+			ep.MetamodelPackage.eINSTANCE.getErnaehrungsplan(),
+			ep.MetamodelPackage.eINSTANCE.getGericht2Zutat(),
+		};
+	}
+	
+	public org.eclipse.emf.ecore.EClass[] getStartSymbols() {
+		return new org.eclipse.emf.ecore.EClass[] {
+			ep.MetamodelPackage.eINSTANCE.getEpElement(),
+		};
+	}
+	
+}
