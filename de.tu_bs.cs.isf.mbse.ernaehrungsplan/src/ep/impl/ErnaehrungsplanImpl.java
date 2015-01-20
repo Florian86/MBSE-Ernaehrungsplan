@@ -9,10 +9,13 @@ import ep.Person;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
@@ -33,14 +36,14 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class ErnaehrungsplanImpl extends MinimalEObjectImpl.Container implements Ernaehrungsplan {
 	/**
-	 * The cached value of the '{@link #getPersonen() <em>Personen</em>}' reference list.
+	 * The cached value of the '{@link #getPersonen() <em>Personen</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getPersonen()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Person> personen;
+	protected Person personen;
 
 	/**
 	 * The cached value of the '{@link #getGerichte() <em>Gerichte</em>}' reference list.
@@ -76,11 +79,37 @@ public class ErnaehrungsplanImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Person> getPersonen() {
-		if (personen == null) {
-			personen = new EObjectResolvingEList<Person>(Person.class, this, MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN);
+	public Person getPersonen() {
+		if (personen != null && personen.eIsProxy()) {
+			InternalEObject oldPersonen = (InternalEObject)personen;
+			personen = (Person)eResolveProxy(oldPersonen);
+			if (personen != oldPersonen) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN, oldPersonen, personen));
+			}
 		}
 		return personen;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Person basicGetPersonen() {
+		return personen;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPersonen(Person newPersonen) {
+		Person oldPersonen = personen;
+		personen = newPersonen;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN, oldPersonen, personen));
 	}
 
 	/**
@@ -104,7 +133,8 @@ public class ErnaehrungsplanImpl extends MinimalEObjectImpl.Container implements
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN:
-				return getPersonen();
+				if (resolve) return getPersonen();
+				return basicGetPersonen();
 			case MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE:
 				return getGerichte();
 		}
@@ -121,8 +151,7 @@ public class ErnaehrungsplanImpl extends MinimalEObjectImpl.Container implements
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN:
-				getPersonen().clear();
-				getPersonen().addAll((Collection<? extends Person>)newValue);
+				setPersonen((Person)newValue);
 				return;
 			case MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE:
 				getGerichte().clear();
@@ -141,7 +170,7 @@ public class ErnaehrungsplanImpl extends MinimalEObjectImpl.Container implements
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN:
-				getPersonen().clear();
+				setPersonen((Person)null);
 				return;
 			case MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE:
 				getGerichte().clear();
@@ -159,7 +188,7 @@ public class ErnaehrungsplanImpl extends MinimalEObjectImpl.Container implements
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN:
-				return personen != null && !personen.isEmpty();
+				return personen != null;
 			case MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE:
 				return gerichte != null && !gerichte.isEmpty();
 		}

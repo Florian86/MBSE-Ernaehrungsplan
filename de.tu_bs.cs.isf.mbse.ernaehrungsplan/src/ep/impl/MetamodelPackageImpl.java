@@ -484,7 +484,7 @@ public class MetamodelPackageImpl extends EPackageImpl implements MetamodelPacka
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(ernaehrungsplanEClass, Ernaehrungsplan.class, "Ernaehrungsplan", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getErnaehrungsplan_Personen(), this.getPerson(), null, "personen", null, 1, -1, Ernaehrungsplan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getErnaehrungsplan_Personen(), this.getPerson(), null, "personen", null, 1, 1, Ernaehrungsplan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getErnaehrungsplan_Gerichte(), this.getGericht(), null, "gerichte", null, 1, -1, Ernaehrungsplan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(personEClass, Person.class, "Person", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

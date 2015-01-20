@@ -67,7 +67,7 @@ public interface MetamodelPackage extends EPackage {
 	int ERNAEHRUNGSPLAN = 0;
 
 	/**
-	 * The feature id for the '<em><b>Personen</b></em>' reference list.
+	 * The feature id for the '<em><b>Personen</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -527,10 +527,10 @@ public interface MetamodelPackage extends EPackage {
 	EClass getErnaehrungsplan();
 
 	/**
-	 * Returns the meta object for the reference list '{@link ep.Ernaehrungsplan#getPersonen <em>Personen</em>}'.
+	 * Returns the meta object for the reference '{@link ep.Ernaehrungsplan#getPersonen <em>Personen</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Personen</em>'.
+	 * @return the meta object for the reference '<em>Personen</em>'.
 	 * @see ep.Ernaehrungsplan#getPersonen()
 	 * @see #getErnaehrungsplan()
 	 * @generated
@@ -827,7 +827,7 @@ public interface MetamodelPackage extends EPackage {
 		EClass ERNAEHRUNGSPLAN = eINSTANCE.getErnaehrungsplan();
 
 		/**
-		 * The meta object literal for the '<em><b>Personen</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Personen</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
