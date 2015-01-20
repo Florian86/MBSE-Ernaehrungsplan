@@ -1,12 +1,15 @@
 package transf;
 
-import de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.Ernaehrungsplan;
-import de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.Person;
+import com.google.common.base.Objects;
+import ep.EpElement;
+import ep.Person;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import transf.ModelLoader;
 
 @SuppressWarnings("all")
@@ -15,7 +18,7 @@ public class M2T {
   
   private List<Person> persons;
   
-  private Ernaehrungsplan plan;
+  private EpElement epElement;
   
   private File targetLatexFile;
   
@@ -40,12 +43,27 @@ public class M2T {
   }
   
   public static void main(final String[] args) {
+    InputOutput.<String>println("Starte Generierung des Ernährungsplans.");
     final M2T m2t = new M2T();
-    m2t.generate("folder", "file");
+    m2t.generate("src/metamodel", "test");
+    InputOutput.<String>println("Generierung beendet.");
   }
   
   public void generate(final String folder, final String file) {
     try {
+      boolean _fileExists = this.fileExists(folder, file);
+      boolean _not = (!_fileExists);
+      if (_not) {
+        InputOutput.<String>println(((("Datei nicht vorhanden " + folder) + "") + file));
+        return;
+      }
+      EpElement _loadModel = this.loader.loadModel(folder, file);
+      this.epElement = _loadModel;
+      EList<Person> _personElement = this.epElement.getPersonElement();
+      this.persons = _personElement;
+      for (final Person p : this.persons) {
+        InputOutput.<Person>println(p);
+      }
       File _file = new File("output/Test_EP+EL_Latex.tex");
       this.targetLatexFile = _file;
       this.targetLatexFile.createNewFile();
@@ -922,5 +940,34 @@ public class M2T {
     _builder.append("</html>");
     _builder.newLine();
     return _builder.toString();
+  }
+  
+  public boolean fileExists(final String folder, final String file) {
+    final StringBuffer path = new StringBuffer();
+    path.append(folder);
+    int _length = folder.length();
+    int _minus = (_length - 1);
+    char _charAt = folder.charAt(_minus);
+    boolean _notEquals = (!Objects.equal(Character.valueOf(_charAt), "/"));
+    if (_notEquals) {
+      path.append("/");
+    }
+    path.append(file);
+    path.append(".ep");
+    String _string = path.toString();
+    final File f = new File(_string);
+    boolean _and = false;
+    boolean _exists = f.exists();
+    if (!_exists) {
+      _and = false;
+    } else {
+      boolean _isDirectory = f.isDirectory();
+      boolean _not = (!_isDirectory);
+      _and = _not;
+    }
+    if (_and) {
+      return true;
+    }
+    return false;
   }
 }

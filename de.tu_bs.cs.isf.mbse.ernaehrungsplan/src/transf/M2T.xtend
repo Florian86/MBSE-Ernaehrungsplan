@@ -1,16 +1,16 @@
 package transf
 
-import de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.Ernaehrungsplan
 import java.io.File
 import java.io.FileOutputStream
-import de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.Person
 import java.util.List
+import ep.EpElement
+import ep.Person
 
 class M2T {
 	
 	ModelLoader loader = new ModelLoader();
 	List<Person> persons; //Für jede Person soll der Plan erstellt werden.
-	Ernaehrungsplan plan;
+	EpElement epElement;
 	File targetLatexFile;
 	File targetHtmlFile_EP;
 	File targetHtmlFile_EL;
@@ -26,15 +26,27 @@ class M2T {
 	}
 	
 	def static void main(String[] args) {
+		println("Starte Generierung des Ernährungsplans.")
 		val m2t = new M2T()
-		m2t.generate("folder", "file")
+		m2t.generate("src/metamodel", "test")
+		println("Generierung beendet.")
 	}
 	
 	def generate(String folder, String file) {
 		
+		// Prüfen ob die Datei existiert
+		if (!fileExists(folder, file)) {
+			println("Datei nicht vorhanden " + folder + "" + file)
+			return
+		}
+		
 		//Modell laden
-		//plan = loader.loadModel(folder, file);
-        //persons = plan.personen;
+		epElement = loader.loadModel(folder, file);
+        persons = epElement.personElement;
+        
+        for (p: persons) {
+        	println(p)
+        }
         
         // for(p : persons) { // für alle Personen im Ernaehrungsplan folgendes ausführen
         
@@ -421,4 +433,22 @@ class M2T {
 		'''
 	}
 	
+	def boolean fileExists(String folder, String file) {
+		
+		val path = new StringBuffer
+		path.append(folder)
+		
+		if(folder.charAt(folder.length-1) != "/") {
+			path.append("/")
+		}
+		path.append(file)
+		path.append(".ep")
+		
+		val f = new File(path.toString)
+		if (f.exists() && !f.isDirectory()) {
+			return true
+		}	
+		
+		return false
+	}
 }
