@@ -1,0 +1,29 @@
+
+	\documentclass[12pt]{article}
+	
+	\usepackage[utf8]{inputenc}
+	\usepackage[ngerman,english]{babel}
+	
+	\begin{document}
+		\section*{Ernährungsplan}
+		
+	\subsection*{Gericht ''Spaghetti Bolognese''}
+	
+        Hauptbestandteil: Spaghetti (123kcal)\\
+
+        Soße: Bolognese (345kcal)\\
+
+
+	\subsection*{Gericht ''Weihnachtsessen''}
+	
+        Hauptbestandteil: Gänsekeule (345kcal)\\
+
+        Soße: Gänsefett (456kcal)\\
+
+        Salat: Schnitzelsalat (123kcal)\\
+
+        Beilage: Klöße (123kcal)\\
+
+
+	\end{document}
+	
