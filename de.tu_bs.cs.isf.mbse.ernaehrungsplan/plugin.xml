@@ -10,7 +10,7 @@
       <!-- @generated metamodel -->
       <package
             uri="http://www.example.org/metamodel"
-            class="metamodel.MetamodelPackage"
+            class="ep.MetamodelPackage"
             genModel="src/metamodel/metamodel.genmodel"/>
    </extension>
 
