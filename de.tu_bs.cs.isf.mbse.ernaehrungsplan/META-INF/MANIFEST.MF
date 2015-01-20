@@ -30,10 +30,8 @@ Require-Bundle: org.eclipse.xtend.profiler;resolution:=optional,
  org.eclipse.xtext.xbase.lib
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel,
- de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.impl,
- de.tu_bs.cs.isf.mbse.ernaehrungsplan.metamodel.util,
- metamodel,
- metamodel.impl,
- metamodel.util
+Export-Package: ep,
+ ep.impl,
+ ep.util
+Import-Package: ep.resource.ep.mopp
 
