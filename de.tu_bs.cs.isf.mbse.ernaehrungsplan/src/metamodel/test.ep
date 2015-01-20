@@ -1,0 +1,27 @@
+Ernaehrungsplan 
+	{
+	Person(Marcel,1200)
+	Hauptbestandteil (Lammfleisch,73)
+	Hauptbestandteil (Rindersteak, 30)
+	Sauce (Bechamel, 100)
+	Beilage (Kartoffeln, 73)
+	Beilage (Reis, 20)
+
+	Gericht 
+	{
+		name FleischMitKartoffeln
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (200,Kartoffeln, FleischMitKartoffeln)
+			zutat (500, Lammfleisch, FleischMitKartoffeln)
+			}
+	}
+	
+	eplan 
+		{
+		personen (Marcel)
+		gerichte(FleischMitKartoffeln)
+		}
+	}
