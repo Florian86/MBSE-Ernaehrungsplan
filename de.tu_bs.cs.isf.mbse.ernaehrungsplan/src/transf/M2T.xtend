@@ -1,26 +1,30 @@
 package transf
 
+import ep.EpElement
+import ep.Ernaehrungsplan
+import ep.Gericht
 import java.io.File
 import java.io.FileOutputStream
 import java.util.List
-import ep.EpElement
-import ep.Person
 
 class M2T {
 	
 	ModelLoader loader = new ModelLoader();
-	List<Person> persons; //Für jede Person soll der Plan erstellt werden.
+	List<Ernaehrungsplan> eplans; 		// alle im Modell vorhandenen Ernährungspläne
+	List<Gericht> meals;
 	EpElement epElement;
 	File targetLatexFile;
 	File targetHtmlFile_EP;
 	File targetHtmlFile_EL;
-	FileOutputStream latexStream; //prinzipiell soll
+	FileOutputStream latexStream; 	
 	FileOutputStream htmlStream_EP;
 	FileOutputStream htmlStream_EL;
 	String latexOutput;
 	String htmlOutput_EP;
 	String htmlOutput_EL;
-	
+
+	String current_personname;		
+
 	def M2T() {
 		
 	}
@@ -41,50 +45,67 @@ class M2T {
 		}
 		
 		//Modell laden
-		epElement = loader.loadModel(folder, file);
-        persons = epElement.personElement;
+		this.epElement = loader.loadModel(folder, file);
+        this.eplans = this.epElement.eplanElement;
         
-        for (p: persons) {
-        	println(p)
-        }
+        // ------------ zu Testzwecken --------------
         
-        // for(p : persons) { // für alle Personen im Ernaehrungsplan folgendes ausführen
-        
+//        for (e: this.eplans) {
+//        	// Aufruf, neues Modell
+//        	// println(e.personen.name + ", " + e.personen.kcal)
+//        	for (p:e.personen) {
+//        		println(p.name + ", " + p.kcal)
+//        	}
+//        	for (g: e.gerichte) {
+//        		println(g.name + ", Salat? " + g.istSalat + ", " + g.kommentar)
+//        		for (z:g.zutaten) {
+//        		// Zutatennamen der Gerichte: epElement.gerichtElement.zutaten.zutat.name
+//        		// zutaten ist die Beziehung zwischen Gericht und Gericht2Zutat
+//        		// zutat ist die Beziehung zwischen Gericht2Zutat und der abtrakten 
+//        		// Klasse Zutat, die die Attribute name und kcal hat
+//        		println(z.zutat.name + ", " + z.menge +", " + z.zutat.kcal)
+//           		}  
+//        	}
+//        }
+                
         //TODO: Hier müsste schon ein zufällige Auswahl der Gerichte stattfinden, da die Auswahl für HTML und Latex gleich sein muss
         
-            //--------------------LaTeX--------------------
-            targetLatexFile = new File("output/Test_EP+EL_Latex.tex");
-            										// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".tex"); 
-            														//Datei bekommt den Namen: folder/file_person.tex
-            targetLatexFile.createNewFile(); 						//Datei erstellen
-            latexStream = new FileOutputStream(targetLatexFile); 	// um Zeug in die Datei zu schreiben
-            
-            // Erst mal ohne Übergabe von p --> genrateLatex() statt genrateLatex(p)
-            latexOutput = generateLatex().replaceAll("\"", ""); 	//TODO: mir noch unklar, warum \" ersetzt wird, vorallem warum "
-            latexStream.write(latexOutput.getBytes()); 				// schreibt den generierten Code in die Datei
-            latexStream.close(); 									// Stream schließen und Resourcen freigeben
-            
-            //--------------------HTML--------------------
-            targetHtmlFile_EP = new File("output/Test_EP_HTML.html");  
-                       								// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".html");
-            targetHtmlFile_EP.createNewFile();
-            htmlStream_EP = new FileOutputStream(targetHtmlFile_EP);
-            
-            // ohne Übergabe von p
-            htmlOutput_EP = generateHtmlSchedule();
-            htmlStream_EP.write(htmlOutput_EP.getBytes());
-            htmlStream_EP.close();
-            
-            targetHtmlFile_EL = new File("output/Test_EL_HTML.html");  
-                       								// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".html");
-            targetHtmlFile_EL.createNewFile();
-            htmlStream_EL = new FileOutputStream(targetHtmlFile_EL);
-            
-            // ohne Übergabe von p
-            htmlOutput_EL = generateHtmlShoppingList();
-            htmlStream_EL.write(htmlOutput_EL.getBytes());
-            htmlStream_EL.close();
-	   //}
+        for (e: this.eplans) {
+        
+        	for (p: e.personen) {
+        		this.current_personname = p.name
+        	}
+        	this.meals = e.gerichte;
+        
+	        //--------------------LaTeX--------------------
+	        targetLatexFile = new File("output" + File.separator + this.current_personname + "_Latex.tex");
+	        										// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".tex"); 
+	        targetLatexFile.createNewFile(); 						// Datei erstellen
+	        latexStream = new FileOutputStream(targetLatexFile); 	// um Zeug in die Datei zu schreiben
+	        
+	        latexOutput = generateLatex(e).replaceAll("\"", ""); 	//TODO: mir noch unklar, warum \" ersetzt wird, vorallem warum "
+	        latexStream.write(latexOutput.getBytes()); 				// schreibt den generierten Code in die Datei
+	        latexStream.close(); 									// Stream schließen und Resourcen freigeben
+	        
+	        //--------------------HTML--------------------
+	        targetHtmlFile_EP = new File("output" + File.separator + this.current_personname + "_EP_HTML.html");  
+	                   								// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".html");
+	        targetHtmlFile_EP.createNewFile();
+	        htmlStream_EP = new FileOutputStream(targetHtmlFile_EP);
+	        
+	        htmlOutput_EP = generateHtmlSchedule(e);
+	        htmlStream_EP.write(htmlOutput_EP.getBytes());
+	        htmlStream_EP.close();
+	        
+	        targetHtmlFile_EL = new File("output" + File.separator + this.current_personname + "_EL_HTML.html");  
+	                   								// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".html");
+	        targetHtmlFile_EL.createNewFile();
+	        htmlStream_EL = new FileOutputStream(targetHtmlFile_EL);
+	        
+	        htmlOutput_EL = generateHtmlShoppingList(e);
+	        htmlStream_EL.write(htmlOutput_EL.getBytes());
+	        htmlStream_EL.close();
+		}
     }
      
 	//--------------------LaTeX--------------------
@@ -93,13 +114,13 @@ class M2T {
 	 * "Startmethode" der Latex-Generierung
 	 * ohne p erstmal !!!!!!!!!!
 	 */
-	def String generateLatex(){
+	def String generateLatex(Ernaehrungsplan e){
         '''
         «generateLatexHead()»
         \begin{document}
-        «generateLatexSchedule()»
+        «generateLatexSchedule(e)»
         \newpage
-        «generateLatexShoppingList()»
+        «generateLatexShoppingList(e)»
         \end{document}
         '''
     }
@@ -118,7 +139,6 @@ class M2T {
 		\usepackage[ngerman]{babel}
 		
 		\pagestyle{empty}
-		
 		\parindent0pt
 		
 		\usepackage{tabularx}
@@ -126,27 +146,62 @@ class M2T {
 		\newcolumntype{C}{>{\centering\arraybackslash}X}
 		
 		\usepackage{pdflscape}
-		
 		\usepackage{ragged2e}
 		
 		\usepackage{enumitem} 
 		\setitemize{leftmargin=*}
+		
 		'''
     }
     
 	/*
 	 * Generiert den Ernährungsplan für Latex.
 	 */
-	def String generateLatexSchedule() {
+	def String generateLatexSchedule(Ernaehrungsplan e) {
 		//TODO: Latex-Code für den Wochenplan; zu befüllen mit den Informationen aus unserer Modellinstanz "plan" (später)
 		
+		//TODO Liste mit Gerichten darf hier schon nur 7 Elemente enthalten!!
+		
+		var kcal = 0
+		var int[] kcal_array = newIntArrayOfSize(7)
+		var String[] name_array = newArrayOfSize(7)
+		
+		var i = 0;
+		
+		for(g: this.meals) {
+			for (z: g.zutaten) {
+				kcal = kcal + (z.zutat.kcal * z.menge/100)
+			}
+			if (i <= 6) {
+				name_array.set(i, g.name)
+				kcal_array.set(i, kcal)
+				i++
+			}
+			kcal = 0
+		}
+		
+		// kcal sind pro hundert gramm, also multiplizieren 
+		// 200g Kartoffeln 73kcal + 500g Lammfleisch 73kcal	
+		// = 200/100*73 + 500/100*73 = 2*73 + 5*73 = 146 + 365 = 511kcal
+		
 		'''
+		
 		\begin{landscape}
 		
 			{\Large \textbf{Ernährungsplan}} \medskip \\
-			Max Mustermann \\
-			Empfohlener Energiebedarf pro Woche: 14.000 Kalorien $\rightarrow$ 2.000 Kalorien pro Tag \medskip \\
-			%Da in diesem Ernährungsplan nur Mittagessen betrachtet werden, für die jeweils 1.000 kcal veranschlagt werden, stehen 2.000-1.000 = 1.000 kcal zur freien Verfügung. \medskip \\
+			«this.current_personname»
+			\\ Empfohlener Energiebedarf pro Woche: 
+		
+	«««		«e.personen.kcal»
+			«FOR p: e.personen»
+				«p.kcal»
+			«ENDFOR»
+			 Kalorien $\rightarrow$ 
+	«««		«e.personen.kcal/7»
+			«FOR p: e.personen»
+				«p.kcal/7»
+			«ENDFOR»
+			Kalorien pro Tag \medskip \\
 			\renewcommand*{\arraystretch}{1.2}
 			\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|X|}	
 				\hline
@@ -154,18 +209,19 @@ class M2T {
 		%		&  &  &  &  &  &  \\
 				&  &  &  &  &  &  \\
 				\hline
-				Spaghetti Bolognese \newline {\scriptsize 1000 kcal} 
+				«name_array.get(0)»	\newline {\scriptsize «kcal_array.get(0)» kcal} 
 				\begin{small}
 				\begin{itemize}
 				\itemsep0pt
 					\item 100g Spaghetti
-					\item 200g Bolognesesoße \smallskip
+					\item 200g Bolognesesoße 
+					\smallskip
 				\end{itemize}
 				\end{small}
 				\begin{scriptsize}
 				Anmerkung: Gericht ist in Buch blablabla auf S.30 zu finden.
 				\end{scriptsize}
-				& Gericht A \newline {\scriptsize 1000 kcal} 
+				& «name_array.get(1)» \newline {\scriptsize «kcal_array.get(1)» kcal} 
 				\begin{small}
 				\begin{itemize}
 				\itemsep0pt
@@ -174,14 +230,14 @@ class M2T {
 					\item 100g Spinat
 				\end{itemize}
 				\end{small}
-				& Pfannkuchen \newline {\scriptsize 500 kcal}  
+				& «name_array.get(2)» \newline {\scriptsize «kcal_array.get(2)» kcal}  
 				\begin{small}
 				\begin{itemize}
 				\itemsep0pt
 					\item 300g Pfannkuchen
 				\end{itemize}
 				\end{small}
-				&  Gericht A \newline {\scriptsize 1000 kcal}  
+				&  «name_array.get(3)» \newline {\scriptsize «kcal_array.get(3)» kcal}  
 				\begin{small}
 				\begin{itemize}
 				\itemsep0pt
@@ -190,7 +246,7 @@ class M2T {
 					\item 100g Spinat
 				\end{itemize}
 				\end{small}
-				&  Gericht A \newline {\scriptsize 1000 kcal}  
+				&  «name_array.get(4)» \newline {\scriptsize «kcal_array.get(4)» kcal}  
 				\begin{small}
 				\begin{itemize}
 				\itemsep0pt
@@ -199,7 +255,7 @@ class M2T {
 					\item 100g Spinat
 				\end{itemize}
 				\end{small}
-				&  Gericht A \newline {\scriptsize 1000 kcal}  
+				&  «name_array.get(5)» \newline {\scriptsize «kcal_array.get(5)» kcal}  
 				\begin{small}
 				\begin{itemize}
 				\itemsep0pt
@@ -208,7 +264,7 @@ class M2T {
 					\item 100g Spinat
 				\end{itemize}
 				\end{small}
-				&  Gericht A \newline {\scriptsize 1000 kcal}  
+				&  «name_array.get(6)» \newline {\scriptsize «kcal_array.get(6)» kcal}  
 				\begin{small}
 				\begin{itemize}
 				\itemsep0pt
@@ -247,7 +303,7 @@ class M2T {
 	/*
 	 * Generiert die Einkaufsliste für Latex.
 	 */
-	def String generateLatexShoppingList() {
+	def String generateLatexShoppingList(Ernaehrungsplan e) {
 		//TODO: Latex-Code für die Einkaufsliste; zu befüllen mit den Informationen aus unserer Modellinstanz "plan" (später)
 		
 		'''
@@ -266,7 +322,7 @@ class M2T {
 	/*
 	 * Generiert den Ernährungsplan für HTML.
 	 */
-	def String generateHtmlSchedule() {
+	def String generateHtmlSchedule(Ernaehrungsplan e) {
 		'''
 		<!DOCTYPE html>
 		<html lang="en">
@@ -292,7 +348,7 @@ class M2T {
 		      <div class="container">
 		        <div class="row">
 		          <h1>Ernährungsplan</h1>
-		          <p>Max Mustermann <br />Empfohlener Energiebedarf pro Woche: 14.000 Kalorien &rarr; 2.000 Kalorien pro Tag</p>
+		          <p>«this.current_personname»<br />Empfohlener Energiebedarf pro Woche: 14.000 Kalorien &rarr; 2.000 Kalorien pro Tag</p>
 		          <table class="table table-bordered">
 		            <thead>
 		              <tr>
@@ -391,7 +447,7 @@ class M2T {
 	/*
 	 * Generiert die Einkaufsliste für HTML.
 	 */
-	def String generateHtmlShoppingList(){
+	def String generateHtmlShoppingList(Ernaehrungsplan e){
 		'''
 		<!DOCTYPE html>
 		<html lang="en">

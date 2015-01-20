@@ -1,11 +1,26 @@
 Ernaehrungsplan 
 	{
 	Person(Marcel,1200)
+	Person(Tabea, 1000)
+	Person(FloH, 1000)
+	Person(FloF, 1000)
+	Person(Rudi,1000)
 	Hauptbestandteil (Lammfleisch,73)
 	Hauptbestandteil (Rindersteak, 30)
+	Hauptbestandteil (Nudelauflauf, 200)
+	Hauptbestandteil (Kartoffelauflauf, 200)
+	Hauptbestandteil (Salat, 200)
+	Hauptbestandteil (Pfannkuchen, 200)
 	Sauce (Bechamel, 100)
+	Sauce (Bolognese, 100)
+	Sauce (Dressing, 100)
+	Sauce (Curry, 100)
 	Beilage (Kartoffeln, 73)
 	Beilage (Reis, 20)
+	Beilage (Nudeln, 50)
+	Beilage (Spinat, 50)
+	Beilage (Gemuese, 50)
+	Beilage (Ruehrei, 50)	
 
 	Gericht 
 	{
@@ -14,14 +29,116 @@ Ernaehrungsplan
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200,Kartoffeln, FleischMitKartoffeln)
+			zutat (200, Kartoffeln, FleischMitKartoffeln)
 			zutat (500, Lammfleisch, FleischMitKartoffeln)
 			}
 	}
 	
-	eplan 
-		{
-		personen (Marcel)
-		gerichte(FleischMitKartoffeln)
-		}
+	Gericht 
+	{
+		name Pfannkuchen
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (300, Pfannkuchen, Pfannkuchen)
+			}
 	}
+	
+	Gericht 
+	{
+		name KartoffelnMitSpinatUndRuehrei
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (200, Kartoffeln, KartoffelnMitSpinatUndRuehrei)
+			zutat (100, Spinat, KartoffelnMitSpinatUndRuehrei)
+			zutat (100, Ruehrei, KartoffelnMitSpinatUndRuehrei)
+			}
+	}
+	
+	Gericht 
+	{
+		name SpaghettiBolognese
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (200, Nudeln, SpaghettiBolognese)
+			zutat (100, Bolognese, SpaghettiBolognese)
+			}
+	}
+	
+	Gericht 
+	{
+		name BunterSalat
+		kommentar "stuff dies das kochen machen"
+		istSalat ja
+		besteht aus 
+			{
+			zutat (200, Salat, BunterSalat)
+			zutat (100, Gemuese, BunterSalat)
+			zutat (100, Dressing, BunterSalat)
+			}
+	}
+	
+	Gericht 
+	{
+		name CurryReis
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (200, Reis, CurryReis)
+			zutat (100, Curry, CurryReis)
+			}
+	}
+	
+	Gericht 
+	{
+		name Salat
+		kommentar "stuff dies das kochen machen"
+		istSalat ja
+		besteht aus 
+			{
+			zutat (200, Salat, Salat)
+			zutat (100, Dressing, Salat)
+			}
+	}
+	
+	Gericht 
+	{
+		name Nudelauflauf
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (300, Nudelauflauf, Nudelauflauf)
+			}
+	}
+	
+	Gericht 
+	{
+		name Kartoffelauflauf
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (300, Kartoffelauflauf, Kartoffelauflauf)
+			}
+	}
+	
+	eplan 
+	{
+		personen (Marcel)
+		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
+	}
+	
+	eplan 
+	{
+		personen (Tabea)
+		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
+	}
+	
+}
