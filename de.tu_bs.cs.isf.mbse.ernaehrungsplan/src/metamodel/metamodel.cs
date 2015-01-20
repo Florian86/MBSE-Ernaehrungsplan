@@ -32,7 +32,7 @@ RULES {
 				"}";
 	
 	Ernaehrungsplan ::= "eplan" "{"
-						"personen" "(" personen[] ("," personen[])* ")"
+						"person" "(" personen[] ")"
 						"gerichte" "(" gerichte[] ("," gerichte[])* ")"
 						"}";
 	

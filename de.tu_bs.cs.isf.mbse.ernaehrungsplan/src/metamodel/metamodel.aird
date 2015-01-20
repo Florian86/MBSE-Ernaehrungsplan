@@ -845,7 +845,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC_EReference']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_sf4uwJywEeSUQMhD9V3O4Q" name="[1..*] personen" sourceNode="_0-91UJTYEeSp_L_BA5sxgA" targetNode="_0_cWcJTYEeSp_L_BA5sxgA">
+      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_sf4uwJywEeSUQMhD9V3O4Q" name="[1..1] personen" sourceNode="_0-91UJTYEeSp_L_BA5sxgA" targetNode="_0_cWcJTYEeSp_L_BA5sxgA">
         <target xmi:type="ecore:EReference" href="metamodel.ecore#//Ernaehrungsplan/personen"/>
         <semanticElements xmi:type="ecore:EReference" href="metamodel.ecore#//Ernaehrungsplan/personen"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_yPq8EZywEeSUQMhD9V3O4Q" description="_yPqVApywEeSUQMhD9V3O4Q" routingStyle="manhattan">
