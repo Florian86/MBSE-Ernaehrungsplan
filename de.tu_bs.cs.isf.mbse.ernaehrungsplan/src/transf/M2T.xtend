@@ -72,9 +72,8 @@ class M2T {
         
         for (e: this.eplans) {
         
-        	for (p: e.personen) {
-        		this.current_personname = p.name
-        	}
+        	this.current_personname = e.personen.name
+        	
         	this.meals = e.gerichte;
         
 	        //--------------------LaTeX--------------------
@@ -192,15 +191,9 @@ class M2T {
 			«this.current_personname»
 			\\ Empfohlener Energiebedarf pro Woche: 
 		
-	«««		«e.personen.kcal»
-			«FOR p: e.personen»
-				«p.kcal»
-			«ENDFOR»
+			«e.personen.kcal»
 			 Kalorien $\rightarrow$ 
-	«««		«e.personen.kcal/7»
-			«FOR p: e.personen»
-				«p.kcal/7»
-			«ENDFOR»
+			«e.personen.kcal/7»
 			Kalorien pro Tag \medskip \\
 			\renewcommand*{\arraystretch}{1.2}
 			\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|X|}	
