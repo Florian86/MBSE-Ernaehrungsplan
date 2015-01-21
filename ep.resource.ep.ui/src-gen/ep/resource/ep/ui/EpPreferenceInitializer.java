@@ -6,47 +6,52 @@
  */
 package ep.resource.ep.ui;
 
+import java.util.Collection;
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.jface.preference.IPreferenceStore;
+
 /**
- * A class used to initialize default preference values.
+ * This class can be used to initialize default preference values.
  */
-public class EpPreferenceInitializer extends org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer {
+public class EpPreferenceInitializer extends AbstractPreferenceInitializer {
 	
 	public void initializeDefaultPreferences() {
 		
 		initializeDefaultSyntaxHighlighting();
 		initializeDefaultBrackets();
+		initializeDefaultsContentAssist();
 		
-		org.eclipse.jface.preference.IPreferenceStore store = ep.resource.ep.ui.EpUIPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = ep.resource.ep.ui.EpUIPlugin.getDefault().getPreferenceStore();
 		// Set default value for matching brackets
 		store.setDefault(ep.resource.ep.ui.EpPreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR, "192,192,192");
 		store.setDefault(ep.resource.ep.ui.EpPreferenceConstants.EDITOR_MATCHING_BRACKETS_CHECKBOX, true);
 		
 	}
 	
-	private void initializeDefaultBrackets() {
-		org.eclipse.jface.preference.IPreferenceStore store = ep.resource.ep.ui.EpUIPlugin.getDefault().getPreferenceStore();
+	protected void initializeDefaultBrackets() {
+		IPreferenceStore store = ep.resource.ep.ui.EpUIPlugin.getDefault().getPreferenceStore();
 		initializeDefaultBrackets(store, new ep.resource.ep.mopp.EpMetaInformation());
 	}
 	
+	protected void initializeDefaultBrackets(IPreferenceStore store, ep.resource.ep.IEpMetaInformation metaInformation) {
+		String languageId = metaInformation.getSyntaxName();
+		// set default brackets
+		ep.resource.ep.ui.EpBracketSet bracketSet = new ep.resource.ep.ui.EpBracketSet();
+		final Collection<ep.resource.ep.IEpBracketPair> bracketPairs = metaInformation.getBracketPairs();
+		if (bracketPairs != null) {
+			for (ep.resource.ep.IEpBracketPair bracketPair : bracketPairs) {
+				bracketSet.addBracketPair(bracketPair.getOpeningBracket(), bracketPair.getClosingBracket(), bracketPair.isClosingEnabledInside(), bracketPair.isCloseAfterEnter());
+			}
+		}
+		store.setDefault(languageId + ep.resource.ep.ui.EpPreferenceConstants.EDITOR_BRACKETS_SUFFIX, bracketSet.serialize());
+	}
+	
 	public void initializeDefaultSyntaxHighlighting() {
-		org.eclipse.jface.preference.IPreferenceStore store = ep.resource.ep.ui.EpUIPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = ep.resource.ep.ui.EpUIPlugin.getDefault().getPreferenceStore();
 		initializeDefaultSyntaxHighlighting(store, new ep.resource.ep.mopp.EpMetaInformation());
 	}
 	
-	private void initializeDefaultBrackets(org.eclipse.jface.preference.IPreferenceStore store, ep.resource.ep.IEpMetaInformation metaInformation) {
-		String languageId = metaInformation.getSyntaxName();
-		// set default brackets for ITextResource bracket set
-		ep.resource.ep.ui.EpBracketSet bracketSet = new ep.resource.ep.ui.EpBracketSet(null, null);
-		final java.util.Collection<ep.resource.ep.IEpBracketPair> bracketPairs = metaInformation.getBracketPairs();
-		if (bracketPairs != null) {
-			for (ep.resource.ep.IEpBracketPair bracketPair : bracketPairs) {
-				bracketSet.addBracketPair(bracketPair.getOpeningBracket(), bracketPair.getClosingBracket(), bracketPair.isClosingEnabledInside());
-			}
-		}
-		store.setDefault(languageId + ep.resource.ep.ui.EpPreferenceConstants.EDITOR_BRACKETS_SUFFIX, bracketSet.getBracketString());
-	}
-	
-	private void initializeDefaultSyntaxHighlighting(org.eclipse.jface.preference.IPreferenceStore store, ep.resource.ep.mopp.EpMetaInformation metaInformation) {
+	protected void initializeDefaultSyntaxHighlighting(IPreferenceStore store, ep.resource.ep.mopp.EpMetaInformation metaInformation) {
 		String languageId = metaInformation.getSyntaxName();
 		String[] tokenNames = metaInformation.getSyntaxHighlightableTokenNames();
 		if (tokenNames == null) {
@@ -64,7 +69,14 @@ public class EpPreferenceInitializer extends org.eclipse.core.runtime.preference
 		}
 	}
 	
-	private void setProperties(org.eclipse.jface.preference.IPreferenceStore store, String languageID, String tokenName, String color, boolean bold, boolean enable, boolean italic, boolean strikethrough, boolean underline) {
+	private void initializeDefaultsContentAssist() {
+		IPreferenceStore store = ep.resource.ep.ui.EpUIPlugin.getDefault().getPreferenceStore();
+		store.setDefault(ep.resource.ep.ui.EpPreferenceConstants.EDITOR_CONTENT_ASSIST_ENABLED, ep.resource.ep.ui.EpPreferenceConstants.EDITOR_CONTENT_ASSIST_ENABLED_DEFAULT);
+		store.setDefault(ep.resource.ep.ui.EpPreferenceConstants.EDITOR_CONTENT_ASSIST_DELAY, ep.resource.ep.ui.EpPreferenceConstants.EDITOR_CONTENT_ASSIST_DELAY_DEFAULT);
+		store.setDefault(ep.resource.ep.ui.EpPreferenceConstants.EDITOR_CONTENT_ASSIST_TRIGGERS, ep.resource.ep.ui.EpPreferenceConstants.EDITOR_CONTENT_ASSIST_TRIGGERS_DEFAULT);
+	}
+	
+	protected void setProperties(IPreferenceStore store, String languageID, String tokenName, String color, boolean bold, boolean enable, boolean italic, boolean strikethrough, boolean underline) {
 		store.setDefault(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageID, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.BOLD), bold);
 		store.setDefault(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageID, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.COLOR), color);
 		store.setDefault(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageID, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.ENABLE), enable);
@@ -73,7 +85,7 @@ public class EpPreferenceInitializer extends org.eclipse.core.runtime.preference
 		store.setDefault(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageID, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.UNDERLINE), underline);
 	}
 	
-	private String getColorString(int[] colorAsRGB) {
+	protected String getColorString(int[] colorAsRGB) {
 		if (colorAsRGB == null) {
 			return "0,0,0";
 		}
@@ -82,4 +94,6 @@ public class EpPreferenceInitializer extends org.eclipse.core.runtime.preference
 		}
 		return colorAsRGB[0] + "," +colorAsRGB[1] + ","+ colorAsRGB[2];
 	}
+	
 }
+

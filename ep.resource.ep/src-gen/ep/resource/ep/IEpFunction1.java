@@ -6,6 +6,7 @@
  */
 package ep.resource.ep;
 
+
 /**
  * A simple interface for generic functions with one argument.
  */

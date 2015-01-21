@@ -6,23 +6,46 @@
  */
 package ep.resource.ep.debug;
 
-public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implements org.eclipse.debug.core.model.IDebugTarget, ep.resource.ep.debug.IEpDebugEventListener {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IMemoryBlock;
+import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IThread;
+
+public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implements IDebugTarget, ep.resource.ep.debug.IEpDebugEventListener {
 	
 	/**
 	 * associated system process
 	 */
 	private ep.resource.ep.debug.EpDebugProcess process;
 	
-	private java.net.Socket eventSocket;
+	private Socket eventSocket;
 	
-	private java.io.BufferedReader eventReader;
+	private BufferedReader eventReader;
 	
 	/**
 	 * containing launch object
 	 */
-	private org.eclipse.debug.core.ILaunch launch;
+	private ILaunch launch;
 	
-	private org.eclipse.debug.core.model.IThread[] threads;
+	private IThread[] threads;
 	
 	private ep.resource.ep.debug.EpDebugThread thread;
 	
@@ -35,11 +58,11 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 	/**
 	 * event listeners
 	 */
-	private java.util.List<ep.resource.ep.debug.IEpDebugEventListener> eventListeners = new java.util.ArrayList<ep.resource.ep.debug.IEpDebugEventListener>();
+	private List<ep.resource.ep.debug.IEpDebugEventListener> eventListeners = new ArrayList<ep.resource.ep.debug.IEpDebugEventListener>();
 	
 	private ep.resource.ep.debug.EpDebugProxy debugProxy;
 	
-	private class DebugEventDispatcher extends org.eclipse.core.runtime.jobs.Job {
+	private class DebugEventDispatcher extends Job {
 		
 		private ep.resource.ep.debug.EpDebugCommunicationHelper communicationHelper = new ep.resource.ep.debug.EpDebugCommunicationHelper();
 		
@@ -48,7 +71,7 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 			setSystem(true);
 		}
 		
-		protected org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor monitor) {
+		protected IStatus run(IProgressMonitor monitor) {
 			while (!isTerminated()) {
 				ep.resource.ep.debug.EpDebugMessage message = communicationHelper.receive(eventReader);
 				if (message != null) {
@@ -58,7 +81,7 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 					break;
 				}
 			}
-			return org.eclipse.core.runtime.Status.OK_STATUS;
+			return Status.OK_STATUS;
 		}
 		
 		private void notifyListeners(ep.resource.ep.debug.EpDebugMessage message) {
@@ -69,33 +92,33 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 		}
 	}
 	
-	public EpDebugTarget(ep.resource.ep.debug.EpDebugProcess process, org.eclipse.debug.core.ILaunch launch, int requestPort, int eventPort) {
+	public EpDebugTarget(ep.resource.ep.debug.EpDebugProcess process, ILaunch launch, int requestPort, int eventPort) {
 		super(launch.getDebugTarget());
 		this.process = process;
 		this.launch = launch;
 		this.thread = new ep.resource.ep.debug.EpDebugThread(this);
-		this.threads = new org.eclipse.debug.core.model.IThread[] {this.thread};
+		this.threads = new IThread[] {this.thread};
 		
 		// initialize debug proxy
 		try {
 			this.debugProxy = new ep.resource.ep.debug.EpDebugProxy(this, requestPort);
-		} catch (java.net.UnknownHostException e) {
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		// initialize asynchronous event dispatcher
 		try {
 			// creating event client socket (trying to connect)...
-			this.eventSocket = new java.net.Socket("localhost", eventPort);
+			this.eventSocket = new Socket("localhost", eventPort);
 			// creating event client socket - done (connected).
-			this.eventReader = new java.io.BufferedReader(new java.io.InputStreamReader(this.eventSocket.getInputStream()));
-		} catch (java.net.ConnectException e) {
+			this.eventReader = new BufferedReader(new InputStreamReader(this.eventSocket.getInputStream()));
+		} catch (ConnectException e) {
 			throw new RuntimeException("Can't create socket: " + e.getMessage());
-		} catch (java.net.UnknownHostException e) {
+		} catch (UnknownHostException e) {
 			throw new RuntimeException("Can't create socket: " + e.getMessage());
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException("Can't create socket: " + e.getMessage());
 		}
 		
@@ -106,13 +129,15 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 		addEventListener(this.thread);
 		addEventListener(this.process);
 		
-		org.eclipse.debug.core.DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
+		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
 	}
 	
 	/**
+	 * <p>
 	 * Registers the given event listener. The listener will be notified of events in
 	 * the program being interpreted. Has no effect if the listener is already
 	 * registered.
+	 * </p>
 	 * 
 	 * @param listener event listener
 	 */
@@ -123,8 +148,10 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 	}
 	
 	/**
+	 * <p>
 	 * Deregisters the given event listener. Has no effect if the listener is not
 	 * currently registered.
+	 * </p>
 	 * 
 	 * @param listener event listener
 	 */
@@ -132,31 +159,31 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 		eventListeners.remove(listener);
 	}
 	
-	public String getName() throws org.eclipse.debug.core.DebugException {
+	public String getName() throws DebugException {
 		return new ep.resource.ep.mopp.EpMetaInformation().getSyntaxName() + " model";
 	}
 	
-	public org.eclipse.debug.core.model.IDebugTarget getDebugTarget() {
+	public IDebugTarget getDebugTarget() {
 		return this;
 	}
 	
-	public org.eclipse.debug.core.model.IProcess getProcess() {
+	public IProcess getProcess() {
 		return process;
 	}
 	
-	public org.eclipse.debug.core.model.IThread[] getThreads() throws org.eclipse.debug.core.DebugException {
+	public IThread[] getThreads() throws DebugException {
 		return threads;
 	}
 	
-	public boolean hasThreads() throws org.eclipse.debug.core.DebugException {
+	public boolean hasThreads() throws DebugException {
 		return true;
 	}
 	
-	public boolean supportsBreakpoint(org.eclipse.debug.core.model.IBreakpoint breakpoint) {
+	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
 		return breakpoint.getModelIdentifier().equals(getModelIdentifier());
 	}
 	
-	public org.eclipse.debug.core.ILaunch getLaunch() {
+	public ILaunch getLaunch() {
 		return launch;
 	}
 	
@@ -168,18 +195,18 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 		return terminated || getProcess().isTerminated();
 	}
 	
-	public void terminate() throws org.eclipse.debug.core.DebugException {
+	public void terminate() throws DebugException {
 		getThread().terminate();
 	}
 	
 	private synchronized void terminated() {
 		terminated = true;
-		threads = new org.eclipse.debug.core.model.IThread[0];
+		threads = new IThread[0];
 		fireTerminateEvent();
 		removeEventListener(this);
 		removeEventListener(this.thread);
 		removeEventListener(this.process);
-		org.eclipse.debug.core.DebugPlugin debugPlugin = org.eclipse.debug.core.DebugPlugin.getDefault();
+		DebugPlugin debugPlugin = DebugPlugin.getDefault();
 		try {
 			debugPlugin.getBreakpointManager().removeBreakpointListener(this);
 		} catch (NullPointerException npe) {
@@ -201,43 +228,43 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 		return getThread().isSuspended();
 	}
 	
-	public void resume() throws org.eclipse.debug.core.DebugException {
+	public void resume() throws DebugException {
 		getThread().resume();
 	}
 	
-	public org.eclipse.debug.core.model.IThread getThread() {
+	public IThread getThread() {
 		return thread;
 	}
 	
-	public void suspend() throws org.eclipse.debug.core.DebugException {
+	public void suspend() throws DebugException {
 		getThread().suspend();
 	}
 	
-	public void breakpointAdded(org.eclipse.debug.core.model.IBreakpoint breakpoint) {
+	public void breakpointAdded(IBreakpoint breakpoint) {
 		if (supportsBreakpoint(breakpoint)) {
 			try {
 				if ((breakpoint.isEnabled() && getBreakpointManager().isEnabled()) || !breakpoint.isRegistered()) {
 					ep.resource.ep.debug.EpLineBreakpoint lineBreakpoint = (ep.resource.ep.debug.EpLineBreakpoint) breakpoint;
 					lineBreakpoint.install(this);
 				}
-			} catch (org.eclipse.core.runtime.CoreException e) {
+			} catch (CoreException e) {
 			}
 		}
 	}
 	
-	public void breakpointRemoved(org.eclipse.debug.core.model.IBreakpoint breakpoint, org.eclipse.core.resources.IMarkerDelta delta) {
+	public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta) {
 		if (supportsBreakpoint(breakpoint)) {
 			try {
 				if ((breakpoint.isEnabled() && getBreakpointManager().isEnabled()) || !breakpoint.isRegistered()) {
 					ep.resource.ep.debug.EpLineBreakpoint lineBreakpoint = (ep.resource.ep.debug.EpLineBreakpoint) breakpoint;
 					lineBreakpoint.remove(this);
 				}
-			} catch (org.eclipse.core.runtime.CoreException e) {
+			} catch (CoreException e) {
 			}
 		}
 	}
 	
-	public void breakpointChanged(org.eclipse.debug.core.model.IBreakpoint breakpoint, org.eclipse.core.resources.IMarkerDelta delta) {
+	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
 	}
 	
 	public boolean canDisconnect() {
@@ -245,14 +272,14 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 		return false;
 	}
 	
-	public void disconnect() throws org.eclipse.debug.core.DebugException {
+	public void disconnect() throws DebugException {
 	}
 	
 	public boolean isDisconnected() {
 		return false;
 	}
 	
-	public org.eclipse.debug.core.model.IMemoryBlock getMemoryBlock(long startAddress, long length) throws org.eclipse.debug.core.DebugException {
+	public IMemoryBlock getMemoryBlock(long startAddress, long length) throws DebugException {
 		return null;
 	}
 	
@@ -268,7 +295,7 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 		installDeferredBreakpoints();
 		try {
 			resume();
-		} catch (org.eclipse.debug.core.DebugException e) {
+		} catch (DebugException e) {
 		}
 	}
 	
@@ -276,7 +303,7 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 	 * Install breakpoints that are already registered with the breakpoint manager.
 	 */
 	private void installDeferredBreakpoints() {
-		org.eclipse.debug.core.model.IBreakpoint[] breakpoints = getBreakpointManager().getBreakpoints(getModelIdentifier());
+		IBreakpoint[] breakpoints = getBreakpointManager().getBreakpoints(getModelIdentifier());
 		for (int i = 0; i < breakpoints.length; i++) {
 			breakpointAdded(breakpoints[i]);
 		}
@@ -295,7 +322,7 @@ public class EpDebugTarget extends ep.resource.ep.debug.EpDebugElement implement
 			} else {
 				System.out.println("ERROR in " + this.getClass().getName() + ".handleMessage(): unknown event " + message);
 			}
-		} catch (org.eclipse.debug.core.DebugException e) {
+		} catch (DebugException e) {
 			e.printStackTrace();
 		}
 	}

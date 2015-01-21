@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.mopp;
 
+
 public class EpTaskItem {
 	
 	private String keyword;

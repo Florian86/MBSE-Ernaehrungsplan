@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.mopp;
 
+
 /**
  * A basic implementation of the ITokenResolveResult interface.
  */

@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.ui;
 
+
 public class EpSyntaxColoringHelper {
 	
 	public static enum StyleProperty {

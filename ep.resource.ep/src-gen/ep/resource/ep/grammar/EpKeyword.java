@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.grammar;
 
+
 /**
  * A class to represent a keyword in the grammar.
  */

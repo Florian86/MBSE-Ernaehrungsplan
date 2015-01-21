@@ -6,22 +6,27 @@
  */
 package ep.resource.ep.mopp;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import org.eclipse.emf.ecore.EClass;
+
 /**
  * Abstract super class for all expected elements. Provides methods to add
  * followers.
  */
 public abstract class EpAbstractExpectedElement implements ep.resource.ep.IEpExpectedElement {
 	
-	private org.eclipse.emf.ecore.EClass ruleMetaclass;
+	private EClass ruleMetaclass;
 	
-	private java.util.Set<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>> followers = new java.util.LinkedHashSet<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>>();
+	private Set<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>> followers = new LinkedHashSet<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>>();
 	
-	public EpAbstractExpectedElement(org.eclipse.emf.ecore.EClass ruleMetaclass) {
+	public EpAbstractExpectedElement(EClass ruleMetaclass) {
 		super();
 		this.ruleMetaclass = ruleMetaclass;
 	}
 	
-	public org.eclipse.emf.ecore.EClass getRuleMetaclass() {
+	public EClass getRuleMetaclass() {
 		return ruleMetaclass;
 	}
 	
@@ -29,7 +34,7 @@ public abstract class EpAbstractExpectedElement implements ep.resource.ep.IEpExp
 		followers.add(new ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>(follower, path));
 	}
 	
-	public java.util.Collection<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>> getFollowers() {
+	public Collection<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>> getFollowers() {
 		return followers;
 	}
 	

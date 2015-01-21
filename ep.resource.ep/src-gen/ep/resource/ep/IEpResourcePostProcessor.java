@@ -6,6 +6,7 @@
  */
 package ep.resource.ep;
 
+
 /**
  * Implementors of this interface can be used to post-process parsed text
  * resources. This can be useful to validate or modify the model that was
@@ -14,8 +15,10 @@ package ep.resource.ep;
 public interface IEpResourcePostProcessor {
 	
 	/**
+	 * <p>
 	 * Processes the resource after it was parsed. This method is automatically called
 	 * for registered post processors.
+	 * </p>
 	 * 
 	 * @param resource the resource to validate of modify
 	 */

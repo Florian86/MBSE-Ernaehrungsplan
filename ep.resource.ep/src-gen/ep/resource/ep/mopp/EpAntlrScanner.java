@@ -6,11 +6,15 @@
  */
 package ep.resource.ep.mopp;
 
+import org.antlr.runtime3_4_0.ANTLRStringStream;
+import org.antlr.runtime3_4_0.Lexer;
+import org.antlr.runtime3_4_0.Token;
+
 public class EpAntlrScanner implements ep.resource.ep.IEpTextScanner {
 	
-	private org.antlr.runtime3_4_0.Lexer antlrLexer;
+	private Lexer antlrLexer;
 	
-	public EpAntlrScanner(org.antlr.runtime3_4_0.Lexer antlrLexer) {
+	public EpAntlrScanner(Lexer antlrLexer) {
 		this.antlrLexer = antlrLexer;
 	}
 	
@@ -18,7 +22,7 @@ public class EpAntlrScanner implements ep.resource.ep.IEpTextScanner {
 		if (antlrLexer.getCharStream() == null) {
 			return null;
 		}
-		final org.antlr.runtime3_4_0.Token current = antlrLexer.nextToken();
+		final Token current = antlrLexer.nextToken();
 		if (current == null || current.getType() < 0) {
 			return null;
 		}
@@ -27,7 +31,7 @@ public class EpAntlrScanner implements ep.resource.ep.IEpTextScanner {
 	}
 	
 	public void setText(String text) {
-		antlrLexer.setCharStream(new org.antlr.runtime3_4_0.ANTLRStringStream(text));
+		antlrLexer.setCharStream(new ANTLRStringStream(text));
 	}
 	
 }

@@ -6,6 +6,9 @@
  */
 package ep.resource.ep.debug;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * DebugMessages are exchanged between the debug server (the Eclipse debug
  * framework) and the debug client (a running process or interpreter). To exchange
@@ -23,7 +26,7 @@ public class EpDebugMessage {
 		this.arguments = arguments;
 	}
 	
-	public EpDebugMessage(ep.resource.ep.debug.EEpDebugMessageTypes messageType, java.util.List<String> arguments) {
+	public EpDebugMessage(ep.resource.ep.debug.EEpDebugMessageTypes messageType, List<String> arguments) {
 		super();
 		this.messageType = messageType;
 		this.arguments = new String[arguments.size()];
@@ -41,7 +44,7 @@ public class EpDebugMessage {
 	}
 	
 	public String serialize() {
-		java.util.List<String> parts = new java.util.ArrayList<String>();
+		List<String> parts = new ArrayList<String>();
 		parts.add(messageType.name());
 		for (String argument : arguments) {
 			parts.add(argument);
@@ -50,7 +53,7 @@ public class EpDebugMessage {
 	}
 	
 	public static EpDebugMessage deserialize(String response) {
-		java.util.List<String> parts = ep.resource.ep.util.EpStringUtil.decode(response, DELIMITER);
+		List<String> parts = ep.resource.ep.util.EpStringUtil.decode(response, DELIMITER);
 		String messageType = parts.get(0);
 		String[] arguments = new String[parts.size() - 1];
 		for (int i = 1; i < parts.size(); i++) {

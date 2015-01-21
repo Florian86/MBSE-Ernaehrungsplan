@@ -6,15 +6,36 @@
  */
 package ep.resource.ep.mopp;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.Enumerator;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
+
 public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	
 	protected class PrintToken {
 		
 		private String text;
 		private String tokenName;
-		private org.eclipse.emf.ecore.EObject container;
+		private EObject container;
 		
-		public PrintToken(String text, String tokenName, org.eclipse.emf.ecore.EObject container) {
+		public PrintToken(String text, String tokenName, EObject container) {
 			this.text = text;
 			this.tokenName = tokenName;
 			this.container = container;
@@ -28,7 +49,7 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 			return tokenName;
 		}
 		
-		public org.eclipse.emf.ecore.EObject getContainer() {
+		public EObject getContainer() {
 			return container;
 		}
 		
@@ -48,19 +69,19 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	 */
 	protected class PrintCountingMap {
 		
-		private java.util.Map<String, java.util.List<Object>> featureToValuesMap = new java.util.LinkedHashMap<String, java.util.List<Object>>();
-		private java.util.Map<String, java.util.Set<Integer>> featureToPrintedIndicesMap = new java.util.LinkedHashMap<String, java.util.Set<Integer>>();
+		private Map<String, List<Object>> featureToValuesMap = new LinkedHashMap<String, List<Object>>();
+		private Map<String, Set<Integer>> featureToPrintedIndicesMap = new LinkedHashMap<String, Set<Integer>>();
 		
-		public void setFeatureValues(String featureName, java.util.List<Object> values) {
+		public void setFeatureValues(String featureName, List<Object> values) {
 			featureToValuesMap.put(featureName, values);
 			// If the feature does not have values it won't be printed. An entry in
 			// 'featureToPrintedIndicesMap' is therefore not needed in this case.
 			if (values != null) {
-				featureToPrintedIndicesMap.put(featureName, new java.util.LinkedHashSet<Integer>());
+				featureToPrintedIndicesMap.put(featureName, new LinkedHashSet<Integer>());
 			}
 		}
 		
-		public java.util.Set<Integer> getIndicesToPrint(String featureName) {
+		public Set<Integer> getIndicesToPrint(String featureName) {
 			return featureToPrintedIndicesMap.get(featureName);
 		}
 		
@@ -69,19 +90,19 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		}
 		
 		public int getCountLeft(ep.resource.ep.grammar.EpTerminal terminal) {
-			org.eclipse.emf.ecore.EStructuralFeature feature = terminal.getFeature();
+			EStructuralFeature feature = terminal.getFeature();
 			String featureName = feature.getName();
-			java.util.List<Object> totalValuesToPrint = featureToValuesMap.get(featureName);
-			java.util.Set<Integer> printedIndices = featureToPrintedIndicesMap.get(featureName);
+			List<Object> totalValuesToPrint = featureToValuesMap.get(featureName);
+			Set<Integer> printedIndices = featureToPrintedIndicesMap.get(featureName);
 			if (totalValuesToPrint == null) {
 				return 0;
 			}
-			if (feature instanceof org.eclipse.emf.ecore.EAttribute) {
+			if (feature instanceof EAttribute) {
 				// for attributes we do not need to check the type, since the CS languages does
 				// not allow type restrictions for attributes.
 				return totalValuesToPrint.size() - printedIndices.size();
-			} else if (feature instanceof org.eclipse.emf.ecore.EReference) {
-				org.eclipse.emf.ecore.EReference reference = (org.eclipse.emf.ecore.EReference) feature;
+			} else if (feature instanceof EReference) {
+				EReference reference = (EReference) feature;
 				if (!reference.isContainment()) {
 					// for non-containment references we also do not need to check the type, since the
 					// CS languages does not allow type restrictions for these either.
@@ -90,8 +111,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 			}
 			// now we're left with containment references for which we check the type of the
 			// objects to print
-			java.util.List<Class<?>> allowedTypes = getAllowedTypes(terminal);
-			java.util.Set<Integer> indicesWithCorrectType = new java.util.LinkedHashSet<Integer>();
+			List<Class<?>> allowedTypes = getAllowedTypes(terminal);
+			Set<Integer> indicesWithCorrectType = new LinkedHashSet<Integer>();
 			int index = 0;
 			for (Object valueToPrint : totalValuesToPrint) {
 				for (Class<?> allowedType : allowedTypes) {
@@ -122,10 +143,10 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	 */
 	private ep.resource.ep.IEpTextResource resource;
 	
-	private java.util.Map<?, ?> options;
-	private java.io.OutputStream outputStream;
+	private Map<?, ?> options;
+	private OutputStream outputStream;
 	private String encoding = System.getProperty("file.encoding");
-	protected java.util.List<PrintToken> tokenOutputStream;
+	protected List<PrintToken> tokenOutputStream;
 	private ep.resource.ep.IEpTokenResolverFactory tokenResolverFactory = new ep.resource.ep.mopp.EpTokenResolverFactory();
 	private boolean handleTokenSpaceAutomatically = true;
 	private int tokenSpace = 1;
@@ -157,25 +178,25 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	 */
 	private boolean startedPrintingContainedObject;
 	
-	public EpPrinter2(java.io.OutputStream outputStream, ep.resource.ep.IEpTextResource resource) {
+	public EpPrinter2(OutputStream outputStream, ep.resource.ep.IEpTextResource resource) {
 		super();
 		this.outputStream = outputStream;
 		this.resource = resource;
 	}
 	
-	public void print(org.eclipse.emf.ecore.EObject element) throws java.io.IOException {
-		tokenOutputStream = new java.util.ArrayList<PrintToken>();
+	public void print(EObject element) throws IOException {
+		tokenOutputStream = new ArrayList<PrintToken>();
 		currentTabs = 0;
 		tabsBeforeCurrentObject = 0;
 		startedPrintingObject = true;
 		startedPrintingContainedObject = false;
-		java.util.List<ep.resource.ep.grammar.EpFormattingElement>  formattingElements = new java.util.ArrayList<ep.resource.ep.grammar.EpFormattingElement>();
+		List<ep.resource.ep.grammar.EpFormattingElement>  formattingElements = new ArrayList<ep.resource.ep.grammar.EpFormattingElement>();
 		doPrint(element, formattingElements);
 		// print all remaining formatting elements
-		java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations = getCopyOfLayoutInformation(element);
+		List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations = getCopyOfLayoutInformation(element);
 		ep.resource.ep.mopp.EpLayoutInformation eofLayoutInformation = getLayoutInformation(layoutInformations, null, null, null);
 		printFormattingElements(element, formattingElements, layoutInformations, eofLayoutInformation);
-		java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.OutputStreamWriter(new java.io.BufferedOutputStream(outputStream), encoding));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(new BufferedOutputStream(outputStream), encoding));
 		if (handleTokenSpaceAutomatically) {
 			printSmart(writer);
 		} else {
@@ -184,12 +205,12 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		writer.flush();
 	}
 	
-	protected void doPrint(org.eclipse.emf.ecore.EObject element, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements) {
+	protected void doPrint(EObject element, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements) {
 		if (element == null) {
-			throw new java.lang.IllegalArgumentException("Nothing to write.");
+			throw new IllegalArgumentException("Nothing to write.");
 		}
 		if (outputStream == null) {
-			throw new java.lang.IllegalArgumentException("Nothing to write on.");
+			throw new IllegalArgumentException("Nothing to write on.");
 		}
 		
 		if (element instanceof ep.EpElement) {
@@ -228,8 +249,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		addWarningToResource("The printer can not handle " + element.eClass().getName() + " elements", element);
 	}
 	
-	public void printInternal(org.eclipse.emf.ecore.EObject eObject, ep.resource.ep.grammar.EpSyntaxElement ruleElement, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements) {
-		java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations = getCopyOfLayoutInformation(eObject);
+	public void printInternal(EObject eObject, ep.resource.ep.grammar.EpSyntaxElement ruleElement, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements) {
+		List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations = getCopyOfLayoutInformation(eObject);
 		ep.resource.ep.mopp.EpSyntaxElementDecorator decoratorTree = getDecoratorTree(ruleElement);
 		decorateTree(decoratorTree, eObject);
 		printTree(decoratorTree, eObject, foundFormattingElements, layoutInformations);
@@ -250,9 +271,9 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return decorator;
 	}
 	
-	public void decorateTree(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, org.eclipse.emf.ecore.EObject eObject) {
+	public void decorateTree(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, EObject eObject) {
 		PrintCountingMap printCountingMap = initializePrintCountingMap(eObject);
-		java.util.List<ep.resource.ep.mopp.EpSyntaxElementDecorator> keywordsToPrint = new java.util.ArrayList<ep.resource.ep.mopp.EpSyntaxElementDecorator>();
+		List<ep.resource.ep.mopp.EpSyntaxElementDecorator> keywordsToPrint = new ArrayList<ep.resource.ep.mopp.EpSyntaxElementDecorator>();
 		decorateTreeBasic(decorator, eObject, printCountingMap, keywordsToPrint);
 		for (ep.resource.ep.mopp.EpSyntaxElementDecorator keywordToPrint : keywordsToPrint) {
 			// for keywords the concrete index does not matter, but we must add one to
@@ -265,19 +286,19 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	 * Tries to decorate the decorator with an attribute value, or reference held by
 	 * the given EObject. Returns true if an attribute value or reference was found.
 	 */
-	public boolean decorateTreeBasic(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, org.eclipse.emf.ecore.EObject eObject, PrintCountingMap printCountingMap, java.util.List<ep.resource.ep.mopp.EpSyntaxElementDecorator> keywordsToPrint) {
+	public boolean decorateTreeBasic(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, EObject eObject, PrintCountingMap printCountingMap, List<ep.resource.ep.mopp.EpSyntaxElementDecorator> keywordsToPrint) {
 		boolean foundFeatureToPrint = false;
 		ep.resource.ep.grammar.EpSyntaxElement syntaxElement = decorator.getDecoratedElement();
 		ep.resource.ep.grammar.EpCardinality cardinality = syntaxElement.getCardinality();
 		boolean isFirstIteration = true;
 		while (true) {
-			java.util.List<ep.resource.ep.mopp.EpSyntaxElementDecorator> subKeywordsToPrint = new java.util.ArrayList<ep.resource.ep.mopp.EpSyntaxElementDecorator>();
+			List<ep.resource.ep.mopp.EpSyntaxElementDecorator> subKeywordsToPrint = new ArrayList<ep.resource.ep.mopp.EpSyntaxElementDecorator>();
 			boolean keepDecorating = false;
 			if (syntaxElement instanceof ep.resource.ep.grammar.EpKeyword) {
 				subKeywordsToPrint.add(decorator);
 			} else if (syntaxElement instanceof ep.resource.ep.grammar.EpTerminal) {
 				ep.resource.ep.grammar.EpTerminal terminal = (ep.resource.ep.grammar.EpTerminal) syntaxElement;
-				org.eclipse.emf.ecore.EStructuralFeature feature = terminal.getFeature();
+				EStructuralFeature feature = terminal.getFeature();
 				if (feature == ep.resource.ep.grammar.EpGrammarInformationProvider.ANONYMOUS_FEATURE) {
 					return false;
 				}
@@ -345,15 +366,15 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return foundFeatureToPrint;
 	}
 	
-	private int findElementWithCorrectType(org.eclipse.emf.ecore.EObject eObject, org.eclipse.emf.ecore.EStructuralFeature feature, java.util.Set<Integer> indicesToPrint, ep.resource.ep.grammar.EpContainment containment) {
+	private int findElementWithCorrectType(EObject eObject, EStructuralFeature feature, Set<Integer> indicesToPrint, ep.resource.ep.grammar.EpContainment containment) {
 		// By default the type restrictions that are defined in the CS definition are
 		// considered when printing models. You can change this behavior by setting the
 		// 'ignoreTypeRestrictionsForPrinting' option to true.
 		boolean ignoreTypeRestrictions = false;
-		org.eclipse.emf.ecore.EClass[] allowedTypes = containment.getAllowedTypes();
+		EClass[] allowedTypes = containment.getAllowedTypes();
 		Object value = eObject.eGet(feature);
-		if (value instanceof java.util.List<?>) {
-			java.util.List<?> valueList = (java.util.List<?>) value;
+		if (value instanceof List<?>) {
+			List<?> valueList = (List<?>) value;
 			int listSize = valueList.size();
 			for (int index = 0; index < listSize; index++) {
 				if (indicesToPrint.contains(index)) {
@@ -379,11 +400,11 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	 * multiple choices are available. We pick the choice that prints at least one
 	 * attribute or reference.
 	 */
-	public boolean doesPrintFeature(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, org.eclipse.emf.ecore.EObject eObject, PrintCountingMap printCountingMap) {
+	public boolean doesPrintFeature(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, EObject eObject, PrintCountingMap printCountingMap) {
 		ep.resource.ep.grammar.EpSyntaxElement syntaxElement = decorator.getDecoratedElement();
 		if (syntaxElement instanceof ep.resource.ep.grammar.EpTerminal) {
 			ep.resource.ep.grammar.EpTerminal terminal = (ep.resource.ep.grammar.EpTerminal) syntaxElement;
-			org.eclipse.emf.ecore.EStructuralFeature feature = terminal.getFeature();
+			EStructuralFeature feature = terminal.getFeature();
 			if (feature == ep.resource.ep.grammar.EpGrammarInformationProvider.ANONYMOUS_FEATURE) {
 				return false;
 			}
@@ -401,10 +422,10 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return false;
 	}
 	
-	public boolean printTree(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, org.eclipse.emf.ecore.EObject eObject, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+	public boolean printTree(ep.resource.ep.mopp.EpSyntaxElementDecorator decorator, EObject eObject, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
 		ep.resource.ep.grammar.EpSyntaxElement printElement = decorator.getDecoratedElement();
 		ep.resource.ep.grammar.EpCardinality cardinality = printElement.getCardinality();
-		java.util.List<ep.resource.ep.grammar.EpFormattingElement> cloned = new java.util.ArrayList<ep.resource.ep.grammar.EpFormattingElement>();
+		List<ep.resource.ep.grammar.EpFormattingElement> cloned = new ArrayList<ep.resource.ep.grammar.EpFormattingElement>();
 		cloned.addAll(foundFormattingElements);
 		boolean foundSomethingAtAll = false;
 		boolean foundSomethingToPrint;
@@ -464,23 +485,23 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return foundSomethingToPrint;
 	}
 	
-	public void printKeyword(org.eclipse.emf.ecore.EObject eObject, ep.resource.ep.grammar.EpKeyword keyword, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+	public void printKeyword(EObject eObject, ep.resource.ep.grammar.EpKeyword keyword, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
 		ep.resource.ep.mopp.EpLayoutInformation keywordLayout = getLayoutInformation(layoutInformations, keyword, null, eObject);
 		printFormattingElements(eObject, foundFormattingElements, layoutInformations, keywordLayout);
 		String value = keyword.getValue();
 		tokenOutputStream.add(new PrintToken(value, "'" + ep.resource.ep.util.EpStringUtil.escapeToANTLRKeyword(value) + "'", eObject));
 	}
 	
-	public void printFeature(org.eclipse.emf.ecore.EObject eObject, ep.resource.ep.grammar.EpPlaceholder placeholder, int count, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
-		org.eclipse.emf.ecore.EStructuralFeature feature = placeholder.getFeature();
-		if (feature instanceof org.eclipse.emf.ecore.EAttribute) {
-			printAttribute(eObject, (org.eclipse.emf.ecore.EAttribute) feature, placeholder, count, foundFormattingElements, layoutInformations);
+	public void printFeature(EObject eObject, ep.resource.ep.grammar.EpPlaceholder placeholder, int count, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+		EStructuralFeature feature = placeholder.getFeature();
+		if (feature instanceof EAttribute) {
+			printAttribute(eObject, (EAttribute) feature, placeholder, count, foundFormattingElements, layoutInformations);
 		} else {
-			printReference(eObject, (org.eclipse.emf.ecore.EReference) feature, placeholder, count, foundFormattingElements, layoutInformations);
+			printReference(eObject, (EReference) feature, placeholder, count, foundFormattingElements, layoutInformations);
 		}
 	}
 	
-	public void printAttribute(org.eclipse.emf.ecore.EObject eObject, org.eclipse.emf.ecore.EAttribute attribute, ep.resource.ep.grammar.EpPlaceholder placeholder, int index, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+	public void printAttribute(EObject eObject, EAttribute attribute, ep.resource.ep.grammar.EpPlaceholder placeholder, int index, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
 		String result = null;
 		Object attributeValue = ep.resource.ep.util.EpEObjectUtil.getFeatureValue(eObject, attribute, index);
 		ep.resource.ep.mopp.EpLayoutInformation attributeLayout = getLayoutInformation(layoutInformations, placeholder, attributeValue, eObject);
@@ -507,8 +528,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	}
 	
 	
-	public void printBooleanTerminal(org.eclipse.emf.ecore.EObject eObject, ep.resource.ep.grammar.EpBooleanTerminal booleanTerminal, int index, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
-		org.eclipse.emf.ecore.EAttribute attribute = booleanTerminal.getAttribute();
+	public void printBooleanTerminal(EObject eObject, ep.resource.ep.grammar.EpBooleanTerminal booleanTerminal, int index, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+		EAttribute attribute = booleanTerminal.getAttribute();
 		String result = null;
 		Object attributeValue = ep.resource.ep.util.EpEObjectUtil.getFeatureValue(eObject, attribute, index);
 		ep.resource.ep.mopp.EpLayoutInformation attributeLayout = getLayoutInformation(layoutInformations, booleanTerminal, attributeValue, eObject);
@@ -536,8 +557,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	}
 	
 	
-	public void printEnumerationTerminal(org.eclipse.emf.ecore.EObject eObject, ep.resource.ep.grammar.EpEnumerationTerminal enumTerminal, int index, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
-		org.eclipse.emf.ecore.EAttribute attribute = enumTerminal.getAttribute();
+	public void printEnumerationTerminal(EObject eObject, ep.resource.ep.grammar.EpEnumerationTerminal enumTerminal, int index, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+		EAttribute attribute = enumTerminal.getAttribute();
 		String result = null;
 		Object attributeValue = ep.resource.ep.util.EpEObjectUtil.getFeatureValue(eObject, attribute, index);
 		ep.resource.ep.mopp.EpLayoutInformation attributeLayout = getLayoutInformation(layoutInformations, enumTerminal, attributeValue, eObject);
@@ -550,8 +571,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		if (result == null) {
 			// if no text is available, the enumeration attribute is converted to its textual
 			// representation using the literals of the enumeration terminal
-			assert attributeValue instanceof org.eclipse.emf.common.util.Enumerator;
-			result = enumTerminal.getText(((org.eclipse.emf.common.util.Enumerator) attributeValue).getName());
+			assert attributeValue instanceof Enumerator;
+			result = enumTerminal.getText(((Enumerator) attributeValue).getName());
 		}
 		
 		if (result != null && !"".equals(result)) {
@@ -562,8 +583,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	}
 	
 	
-	public void printContainedObject(org.eclipse.emf.ecore.EObject eObject, ep.resource.ep.grammar.EpContainment containment, int index, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
-		org.eclipse.emf.ecore.EStructuralFeature reference = containment.getFeature();
+	public void printContainedObject(EObject eObject, ep.resource.ep.grammar.EpContainment containment, int index, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+		EStructuralFeature reference = containment.getFeature();
 		Object o = ep.resource.ep.util.EpEObjectUtil.getFeatureValue(eObject, reference, index);
 		// save current number of tabs to restore them after printing the contained object
 		int oldTabsBeforeCurrentObject = tabsBeforeCurrentObject;
@@ -573,13 +594,13 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		// printed with the old number of tabs.
 		startedPrintingContainedObject = false;
 		currentTabs = 0;
-		doPrint((org.eclipse.emf.ecore.EObject) o, foundFormattingElements);
+		doPrint((EObject) o, foundFormattingElements);
 		// restore number of tabs after printing the contained object
 		tabsBeforeCurrentObject = oldTabsBeforeCurrentObject;
 		currentTabs = oldCurrentTabs;
 	}
 	
-	public void printFormattingElements(org.eclipse.emf.ecore.EObject eObject, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations, ep.resource.ep.mopp.EpLayoutInformation layoutInformation) {
+	public void printFormattingElements(EObject eObject, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations, ep.resource.ep.mopp.EpLayoutInformation layoutInformation) {
 		String hiddenTokenText = getHiddenTokenText(layoutInformation);
 		if (hiddenTokenText != null) {
 			// removed used information
@@ -635,8 +656,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		startedPrintingContainedObject = true;
 	}
 	
-	@SuppressWarnings("unchecked")	
-	public void printReference(org.eclipse.emf.ecore.EObject eObject, org.eclipse.emf.ecore.EReference reference, ep.resource.ep.grammar.EpPlaceholder placeholder, int index, java.util.List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
+	@SuppressWarnings("unchecked")
+	public void printReference(EObject eObject, EReference reference, ep.resource.ep.grammar.EpPlaceholder placeholder, int index, List<ep.resource.ep.grammar.EpFormattingElement> foundFormattingElements, List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations) {
 		String tokenName = placeholder.getTokenName();
 		Object referencedObject = ep.resource.ep.util.EpEObjectUtil.getFeatureValue(eObject, reference, index, false);
 		// first add layout before the reference
@@ -644,10 +665,10 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		printFormattingElements(eObject, foundFormattingElements, layoutInformations, referenceLayout);
 		// proxy objects must be printed differently
 		String deresolvedReference = null;
-		if (referencedObject instanceof org.eclipse.emf.ecore.EObject) {
-			org.eclipse.emf.ecore.EObject eObjectToDeResolve = (org.eclipse.emf.ecore.EObject) referencedObject;
+		if (referencedObject instanceof EObject) {
+			EObject eObjectToDeResolve = (EObject) referencedObject;
 			if (eObjectToDeResolve.eIsProxy()) {
-				deresolvedReference = ((org.eclipse.emf.ecore.InternalEObject) eObjectToDeResolve).eProxyURI().fragment();
+				deresolvedReference = ((InternalEObject) eObjectToDeResolve).eProxyURI().fragment();
 				// If the proxy was created by EMFText, we can try to recover the identifier from
 				// the proxy URI
 				if (deresolvedReference != null && deresolvedReference.startsWith(ep.resource.ep.IEpContextDependentURIFragment.INTERNAL_URI_FRAGMENT_PREFIX)) {
@@ -660,10 +681,10 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 			// NC-References must always be printed by deresolving the reference. We cannot
 			// use the visible token information, because deresolving usually depends on
 			// attribute values of the referenced object instead of the object itself.
-			@SuppressWarnings("rawtypes")			
+			@SuppressWarnings("rawtypes")
 			ep.resource.ep.IEpReferenceResolver referenceResolver = getReferenceResolverSwitch().getResolver(reference);
 			referenceResolver.setOptions(getOptions());
-			deresolvedReference = referenceResolver.deResolve((org.eclipse.emf.ecore.EObject) referencedObject, eObject, reference);
+			deresolvedReference = referenceResolver.deResolve((EObject) referencedObject, eObject, reference);
 		}
 		ep.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver(tokenName);
 		tokenResolver.setOptions(getOptions());
@@ -672,26 +693,26 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		tokenOutputStream.add(new PrintToken(deresolvedToken, tokenName, eObject));
 	}
 	
-	@SuppressWarnings("unchecked")	
-	public PrintCountingMap initializePrintCountingMap(org.eclipse.emf.ecore.EObject eObject) {
+	@SuppressWarnings("unchecked")
+	public PrintCountingMap initializePrintCountingMap(EObject eObject) {
 		// The PrintCountingMap contains a mapping from feature names to the number of
 		// remaining elements that still need to be printed. The map is initialized with
 		// the number of elements stored in each structural feature. For lists this is the
 		// list size. For non-multiple features it is either 1 (if the feature is set) or
 		// 0 (if the feature is null).
 		PrintCountingMap printCountingMap = new PrintCountingMap();
-		java.util.List<org.eclipse.emf.ecore.EStructuralFeature> features = eObject.eClass().getEAllStructuralFeatures();
-		for (org.eclipse.emf.ecore.EStructuralFeature feature : features) {
+		List<EStructuralFeature> features = eObject.eClass().getEAllStructuralFeatures();
+		for (EStructuralFeature feature : features) {
 			// We get the feature value without resolving it, because resolving is not
 			// required to count the number of elements that are referenced by the feature.
 			// Moreover, triggering reference resolving is not desired here, because we'd also
 			// like to print models that contain unresolved references.
 			Object featureValue = eObject.eGet(feature, false);
 			if (featureValue != null) {
-				if (featureValue instanceof java.util.List<?>) {
-					printCountingMap.setFeatureValues(feature.getName(), (java.util.List<Object>) featureValue);
+				if (featureValue instanceof List<?>) {
+					printCountingMap.setFeatureValues(feature.getName(), (List<Object>) featureValue);
 				} else {
-					printCountingMap.setFeatureValues(feature.getName(), java.util.Collections.singletonList(featureValue));
+					printCountingMap.setFeatureValues(feature.getName(), Collections.singletonList(featureValue));
 				}
 			} else {
 				printCountingMap.setFeatureValues(feature.getName(), null);
@@ -700,11 +721,11 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return printCountingMap;
 	}
 	
-	public java.util.Map<?,?> getOptions() {
+	public Map<?,?> getOptions() {
 		return options;
 	}
 	
-	public void setOptions(java.util.Map<?,?> options) {
+	public void setOptions(Map<?,?> options) {
 		this.options = options;
 	}
 	
@@ -726,7 +747,7 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return (ep.resource.ep.mopp.EpReferenceResolverSwitch) new ep.resource.ep.mopp.EpMetaInformation().getReferenceResolverSwitch();
 	}
 	
-	protected void addWarningToResource(final String errorMessage, org.eclipse.emf.ecore.EObject cause) {
+	protected void addWarningToResource(final String errorMessage, EObject cause) {
 		ep.resource.ep.IEpTextResource resource = getResource();
 		if (resource == null) {
 			// the resource can be null if the printer is used stand alone
@@ -735,8 +756,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		resource.addProblem(new ep.resource.ep.mopp.EpProblem(errorMessage, ep.resource.ep.EpEProblemType.PRINT_PROBLEM, ep.resource.ep.EpEProblemSeverity.WARNING), cause);
 	}
 	
-	protected ep.resource.ep.mopp.EpLayoutInformationAdapter getLayoutInformationAdapter(org.eclipse.emf.ecore.EObject element) {
-		for (org.eclipse.emf.common.notify.Adapter adapter : element.eAdapters()) {
+	protected ep.resource.ep.mopp.EpLayoutInformationAdapter getLayoutInformationAdapter(EObject element) {
+		for (Adapter adapter : element.eAdapters()) {
 			if (adapter instanceof ep.resource.ep.mopp.EpLayoutInformationAdapter) {
 				return (ep.resource.ep.mopp.EpLayoutInformationAdapter) adapter;
 			}
@@ -746,7 +767,7 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return newAdapter;
 	}
 	
-	private ep.resource.ep.mopp.EpLayoutInformation getLayoutInformation(java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations, ep.resource.ep.grammar.EpSyntaxElement syntaxElement, Object object, org.eclipse.emf.ecore.EObject container) {
+	private ep.resource.ep.mopp.EpLayoutInformation getLayoutInformation(List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations, ep.resource.ep.grammar.EpSyntaxElement syntaxElement, Object object, EObject container) {
 		for (ep.resource.ep.mopp.EpLayoutInformation layoutInformation : layoutInformations) {
 			if (syntaxElement == layoutInformation.getSyntaxElement()) {
 				if (object == null) {
@@ -756,8 +777,8 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 				// to, if we compare with a non-proxy object. If we're printing a resource that
 				// contains proxy objects, resolving must not be triggered.
 				boolean isNoProxy = true;
-				if (object instanceof org.eclipse.emf.ecore.EObject) {
-					org.eclipse.emf.ecore.EObject eObject = (org.eclipse.emf.ecore.EObject) object;
+				if (object instanceof EObject) {
+					EObject eObject = (EObject) object;
 					isNoProxy = !eObject.eIsProxy();
 				}
 				if (isSame(object, layoutInformation.getObject(container, isNoProxy))) {
@@ -768,12 +789,12 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return null;
 	}
 	
-	public java.util.List<ep.resource.ep.mopp.EpLayoutInformation> getCopyOfLayoutInformation(org.eclipse.emf.ecore.EObject eObject) {
+	public List<ep.resource.ep.mopp.EpLayoutInformation> getCopyOfLayoutInformation(EObject eObject) {
 		ep.resource.ep.mopp.EpLayoutInformationAdapter layoutInformationAdapter = getLayoutInformationAdapter(eObject);
-		java.util.List<ep.resource.ep.mopp.EpLayoutInformation> originalLayoutInformations = layoutInformationAdapter.getLayoutInformations();
+		List<ep.resource.ep.mopp.EpLayoutInformation> originalLayoutInformations = layoutInformationAdapter.getLayoutInformations();
 		// create a copy of the original list of layout information object in order to be
 		// able to remove used informations during printing
-		java.util.List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations = new java.util.ArrayList<ep.resource.ep.mopp.EpLayoutInformation>(originalLayoutInformations.size());
+		List<ep.resource.ep.mopp.EpLayoutInformation> layoutInformations = new ArrayList<ep.resource.ep.mopp.EpLayoutInformation>(originalLayoutInformations.size());
 		layoutInformations.addAll(originalLayoutInformations);
 		return layoutInformations;
 	}
@@ -817,20 +838,25 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	/**
 	 * Prints the current tokenOutputStream to the given writer (as it is).
 	 */
-	public void printBasic(java.io.PrintWriter writer) throws java.io.IOException {
+	public void printBasic(PrintWriter writer) throws IOException {
 		for (PrintToken nextToken : tokenOutputStream) {
 			writer.write(nextToken.getText());
 		}
 	}
 	
 	/**
+	 * <p>
 	 * Prints the current tokenOutputStream to the given writer.
+	 * </p>
 	 * 
+	 * <p>
 	 * This methods implements smart whitespace printing. It does so by writing output
 	 * to a token stream instead of printing the raw token text to a PrintWriter.
 	 * Tokens in this stream hold both the text and the type of the token (i.e., its
 	 * name).
+	 * </p>
 	 * 
+	 * <p>
 	 * To decide where whitespace is needed, sequences of successive tokens are
 	 * searched that can be printed without separating whitespace. To determine such
 	 * groups we start with two successive non-whitespace tokens, concatenate their
@@ -839,8 +865,9 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 	 * to be printed, no whitespace is needed. The tokens in the sequence are checked
 	 * both regarding their type and their text. If two tokens successfully form a
 	 * group a third one is added and so on.
+	 * </p>
 	 */
-	public void printSmart(java.io.PrintWriter writer) throws java.io.IOException {
+	public void printSmart(PrintWriter writer) throws IOException {
 		// stores the text of the current group of tokens. this text is given to the lexer
 		// to check whether it can be correctly scanned.
 		StringBuilder currentBlock = new StringBuilder();
@@ -870,7 +897,7 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 			ep.resource.ep.IEpTextScanner scanner = new ep.resource.ep.mopp.EpMetaInformation().createLexer();
 			scanner.setText(currentBlock.toString());
 			// retrieve all tokens from scanner and add them to list 'tempTokens'
-			java.util.List<ep.resource.ep.IEpTextToken> tempTokens = new java.util.ArrayList<ep.resource.ep.IEpTextToken>();
+			List<ep.resource.ep.IEpTextToken> tempTokens = new ArrayList<ep.resource.ep.IEpTextToken>();
 			ep.resource.ep.IEpTextToken nextToken = scanner.getNextToken();
 			while (nextToken != null && nextToken.getText() != null) {
 				tempTokens.add(nextToken);
@@ -930,15 +957,15 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return o1 == o2;
 	}
 	
-	protected java.util.List<Class<?>> getAllowedTypes(ep.resource.ep.grammar.EpTerminal terminal) {
-		java.util.List<Class<?>> allowedTypes = new java.util.ArrayList<Class<?>>();
+	protected List<Class<?>> getAllowedTypes(ep.resource.ep.grammar.EpTerminal terminal) {
+		List<Class<?>> allowedTypes = new ArrayList<Class<?>>();
 		allowedTypes.add(terminal.getFeature().getEType().getInstanceClass());
 		if (terminal instanceof ep.resource.ep.grammar.EpContainment) {
 			ep.resource.ep.grammar.EpContainment printingContainment = (ep.resource.ep.grammar.EpContainment) terminal;
-			org.eclipse.emf.ecore.EClass[] typeRestrictions = printingContainment.getAllowedTypes();
+			EClass[] typeRestrictions = printingContainment.getAllowedTypes();
 			if (typeRestrictions != null && typeRestrictions.length > 0) {
 				allowedTypes.clear();
-				for (org.eclipse.emf.ecore.EClass eClass : typeRestrictions) {
+				for (EClass eClass : typeRestrictions) {
 					allowedTypes.add(eClass.getInstanceClass());
 				}
 			}
@@ -946,15 +973,21 @@ public class EpPrinter2 implements ep.resource.ep.IEpTextPrinter {
 		return allowedTypes;
 	}
 	
-	protected PrintToken createSpaceToken(org.eclipse.emf.ecore.EObject container) {
+	protected PrintToken createSpaceToken(EObject container) {
 		return new PrintToken(" ", null, container);
 	}
 	
-	protected PrintToken createTabToken(org.eclipse.emf.ecore.EObject container) {
+	protected PrintToken createTabToken(EObject container) {
 		return new PrintToken("\t", null, container);
 	}
 	
-	protected PrintToken createNewLineToken(org.eclipse.emf.ecore.EObject container) {
+	protected PrintToken createNewLineToken(EObject container) {
+		if (options != null) {
+			Object lineBreaks = options.get(ep.resource.ep.IEpOptions.LINE_DELIMITER_FOR_PRINTING);
+			if (lineBreaks != null && lineBreaks instanceof String) {
+				return new PrintToken((String) lineBreaks, null, container);
+			}
+		}
 		return new PrintToken(NEW_LINE, null, container);
 	}
 	

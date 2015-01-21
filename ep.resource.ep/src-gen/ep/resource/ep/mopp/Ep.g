@@ -8,19 +8,44 @@ options {
 
 @lexer::header {
 	package ep.resource.ep.mopp;
+	
+	import java.util.ArrayList;
+import java.util.List;
+import org.antlr.runtime3_4_0.ANTLRStringStream;
+import org.antlr.runtime3_4_0.RecognitionException;
 }
 
 @lexer::members {
-	public java.util.List<org.antlr.runtime3_4_0.RecognitionException> lexerExceptions  = new java.util.ArrayList<org.antlr.runtime3_4_0.RecognitionException>();
-	public java.util.List<Integer> lexerExceptionsPosition = new java.util.ArrayList<Integer>();
+	public List<RecognitionException> lexerExceptions  = new ArrayList<RecognitionException>();
+	public List<Integer> lexerExceptionPositions = new ArrayList<Integer>();
 	
-	public void reportError(org.antlr.runtime3_4_0.RecognitionException e) {
+	public void reportError(RecognitionException e) {
 		lexerExceptions.add(e);
-		lexerExceptionsPosition.add(((org.antlr.runtime3_4_0.ANTLRStringStream) input).index());
+		lexerExceptionPositions.add(((ANTLRStringStream) input).index());
 	}
 }
 @header{
 	package ep.resource.ep.mopp;
+	
+	import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.antlr.runtime3_4_0.ANTLRInputStream;
+import org.antlr.runtime3_4_0.BitSet;
+import org.antlr.runtime3_4_0.CommonToken;
+import org.antlr.runtime3_4_0.CommonTokenStream;
+import org.antlr.runtime3_4_0.IntStream;
+import org.antlr.runtime3_4_0.Lexer;
+import org.antlr.runtime3_4_0.RecognitionException;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 }
 
 @members{
@@ -46,18 +71,18 @@ options {
 	 * This list is only filled if <code>rememberExpectedElements</code> is set to
 	 * true.
 	 */
-	private java.util.List<ep.resource.ep.mopp.EpExpectedTerminal> expectedElements = new java.util.ArrayList<ep.resource.ep.mopp.EpExpectedTerminal>();
+	private List<ep.resource.ep.mopp.EpExpectedTerminal> expectedElements = new ArrayList<ep.resource.ep.mopp.EpExpectedTerminal>();
 	
 	private int mismatchedTokenRecoveryTries = 0;
 	/**
 	 * A helper list to allow a lexer to pass errors to its parser
 	 */
-	protected java.util.List<org.antlr.runtime3_4_0.RecognitionException> lexerExceptions = java.util.Collections.synchronizedList(new java.util.ArrayList<org.antlr.runtime3_4_0.RecognitionException>());
+	protected List<RecognitionException> lexerExceptions = Collections.synchronizedList(new ArrayList<RecognitionException>());
 	
 	/**
 	 * Another helper list to allow a lexer to pass positions of errors to its parser
 	 */
-	protected java.util.List<Integer> lexerExceptionsPosition = java.util.Collections.synchronizedList(new java.util.ArrayList<Integer>());
+	protected List<Integer> lexerExceptionPositions = Collections.synchronizedList(new ArrayList<Integer>());
 	
 	/**
 	 * A stack for incomplete objects. This stack is used filled when the parser is
@@ -65,7 +90,7 @@ options {
 	 * pushed on the stack. Once the element was parser completely it is popped from
 	 * the stack.
 	 */
-	java.util.List<org.eclipse.emf.ecore.EObject> incompleteObjects = new java.util.ArrayList<org.eclipse.emf.ecore.EObject>();
+	List<EObject> incompleteObjects = new ArrayList<EObject>();
 	
 	private int stopIncludingHiddenTokens;
 	private int stopExcludingHiddenTokens;
@@ -85,6 +110,15 @@ options {
 	 */
 	private int lastStartIncludingHidden;
 	
+	private ep.resource.ep.IEpLocationMap locationMap;
+	
+	private ep.resource.ep.mopp.EpSyntaxErrorMessageConverter syntaxErrorMessageConverter = new ep.resource.ep.mopp.EpSyntaxErrorMessageConverter(tokenNames);
+	
+	@Override
+	public void reportError(RecognitionException re) {
+		addErrorToResource(syntaxErrorMessageConverter.translateParseError(re));
+	}
+	
 	protected void addErrorToResource(final String errorMessage, final int column, final int line, final int startIndex, final int stopIndex) {
 		postParseCommands.add(new ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>() {
 			public boolean execute(ep.resource.ep.IEpTextResource resource) {
@@ -102,7 +136,7 @@ options {
 					public String getMessage() {
 						return errorMessage;
 					}
-					public java.util.Collection<ep.resource.ep.IEpQuickFix> getQuickFixes() {
+					public Collection<ep.resource.ep.IEpQuickFix> getQuickFixes() {
 						return null;
 					}
 				}, column, line, startIndex, stopIndex);
@@ -111,7 +145,14 @@ options {
 		});
 	}
 	
-	public void addExpectedElement(org.eclipse.emf.ecore.EClass eClass, int[] ids) {
+	protected void addErrorToResource(ep.resource.ep.mopp.EpLocalizedMessage message) {
+		if (message == null) {
+			return;
+		}
+		addErrorToResource(message.getMessage(), message.getColumn(), message.getLine(), message.getCharStart(), message.getCharEnd());
+	}
+	
+	public void addExpectedElement(EClass eClass, int[] ids) {
 		if (!this.rememberExpectedElements) {
 			return;
 		}
@@ -123,7 +164,7 @@ options {
 			containmentFeatures[i - 2] = ep.resource.ep.grammar.EpFollowSetProvider.LINKS[ids[i]];
 		}
 		ep.resource.ep.grammar.EpContainmentTrace containmentTrace = new ep.resource.ep.grammar.EpContainmentTrace(eClass, containmentFeatures);
-		org.eclipse.emf.ecore.EObject container = getLastIncompleteElement();
+		EObject container = getLastIncompleteElement();
 		ep.resource.ep.mopp.EpExpectedTerminal expectedElement = new ep.resource.ep.mopp.EpExpectedTerminal(container, terminal, followSetID, containmentTrace);
 		setPosition(expectedElement, input.index());
 		int startIncludingHiddenTokens = expectedElement.getStartIncludingHiddenTokens();
@@ -136,20 +177,20 @@ options {
 		this.expectedElements.add(expectedElement);
 	}
 	
-	protected void collectHiddenTokens(org.eclipse.emf.ecore.EObject element) {
+	protected void collectHiddenTokens(EObject element) {
 	}
 	
-	protected void copyLocalizationInfos(final org.eclipse.emf.ecore.EObject source, final org.eclipse.emf.ecore.EObject target) {
+	protected void copyLocalizationInfos(final EObject source, final EObject target) {
 		if (disableLocationMap) {
+			return;
+		}
+		final ep.resource.ep.IEpLocationMap locationMap = this.locationMap;
+		if (locationMap == null) {
+			// the locationMap can be null if the parser is used for code completion
 			return;
 		}
 		postParseCommands.add(new ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>() {
 			public boolean execute(ep.resource.ep.IEpTextResource resource) {
-				ep.resource.ep.IEpLocationMap locationMap = resource.getLocationMap();
-				if (locationMap == null) {
-					// the locationMap can be null if the parser is used for code completion
-					return true;
-				}
 				locationMap.setCharStart(target, locationMap.getCharStart(source));
 				locationMap.setCharEnd(target, locationMap.getCharEnd(source));
 				locationMap.setColumn(target, locationMap.getColumn(source));
@@ -159,17 +200,17 @@ options {
 		});
 	}
 	
-	protected void copyLocalizationInfos(final org.antlr.runtime3_4_0.CommonToken source, final org.eclipse.emf.ecore.EObject target) {
+	protected void copyLocalizationInfos(final CommonToken source, final EObject target) {
 		if (disableLocationMap) {
+			return;
+		}
+		final ep.resource.ep.IEpLocationMap locationMap = this.locationMap;
+		if (locationMap == null) {
+			// the locationMap can be null if the parser is used for code completion
 			return;
 		}
 		postParseCommands.add(new ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>() {
 			public boolean execute(ep.resource.ep.IEpTextResource resource) {
-				ep.resource.ep.IEpLocationMap locationMap = resource.getLocationMap();
-				if (locationMap == null) {
-					// the locationMap can be null if the parser is used for code completion
-					return true;
-				}
 				if (source == null) {
 					return true;
 				}
@@ -186,17 +227,17 @@ options {
 	 * Sets the end character index and the last line for the given object in the
 	 * location map.
 	 */
-	protected void setLocalizationEnd(java.util.Collection<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>> postParseCommands , final org.eclipse.emf.ecore.EObject object, final int endChar, final int endLine) {
+	protected void setLocalizationEnd(Collection<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>> postParseCommands , final EObject object, final int endChar, final int endLine) {
 		if (disableLocationMap) {
+			return;
+		}
+		final ep.resource.ep.IEpLocationMap locationMap = this.locationMap;
+		if (locationMap == null) {
+			// the locationMap can be null if the parser is used for code completion
 			return;
 		}
 		postParseCommands.add(new ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>() {
 			public boolean execute(ep.resource.ep.IEpTextResource resource) {
-				ep.resource.ep.IEpLocationMap locationMap = resource.getLocationMap();
-				if (locationMap == null) {
-					// the locationMap can be null if the parser is used for code completion
-					return true;
-				}
 				locationMap.setCharEnd(object, endChar);
 				locationMap.setLine(object, endLine);
 				return true;
@@ -204,14 +245,14 @@ options {
 		});
 	}
 	
-	public ep.resource.ep.IEpTextParser createInstance(java.io.InputStream actualInputStream, String encoding) {
+	public ep.resource.ep.IEpTextParser createInstance(InputStream actualInputStream, String encoding) {
 		try {
 			if (encoding == null) {
-				return new EpParser(new org.antlr.runtime3_4_0.CommonTokenStream(new EpLexer(new org.antlr.runtime3_4_0.ANTLRInputStream(actualInputStream))));
+				return new EpParser(new CommonTokenStream(new EpLexer(new ANTLRInputStream(actualInputStream))));
 			} else {
-				return new EpParser(new org.antlr.runtime3_4_0.CommonTokenStream(new EpLexer(new org.antlr.runtime3_4_0.ANTLRInputStream(actualInputStream, encoding))));
+				return new EpParser(new CommonTokenStream(new EpLexer(new ANTLRInputStream(actualInputStream, encoding))));
 			}
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			new ep.resource.ep.util.EpRuntimeUtil().logError("Error while creating parser.", e);
 			return null;
 		}
@@ -224,16 +265,16 @@ options {
 		super(null);
 	}
 	
-	protected org.eclipse.emf.ecore.EObject doParse() throws org.antlr.runtime3_4_0.RecognitionException {
+	protected EObject doParse() throws RecognitionException {
 		this.lastPosition = 0;
 		// required because the lexer class can not be subclassed
 		((EpLexer) getTokenStream().getTokenSource()).lexerExceptions = lexerExceptions;
-		((EpLexer) getTokenStream().getTokenSource()).lexerExceptionsPosition = lexerExceptionsPosition;
+		((EpLexer) getTokenStream().getTokenSource()).lexerExceptionPositions = lexerExceptionPositions;
 		Object typeObject = getTypeObject();
 		if (typeObject == null) {
 			return start();
-		} else if (typeObject instanceof org.eclipse.emf.ecore.EClass) {
-			org.eclipse.emf.ecore.EClass type = (org.eclipse.emf.ecore.EClass) typeObject;
+		} else if (typeObject instanceof EClass) {
+			EClass type = (EClass) typeObject;
 			if (type.getInstanceClass() == ep.EpElement.class) {
 				return parse_ep_EpElement();
 			}
@@ -266,7 +307,7 @@ options {
 		return mismatchedTokenRecoveryTries;
 	}
 	
-	public Object getMissingSymbol(org.antlr.runtime3_4_0.IntStream arg0, org.antlr.runtime3_4_0.RecognitionException arg1, int arg2, org.antlr.runtime3_4_0.BitSet arg3) {
+	public Object getMissingSymbol(IntStream arg0, RecognitionException arg1, int arg2, BitSet arg3) {
 		mismatchedTokenRecoveryTries++;
 		return super.getMissingSymbol(arg0, arg1, arg2, arg3);
 	}
@@ -280,7 +321,7 @@ options {
 		if (typeObject != null) {
 			return typeObject;
 		}
-		java.util.Map<?,?> options = getOptions();
+		Map<?,?> options = getOptions();
 		if (options != null) {
 			typeObject = options.get(ep.resource.ep.IEpOptions.RESOURCE_CONTENT_TYPE);
 		}
@@ -292,17 +333,25 @@ options {
 	 * RecognitionExceptions.
 	 */
 	public ep.resource.ep.IEpParseResult parse() {
+		// Reset parser state
 		terminateParsing = false;
-		postParseCommands = new java.util.ArrayList<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>>();
+		postParseCommands = new ArrayList<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>>();
 		ep.resource.ep.mopp.EpParseResult parseResult = new ep.resource.ep.mopp.EpParseResult();
+		if (disableLocationMap) {
+			locationMap = new ep.resource.ep.mopp.EpDevNullLocationMap();
+		} else {
+			locationMap = new ep.resource.ep.mopp.EpLocationMap();
+		}
+		// Run parser
 		try {
-			org.eclipse.emf.ecore.EObject result =  doParse();
+			EObject result =  doParse();
 			if (lexerExceptions.isEmpty()) {
 				parseResult.setRoot(result);
+				parseResult.setLocationMap(locationMap);
 			}
-		} catch (org.antlr.runtime3_4_0.RecognitionException re) {
-			reportError(re);
-		} catch (java.lang.IllegalArgumentException iae) {
+		} catch (RecognitionException re) {
+			addErrorToResource(syntaxErrorMessageConverter.translateParseError(re));
+		} catch (IllegalArgumentException iae) {
 			if ("The 'no null' constraint is violated".equals(iae.getMessage())) {
 				// can be caused if a null is set on EMF models where not allowed. this will just
 				// happen if other errors occurred before
@@ -310,28 +359,28 @@ options {
 				iae.printStackTrace();
 			}
 		}
-		for (org.antlr.runtime3_4_0.RecognitionException re : lexerExceptions) {
-			reportLexicalError(re);
+		for (RecognitionException re : lexerExceptions) {
+			addErrorToResource(syntaxErrorMessageConverter.translateLexicalError(re, lexerExceptions, lexerExceptionPositions));
 		}
 		parseResult.getPostParseCommands().addAll(postParseCommands);
 		return parseResult;
 	}
 	
-	public java.util.List<ep.resource.ep.mopp.EpExpectedTerminal> parseToExpectedElements(org.eclipse.emf.ecore.EClass type, ep.resource.ep.IEpTextResource dummyResource, int cursorOffset) {
+	public List<ep.resource.ep.mopp.EpExpectedTerminal> parseToExpectedElements(EClass type, ep.resource.ep.IEpTextResource dummyResource, int cursorOffset) {
 		this.rememberExpectedElements = true;
 		this.parseToIndexTypeObject = type;
 		this.cursorOffset = cursorOffset;
 		this.lastStartIncludingHidden = -1;
-		final org.antlr.runtime3_4_0.CommonTokenStream tokenStream = (org.antlr.runtime3_4_0.CommonTokenStream) getTokenStream();
+		final CommonTokenStream tokenStream = (CommonTokenStream) getTokenStream();
 		ep.resource.ep.IEpParseResult result = parse();
-		for (org.eclipse.emf.ecore.EObject incompleteObject : incompleteObjects) {
-			org.antlr.runtime3_4_0.Lexer lexer = (org.antlr.runtime3_4_0.Lexer) tokenStream.getTokenSource();
+		for (EObject incompleteObject : incompleteObjects) {
+			Lexer lexer = (Lexer) tokenStream.getTokenSource();
 			int endChar = lexer.getCharIndex();
 			int endLine = lexer.getLine();
 			setLocalizationEnd(result.getPostParseCommands(), incompleteObject, endChar, endLine);
 		}
 		if (result != null) {
-			org.eclipse.emf.ecore.EObject root = result.getRoot();
+			EObject root = result.getRoot();
 			if (root != null) {
 				dummyResource.getContentsInternal().add(root);
 			}
@@ -342,8 +391,8 @@ options {
 		// remove all expected elements that were added after the last complete element
 		expectedElements = expectedElements.subList(0, expectedElementsIndexOfLastCompleteElement + 1);
 		int lastFollowSetID = expectedElements.get(expectedElementsIndexOfLastCompleteElement).getFollowSetID();
-		java.util.Set<ep.resource.ep.mopp.EpExpectedTerminal> currentFollowSet = new java.util.LinkedHashSet<ep.resource.ep.mopp.EpExpectedTerminal>();
-		java.util.List<ep.resource.ep.mopp.EpExpectedTerminal> newFollowSet = new java.util.ArrayList<ep.resource.ep.mopp.EpExpectedTerminal>();
+		Set<ep.resource.ep.mopp.EpExpectedTerminal> currentFollowSet = new LinkedHashSet<ep.resource.ep.mopp.EpExpectedTerminal>();
+		List<ep.resource.ep.mopp.EpExpectedTerminal> newFollowSet = new ArrayList<ep.resource.ep.mopp.EpExpectedTerminal>();
 		for (int i = expectedElementsIndexOfLastCompleteElement; i >= 0; i--) {
 			ep.resource.ep.mopp.EpExpectedTerminal expectedElementI = expectedElements.get(i);
 			if (expectedElementI.getFollowSetID() == lastFollowSetID) {
@@ -352,10 +401,10 @@ options {
 				break;
 			}
 		}
-		int followSetID = 70;
+		int followSetID = 67;
 		int i;
 		for (i = tokenIndexOfLastCompleteElement; i < tokenStream.size(); i++) {
-			org.antlr.runtime3_4_0.CommonToken nextToken = (org.antlr.runtime3_4_0.CommonToken) tokenStream.get(i);
+			CommonToken nextToken = (CommonToken) tokenStream.get(i);
 			if (nextToken.getType() < 0) {
 				break;
 			}
@@ -374,10 +423,10 @@ options {
 				for (ep.resource.ep.mopp.EpExpectedTerminal nextFollow : currentFollowSet) {
 					if (nextFollow.getTerminal().getTokenNames().contains(getTokenNames()[nextToken.getType()])) {
 						// keep this one - it matches
-						java.util.Collection<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>> newFollowers = nextFollow.getTerminal().getFollowers();
+						Collection<ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]>> newFollowers = nextFollow.getTerminal().getFollowers();
 						for (ep.resource.ep.util.EpPair<ep.resource.ep.IEpExpectedElement, ep.resource.ep.mopp.EpContainedFeature[]> newFollowerPair : newFollowers) {
 							ep.resource.ep.IEpExpectedElement newFollower = newFollowerPair.getLeft();
-							org.eclipse.emf.ecore.EObject container = getLastIncompleteElement();
+							EObject container = getLastIncompleteElement();
 							ep.resource.ep.grammar.EpContainmentTrace containmentTrace = new ep.resource.ep.grammar.EpContainmentTrace(null, newFollowerPair.getRight());
 							ep.resource.ep.mopp.EpExpectedTerminal newFollowTerminal = new ep.resource.ep.mopp.EpExpectedTerminal(container, newFollower, followSetID, containmentTrace);
 							newFollowSet.add(newFollowTerminal);
@@ -405,7 +454,7 @@ options {
 			if (index >= input.size()) {
 				break;
 			}
-			org.antlr.runtime3_4_0.CommonToken tokenAtIndex = (org.antlr.runtime3_4_0.CommonToken) input.get(index);
+			CommonToken tokenAtIndex = (CommonToken) input.get(index);
 			stopIncludingHiddenTokens = tokenAtIndex.getStopIndex() + 1;
 			if (tokenAtIndex.getChannel() != 99 && !anonymousTokens.contains(tokenAtIndex)) {
 				stopExcludingHiddenTokens = tokenAtIndex.getStopIndex() + 1;
@@ -415,7 +464,7 @@ options {
 		expectedElement.setPosition(stopExcludingHiddenTokens, stopIncludingHiddenTokens);
 	}
 	
-	public Object recoverFromMismatchedToken(org.antlr.runtime3_4_0.IntStream input, int ttype, org.antlr.runtime3_4_0.BitSet follow) throws org.antlr.runtime3_4_0.RecognitionException {
+	public Object recoverFromMismatchedToken(IntStream input, int ttype, BitSet follow) throws RecognitionException {
 		if (!rememberExpectedElements) {
 			return super.recoverFromMismatchedToken(input, ttype, follow);
 		} else {
@@ -423,76 +472,9 @@ options {
 		}
 	}
 	
-	/**
-	 * Translates errors thrown by the parser into human readable messages.
-	 */
-	public void reportError(final org.antlr.runtime3_4_0.RecognitionException e)  {
-		String message = e.getMessage();
-		if (e instanceof org.antlr.runtime3_4_0.MismatchedTokenException) {
-			org.antlr.runtime3_4_0.MismatchedTokenException mte = (org.antlr.runtime3_4_0.MismatchedTokenException) e;
-			String expectedTokenName = formatTokenName(mte.expecting);
-			String actualTokenName = formatTokenName(e.token.getType());
-			message = "Syntax error on token \"" + e.token.getText() + " (" + actualTokenName + ")\", \"" + expectedTokenName + "\" expected";
-		} else if (e instanceof org.antlr.runtime3_4_0.MismatchedTreeNodeException) {
-			org.antlr.runtime3_4_0.MismatchedTreeNodeException mtne = (org.antlr.runtime3_4_0.MismatchedTreeNodeException) e;
-			String expectedTokenName = formatTokenName(mtne.expecting);
-			message = "mismatched tree node: " + "xxx" + "; tokenName " + expectedTokenName;
-		} else if (e instanceof org.antlr.runtime3_4_0.NoViableAltException) {
-			message = "Syntax error on token \"" + e.token.getText() + "\", check following tokens";
-		} else if (e instanceof org.antlr.runtime3_4_0.EarlyExitException) {
-			message = "Syntax error on token \"" + e.token.getText() + "\", delete this token";
-		} else if (e instanceof org.antlr.runtime3_4_0.MismatchedSetException) {
-			org.antlr.runtime3_4_0.MismatchedSetException mse = (org.antlr.runtime3_4_0.MismatchedSetException) e;
-			message = "mismatched token: " + e.token + "; expecting set " + mse.expecting;
-		} else if (e instanceof org.antlr.runtime3_4_0.MismatchedNotSetException) {
-			org.antlr.runtime3_4_0.MismatchedNotSetException mse = (org.antlr.runtime3_4_0.MismatchedNotSetException) e;
-			message = "mismatched token: " +  e.token + "; expecting set " + mse.expecting;
-		} else if (e instanceof org.antlr.runtime3_4_0.FailedPredicateException) {
-			org.antlr.runtime3_4_0.FailedPredicateException fpe = (org.antlr.runtime3_4_0.FailedPredicateException) e;
-			message = "rule " + fpe.ruleName + " failed predicate: {" +  fpe.predicateText + "}?";
-		}
-		// the resource may be null if the parser is used for code completion
-		final String finalMessage = message;
-		if (e.token instanceof org.antlr.runtime3_4_0.CommonToken) {
-			final org.antlr.runtime3_4_0.CommonToken ct = (org.antlr.runtime3_4_0.CommonToken) e.token;
-			addErrorToResource(finalMessage, ct.getCharPositionInLine(), ct.getLine(), ct.getStartIndex(), ct.getStopIndex());
-		} else {
-			addErrorToResource(finalMessage, e.token.getCharPositionInLine(), e.token.getLine(), 1, 5);
-		}
-	}
-	
-	/**
-	 * Translates errors thrown by the lexer into human readable messages.
-	 */
-	public void reportLexicalError(final org.antlr.runtime3_4_0.RecognitionException e)  {
-		String message = "";
-		if (e instanceof org.antlr.runtime3_4_0.MismatchedTokenException) {
-			org.antlr.runtime3_4_0.MismatchedTokenException mte = (org.antlr.runtime3_4_0.MismatchedTokenException) e;
-			message = "Syntax error on token \"" + ((char) e.c) + "\", \"" + (char) mte.expecting + "\" expected";
-		} else if (e instanceof org.antlr.runtime3_4_0.NoViableAltException) {
-			message = "Syntax error on token \"" + ((char) e.c) + "\", delete this token";
-		} else if (e instanceof org.antlr.runtime3_4_0.EarlyExitException) {
-			org.antlr.runtime3_4_0.EarlyExitException eee = (org.antlr.runtime3_4_0.EarlyExitException) e;
-			message = "required (...)+ loop (decision=" + eee.decisionNumber + ") did not match anything; on line " + e.line + ":" + e.charPositionInLine + " char=" + ((char) e.c) + "'";
-		} else if (e instanceof org.antlr.runtime3_4_0.MismatchedSetException) {
-			org.antlr.runtime3_4_0.MismatchedSetException mse = (org.antlr.runtime3_4_0.MismatchedSetException) e;
-			message = "mismatched char: '" + ((char) e.c) + "' on line " + e.line + ":" + e.charPositionInLine + "; expecting set " + mse.expecting;
-		} else if (e instanceof org.antlr.runtime3_4_0.MismatchedNotSetException) {
-			org.antlr.runtime3_4_0.MismatchedNotSetException mse = (org.antlr.runtime3_4_0.MismatchedNotSetException) e;
-			message = "mismatched char: '" + ((char) e.c) + "' on line " + e.line + ":" + e.charPositionInLine + "; expecting set " + mse.expecting;
-		} else if (e instanceof org.antlr.runtime3_4_0.MismatchedRangeException) {
-			org.antlr.runtime3_4_0.MismatchedRangeException mre = (org.antlr.runtime3_4_0.MismatchedRangeException) e;
-			message = "mismatched char: '" + ((char) e.c) + "' on line " + e.line + ":" + e.charPositionInLine + "; expecting set '" + (char) mre.a + "'..'" + (char) mre.b + "'";
-		} else if (e instanceof org.antlr.runtime3_4_0.FailedPredicateException) {
-			org.antlr.runtime3_4_0.FailedPredicateException fpe = (org.antlr.runtime3_4_0.FailedPredicateException) e;
-			message = "rule " + fpe.ruleName + " failed predicate: {" + fpe.predicateText + "}?";
-		}
-		addErrorToResource(message, e.charPositionInLine, e.line, lexerExceptionsPosition.get(lexerExceptions.indexOf(e)), lexerExceptionsPosition.get(lexerExceptions.indexOf(e)));
-	}
-	
 	private void startIncompleteElement(Object object) {
-		if (object instanceof org.eclipse.emf.ecore.EObject) {
-			this.incompleteObjects.add((org.eclipse.emf.ecore.EObject) object);
+		if (object instanceof EObject) {
+			this.incompleteObjects.add((EObject) object);
 		}
 	}
 	
@@ -502,13 +484,13 @@ options {
 			if (!exists) {
 			}
 		}
-		if (object instanceof org.eclipse.emf.ecore.EObject) {
+		if (object instanceof EObject) {
 			this.tokenIndexOfLastCompleteElement = getTokenStream().index();
 			this.expectedElementsIndexOfLastCompleteElement = expectedElements.size() - 1;
 		}
 	}
 	
-	private org.eclipse.emf.ecore.EObject getLastIncompleteElement() {
+	private EObject getLastIncompleteElement() {
 		if (incompleteObjects.isEmpty()) {
 			return null;
 		}
@@ -517,7 +499,7 @@ options {
 	
 }
 
-start returns [ org.eclipse.emf.ecore.EObject element = null]
+start returns [ EObject element = null]
 :
 	{
 		// follow set for start rule(s)
@@ -544,7 +526,7 @@ parse_ep_EpElement returns [ep.EpElement element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_0_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
@@ -558,7 +540,7 @@ parse_ep_EpElement returns [ep.EpElement element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_0_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
@@ -692,7 +674,7 @@ parse_ep_EpElement returns [ep.EpElement element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_0_0_0_6, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a6, element);
+		copyLocalizationInfos((CommonToken)a6, element);
 	}
 	{
 		// expected elements (follow set)
@@ -711,7 +693,7 @@ parse_ep_Person returns [ep.Person element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_1_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
@@ -725,7 +707,7 @@ parse_ep_Person returns [ep.Person element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_1_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
@@ -749,7 +731,7 @@ parse_ep_Person returns [ep.Person element = null]
 				tokenResolver.resolve(a2.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.PERSON__NAME), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a2).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a2).getLine(), ((CommonToken) a2).getCharPositionInLine(), ((CommonToken) a2).getStartIndex(), ((CommonToken) a2).getStopIndex());
 				}
 				java.lang.String resolved = (java.lang.String) resolvedObject;
 				if (resolved != null) {
@@ -759,7 +741,7 @@ parse_ep_Person returns [ep.Person element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_1_0_0_2, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a2, element);
+				copyLocalizationInfos((CommonToken) a2, element);
 			}
 		}
 	)
@@ -775,7 +757,7 @@ parse_ep_Person returns [ep.Person element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_1_0_0_3, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
+		copyLocalizationInfos((CommonToken)a3, element);
 	}
 	{
 		// expected elements (follow set)
@@ -801,7 +783,7 @@ parse_ep_Person returns [ep.Person element = null]
 					tokenResolver.resolve(a4.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.PERSON__KCAL), result);
 					Object resolvedObject = result.getResolvedToken();
 					if (resolvedObject == null) {
-						addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a4).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStopIndex());
+						addErrorToResource(result.getErrorMessage(), ((CommonToken) a4).getLine(), ((CommonToken) a4).getCharPositionInLine(), ((CommonToken) a4).getStartIndex(), ((CommonToken) a4).getStopIndex());
 					}
 					java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 					if (resolved != null) {
@@ -811,7 +793,7 @@ parse_ep_Person returns [ep.Person element = null]
 					}
 					collectHiddenTokens(element);
 					retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_1_0_0_4, resolved, true);
-					copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, element);
+					copyLocalizationInfos((CommonToken) a4, element);
 				}
 			}
 		)
@@ -828,7 +810,7 @@ parse_ep_Person returns [ep.Person element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_1_0_0_5, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
+		copyLocalizationInfos((CommonToken)a5, element);
 	}
 	{
 		// expected elements (follow set)
@@ -851,7 +833,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_2_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
@@ -865,7 +847,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_2_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
@@ -889,7 +871,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 				tokenResolver.resolve(a2.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.HAUPTBESTANDTEIL__NAME), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a2).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a2).getLine(), ((CommonToken) a2).getCharPositionInLine(), ((CommonToken) a2).getStartIndex(), ((CommonToken) a2).getStopIndex());
 				}
 				java.lang.String resolved = (java.lang.String) resolvedObject;
 				if (resolved != null) {
@@ -899,7 +881,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_2_0_0_2, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a2, element);
+				copyLocalizationInfos((CommonToken) a2, element);
 			}
 		}
 	)
@@ -915,7 +897,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_2_0_0_3, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
+		copyLocalizationInfos((CommonToken)a3, element);
 	}
 	{
 		// expected elements (follow set)
@@ -941,7 +923,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 					tokenResolver.resolve(a4.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.HAUPTBESTANDTEIL__KCAL), result);
 					Object resolvedObject = result.getResolvedToken();
 					if (resolvedObject == null) {
-						addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a4).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStopIndex());
+						addErrorToResource(result.getErrorMessage(), ((CommonToken) a4).getLine(), ((CommonToken) a4).getCharPositionInLine(), ((CommonToken) a4).getStartIndex(), ((CommonToken) a4).getStopIndex());
 					}
 					java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 					if (resolved != null) {
@@ -951,7 +933,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 					}
 					collectHiddenTokens(element);
 					retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_2_0_0_4, resolved, true);
-					copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, element);
+					copyLocalizationInfos((CommonToken) a4, element);
 				}
 			}
 		)
@@ -968,7 +950,7 @@ parse_ep_Hauptbestandteil returns [ep.Hauptbestandteil element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_2_0_0_5, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
+		copyLocalizationInfos((CommonToken)a5, element);
 	}
 	{
 		// expected elements (follow set)
@@ -991,7 +973,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_3_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1005,7 +987,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_3_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1029,7 +1011,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 				tokenResolver.resolve(a2.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.BEILAGE__NAME), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a2).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a2).getLine(), ((CommonToken) a2).getCharPositionInLine(), ((CommonToken) a2).getStartIndex(), ((CommonToken) a2).getStopIndex());
 				}
 				java.lang.String resolved = (java.lang.String) resolvedObject;
 				if (resolved != null) {
@@ -1039,7 +1021,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_3_0_0_2, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a2, element);
+				copyLocalizationInfos((CommonToken) a2, element);
 			}
 		}
 	)
@@ -1055,7 +1037,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_3_0_0_3, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
+		copyLocalizationInfos((CommonToken)a3, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1081,7 +1063,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 					tokenResolver.resolve(a4.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.BEILAGE__KCAL), result);
 					Object resolvedObject = result.getResolvedToken();
 					if (resolvedObject == null) {
-						addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a4).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStopIndex());
+						addErrorToResource(result.getErrorMessage(), ((CommonToken) a4).getLine(), ((CommonToken) a4).getCharPositionInLine(), ((CommonToken) a4).getStartIndex(), ((CommonToken) a4).getStopIndex());
 					}
 					java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 					if (resolved != null) {
@@ -1091,7 +1073,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 					}
 					collectHiddenTokens(element);
 					retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_3_0_0_4, resolved, true);
-					copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, element);
+					copyLocalizationInfos((CommonToken) a4, element);
 				}
 			}
 		)
@@ -1108,7 +1090,7 @@ parse_ep_Beilage returns [ep.Beilage element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_3_0_0_5, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
+		copyLocalizationInfos((CommonToken)a5, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1131,7 +1113,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_4_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1145,7 +1127,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_4_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1169,7 +1151,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 				tokenResolver.resolve(a2.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.SAUCE__NAME), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a2).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a2).getLine(), ((CommonToken) a2).getCharPositionInLine(), ((CommonToken) a2).getStartIndex(), ((CommonToken) a2).getStopIndex());
 				}
 				java.lang.String resolved = (java.lang.String) resolvedObject;
 				if (resolved != null) {
@@ -1179,7 +1161,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_4_0_0_2, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a2, element);
+				copyLocalizationInfos((CommonToken) a2, element);
 			}
 		}
 	)
@@ -1195,7 +1177,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_4_0_0_3, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
+		copyLocalizationInfos((CommonToken)a3, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1221,7 +1203,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 					tokenResolver.resolve(a4.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.SAUCE__KCAL), result);
 					Object resolvedObject = result.getResolvedToken();
 					if (resolvedObject == null) {
-						addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a4).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStopIndex());
+						addErrorToResource(result.getErrorMessage(), ((CommonToken) a4).getLine(), ((CommonToken) a4).getCharPositionInLine(), ((CommonToken) a4).getStartIndex(), ((CommonToken) a4).getStopIndex());
 					}
 					java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 					if (resolved != null) {
@@ -1231,7 +1213,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 					}
 					collectHiddenTokens(element);
 					retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_4_0_0_4, resolved, true);
-					copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, element);
+					copyLocalizationInfos((CommonToken) a4, element);
 				}
 			}
 		)
@@ -1248,7 +1230,7 @@ parse_ep_Sauce returns [ep.Sauce element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_4_0_0_5, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
+		copyLocalizationInfos((CommonToken)a5, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1271,7 +1253,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1285,7 +1267,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1299,7 +1281,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_2, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a2, element);
+		copyLocalizationInfos((CommonToken)a2, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1323,7 +1305,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 				tokenResolver.resolve(a3.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT__NAME), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a3).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a3).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a3).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a3).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a3).getLine(), ((CommonToken) a3).getCharPositionInLine(), ((CommonToken) a3).getStartIndex(), ((CommonToken) a3).getStopIndex());
 				}
 				java.lang.String resolved = (java.lang.String) resolvedObject;
 				if (resolved != null) {
@@ -1333,7 +1315,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_3, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a3, element);
+				copyLocalizationInfos((CommonToken) a3, element);
 			}
 		}
 	)
@@ -1349,7 +1331,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_4, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a4, element);
+		copyLocalizationInfos((CommonToken)a4, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1375,7 +1357,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 					tokenResolver.resolve(a5.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT__KOMMENTAR), result);
 					Object resolvedObject = result.getResolvedToken();
 					if (resolvedObject == null) {
-						addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a5).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a5).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a5).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a5).getStopIndex());
+						addErrorToResource(result.getErrorMessage(), ((CommonToken) a5).getLine(), ((CommonToken) a5).getCharPositionInLine(), ((CommonToken) a5).getStartIndex(), ((CommonToken) a5).getStopIndex());
 					}
 					java.lang.String resolved = (java.lang.String) resolvedObject;
 					if (resolved != null) {
@@ -1385,7 +1367,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 					}
 					collectHiddenTokens(element);
 					retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_5, resolved, true);
-					copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a5, element);
+					copyLocalizationInfos((CommonToken) a5, element);
 				}
 			}
 		)
@@ -1402,7 +1384,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_6, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a6, element);
+		copyLocalizationInfos((CommonToken)a6, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1420,7 +1402,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 					}
 					collectHiddenTokens(element);
 					retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_7, true, true);
-					copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a7, element);
+					copyLocalizationInfos((CommonToken)a7, element);
 					// set value of boolean attribute
 					Object value = true;
 					element.eSet(element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT__IST_SALAT), value);
@@ -1433,7 +1415,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 					}
 					collectHiddenTokens(element);
 					retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_7, false, true);
-					copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a8, element);
+					copyLocalizationInfos((CommonToken)a8, element);
 					// set value of boolean attribute
 					Object value = false;
 					element.eSet(element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT__IST_SALAT), value);
@@ -1454,7 +1436,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_8, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a10, element);
+		copyLocalizationInfos((CommonToken)a10, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1468,7 +1450,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_9, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a11, element);
+		copyLocalizationInfos((CommonToken)a11, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1511,7 +1493,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_11, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a13, element);
+		copyLocalizationInfos((CommonToken)a13, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1525,7 +1507,7 @@ parse_ep_Gericht returns [ep.Gericht element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_5_0_0_12, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a14, element);
+		copyLocalizationInfos((CommonToken)a14, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1546,7 +1528,7 @@ parse_ep_Ernaehrungsplan returns [ep.Ernaehrungsplan element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1560,21 +1542,21 @@ parse_ep_Ernaehrungsplan returns [ep.Ernaehrungsplan element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
 		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[73]);
 	}
 	
-	a2 = 'personen' {
+	a2 = 'person' {
 		if (element == null) {
 			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_2, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a2, element);
+		copyLocalizationInfos((CommonToken)a2, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1588,7 +1570,7 @@ parse_ep_Ernaehrungsplan returns [ep.Ernaehrungsplan element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_3, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
+		copyLocalizationInfos((CommonToken)a3, element);
 	}
 	{
 		// expected elements (follow set)
@@ -1612,139 +1594,73 @@ parse_ep_Ernaehrungsplan returns [ep.Ernaehrungsplan element = null]
 				tokenResolver.resolve(a4.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a4).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a4).getLine(), ((CommonToken) a4).getCharPositionInLine(), ((CommonToken) a4).getStartIndex(), ((CommonToken) a4).getStopIndex());
 				}
 				String resolved = (String) resolvedObject;
 				ep.Person proxy = ep.MetamodelFactory.eINSTANCE.createPerson();
 				collectHiddenTokens(element);
-				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Ernaehrungsplan, ep.Person>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanPersonenReferenceResolver()), element, (org.eclipse.emf.ecore.EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN), resolved, proxy);
+				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Ernaehrungsplan, ep.Person>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanPersonenReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN), resolved, proxy);
 				if (proxy != null) {
 					Object value = proxy;
-					addObjectToList(element, ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN, value);
+					element.eSet(element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN), value);
 					completedElement(value, false);
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_4, proxy, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, element);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, proxy);
+				copyLocalizationInfos((CommonToken) a4, element);
+				copyLocalizationInfos((CommonToken) a4, proxy);
 			}
 		}
 	)
 	{
 		// expected elements (follow set)
 		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[76]);
+	}
+	
+	a5 = ')' {
+		if (element == null) {
+			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
+			startIncompleteElement(element);
+		}
+		collectHiddenTokens(element);
+		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_5, null, true);
+		copyLocalizationInfos((CommonToken)a5, element);
+	}
+	{
+		// expected elements (follow set)
 		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[77]);
 	}
 	
-	(
-		(
-			a5 = ',' {
-				if (element == null) {
-					element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
-					startIncompleteElement(element);
-				}
-				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_5_0_0_0, null, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
-			}
-			{
-				// expected elements (follow set)
-				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[78]);
-			}
-			
-			(
-				a6 = TEXT				
-				{
-					if (terminateParsing) {
-						throw new ep.resource.ep.mopp.EpTerminateParsingException();
-					}
-					if (element == null) {
-						element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
-						startIncompleteElement(element);
-					}
-					if (a6 != null) {
-						ep.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("TEXT");
-						tokenResolver.setOptions(getOptions());
-						ep.resource.ep.IEpTokenResolveResult result = getFreshTokenResolveResult();
-						tokenResolver.resolve(a6.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN), result);
-						Object resolvedObject = result.getResolvedToken();
-						if (resolvedObject == null) {
-							addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a6).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a6).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a6).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a6).getStopIndex());
-						}
-						String resolved = (String) resolvedObject;
-						ep.Person proxy = ep.MetamodelFactory.eINSTANCE.createPerson();
-						collectHiddenTokens(element);
-						registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Ernaehrungsplan, ep.Person>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanPersonenReferenceResolver()), element, (org.eclipse.emf.ecore.EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN), resolved, proxy);
-						if (proxy != null) {
-							Object value = proxy;
-							addObjectToList(element, ep.MetamodelPackage.ERNAEHRUNGSPLAN__PERSONEN, value);
-							completedElement(value, false);
-						}
-						collectHiddenTokens(element);
-						retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_5_0_0_1, proxy, true);
-						copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a6, element);
-						copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a6, proxy);
-					}
-				}
-			)
-			{
-				// expected elements (follow set)
-				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[79]);
-				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[80]);
-			}
-			
-		)
-		
-	)*	{
-		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[81]);
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[82]);
-	}
-	
-	a7 = ')' {
+	a6 = 'gerichte' {
 		if (element == null) {
 			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_6, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a7, element);
+		copyLocalizationInfos((CommonToken)a6, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[83]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[78]);
 	}
 	
-	a8 = 'gerichte' {
+	a7 = '(' {
 		if (element == null) {
 			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_7, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a8, element);
+		copyLocalizationInfos((CommonToken)a7, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[84]);
-	}
-	
-	a9 = '(' {
-		if (element == null) {
-			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
-			startIncompleteElement(element);
-		}
-		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_8, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a9, element);
-	}
-	{
-		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[85]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[79]);
 	}
 	
 	(
-		a10 = TEXT		
+		a8 = TEXT		
 		{
 			if (terminateParsing) {
 				throw new ep.resource.ep.mopp.EpTerminateParsingException();
@@ -1753,55 +1669,55 @@ parse_ep_Ernaehrungsplan returns [ep.Ernaehrungsplan element = null]
 				element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
 				startIncompleteElement(element);
 			}
-			if (a10 != null) {
+			if (a8 != null) {
 				ep.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("TEXT");
 				tokenResolver.setOptions(getOptions());
 				ep.resource.ep.IEpTokenResolveResult result = getFreshTokenResolveResult();
-				tokenResolver.resolve(a10.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
+				tokenResolver.resolve(a8.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a10).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a10).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a10).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a10).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a8).getLine(), ((CommonToken) a8).getCharPositionInLine(), ((CommonToken) a8).getStartIndex(), ((CommonToken) a8).getStopIndex());
 				}
 				String resolved = (String) resolvedObject;
 				ep.Gericht proxy = ep.MetamodelFactory.eINSTANCE.createGericht();
 				collectHiddenTokens(element);
-				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Ernaehrungsplan, ep.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (org.eclipse.emf.ecore.EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
+				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Ernaehrungsplan, ep.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
 				if (proxy != null) {
 					Object value = proxy;
 					addObjectToList(element, ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE, value);
 					completedElement(value, false);
 				}
 				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_9, proxy, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a10, element);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a10, proxy);
+				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_8, proxy, true);
+				copyLocalizationInfos((CommonToken) a8, element);
+				copyLocalizationInfos((CommonToken) a8, proxy);
 			}
 		}
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[86]);
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[87]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[80]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[81]);
 	}
 	
 	(
 		(
-			a11 = ',' {
+			a9 = ',' {
 				if (element == null) {
 					element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
 					startIncompleteElement(element);
 				}
 				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_10_0_0_0, null, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a11, element);
+				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_9_0_0_0, null, true);
+				copyLocalizationInfos((CommonToken)a9, element);
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[88]);
+				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[82]);
 			}
 			
 			(
-				a12 = TEXT				
+				a10 = TEXT				
 				{
 					if (terminateParsing) {
 						throw new ep.resource.ep.mopp.EpTerminateParsingException();
@@ -1810,72 +1726,72 @@ parse_ep_Ernaehrungsplan returns [ep.Ernaehrungsplan element = null]
 						element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
 						startIncompleteElement(element);
 					}
-					if (a12 != null) {
+					if (a10 != null) {
 						ep.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("TEXT");
 						tokenResolver.setOptions(getOptions());
 						ep.resource.ep.IEpTokenResolveResult result = getFreshTokenResolveResult();
-						tokenResolver.resolve(a12.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
+						tokenResolver.resolve(a10.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
 						Object resolvedObject = result.getResolvedToken();
 						if (resolvedObject == null) {
-							addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a12).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a12).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a12).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a12).getStopIndex());
+							addErrorToResource(result.getErrorMessage(), ((CommonToken) a10).getLine(), ((CommonToken) a10).getCharPositionInLine(), ((CommonToken) a10).getStartIndex(), ((CommonToken) a10).getStopIndex());
 						}
 						String resolved = (String) resolvedObject;
 						ep.Gericht proxy = ep.MetamodelFactory.eINSTANCE.createGericht();
 						collectHiddenTokens(element);
-						registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Ernaehrungsplan, ep.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (org.eclipse.emf.ecore.EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
+						registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Ernaehrungsplan, ep.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
 						if (proxy != null) {
 							Object value = proxy;
 							addObjectToList(element, ep.MetamodelPackage.ERNAEHRUNGSPLAN__GERICHTE, value);
 							completedElement(value, false);
 						}
 						collectHiddenTokens(element);
-						retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_10_0_0_1, proxy, true);
-						copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a12, element);
-						copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a12, proxy);
+						retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_9_0_0_1, proxy, true);
+						copyLocalizationInfos((CommonToken) a10, element);
+						copyLocalizationInfos((CommonToken) a10, proxy);
 					}
 				}
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[89]);
-				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[90]);
+				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[83]);
+				addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[84]);
 			}
 			
 		)
 		
 	)*	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[91]);
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[92]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[85]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[86]);
 	}
 	
-	a13 = ')' {
+	a11 = ')' {
+		if (element == null) {
+			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
+			startIncompleteElement(element);
+		}
+		collectHiddenTokens(element);
+		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_10, null, true);
+		copyLocalizationInfos((CommonToken)a11, element);
+	}
+	{
+		// expected elements (follow set)
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[87]);
+	}
+	
+	a12 = '}' {
 		if (element == null) {
 			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_11, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a13, element);
+		copyLocalizationInfos((CommonToken)a12, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[93]);
-	}
-	
-	a14 = '}' {
-		if (element == null) {
-			element = ep.MetamodelFactory.eINSTANCE.createErnaehrungsplan();
-			startIncompleteElement(element);
-		}
-		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_12, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a14, element);
-	}
-	{
-		// expected elements (follow set)
-		addExpectedElement(ep.MetamodelPackage.eINSTANCE.getEpElement(), ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[94]);
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[95]);
+		addExpectedElement(ep.MetamodelPackage.eINSTANCE.getEpElement(), ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[88]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[89]);
 	}
 	
 ;
@@ -1891,11 +1807,11 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_0, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
+		copyLocalizationInfos((CommonToken)a0, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[96]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[90]);
 	}
 	
 	a1 = '(' {
@@ -1905,11 +1821,11 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_1, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
+		copyLocalizationInfos((CommonToken)a1, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[97]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[91]);
 	}
 	
 	(
@@ -1929,7 +1845,7 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 				tokenResolver.resolve(a2.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__MENGE), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a2).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a2).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a2).getLine(), ((CommonToken) a2).getCharPositionInLine(), ((CommonToken) a2).getStartIndex(), ((CommonToken) a2).getStopIndex());
 				}
 				java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 				if (resolved != null) {
@@ -1939,13 +1855,13 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_2, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a2, element);
+				copyLocalizationInfos((CommonToken) a2, element);
 			}
 		}
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[98]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[92]);
 	}
 	
 	a3 = ',' {
@@ -1955,11 +1871,11 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_3, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
+		copyLocalizationInfos((CommonToken)a3, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[99]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[93]);
 	}
 	
 	(
@@ -1979,12 +1895,12 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 				tokenResolver.resolve(a4.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__ZUTAT), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a4).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a4).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a4).getLine(), ((CommonToken) a4).getCharPositionInLine(), ((CommonToken) a4).getStartIndex(), ((CommonToken) a4).getStopIndex());
 				}
 				String resolved = (String) resolvedObject;
 				ep.Zutat proxy = ep.MetamodelFactory.eINSTANCE.createHauptbestandteil();
 				collectHiddenTokens(element);
-				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Gericht2Zutat, ep.Zutat>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getGericht2ZutatZutatReferenceResolver()), element, (org.eclipse.emf.ecore.EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__ZUTAT), resolved, proxy);
+				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Gericht2Zutat, ep.Zutat>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getGericht2ZutatZutatReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__ZUTAT), resolved, proxy);
 				if (proxy != null) {
 					Object value = proxy;
 					element.eSet(element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__ZUTAT), value);
@@ -1992,14 +1908,14 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_4, proxy, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, element);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a4, proxy);
+				copyLocalizationInfos((CommonToken) a4, element);
+				copyLocalizationInfos((CommonToken) a4, proxy);
 			}
 		}
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[100]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[94]);
 	}
 	
 	a5 = ',' {
@@ -2009,11 +1925,11 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_5, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
+		copyLocalizationInfos((CommonToken)a5, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[101]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[95]);
 	}
 	
 	(
@@ -2033,12 +1949,12 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 				tokenResolver.resolve(a6.getText(), element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__GERICHT), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a6).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a6).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a6).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a6).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((CommonToken) a6).getLine(), ((CommonToken) a6).getCharPositionInLine(), ((CommonToken) a6).getStartIndex(), ((CommonToken) a6).getStopIndex());
 				}
 				String resolved = (String) resolvedObject;
 				ep.Gericht proxy = ep.MetamodelFactory.eINSTANCE.createGericht();
 				collectHiddenTokens(element);
-				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Gericht2Zutat, ep.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getGericht2ZutatGerichtReferenceResolver()), element, (org.eclipse.emf.ecore.EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__GERICHT), resolved, proxy);
+				registerContextDependentProxy(new ep.resource.ep.mopp.EpContextDependentURIFragmentFactory<ep.Gericht2Zutat, ep.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getGericht2ZutatGerichtReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__GERICHT), resolved, proxy);
 				if (proxy != null) {
 					Object value = proxy;
 					element.eSet(element.eClass().getEStructuralFeature(ep.MetamodelPackage.GERICHT2_ZUTAT__GERICHT), value);
@@ -2046,14 +1962,14 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 				}
 				collectHiddenTokens(element);
 				retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_6, proxy, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a6, element);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a6, proxy);
+				copyLocalizationInfos((CommonToken) a6, element);
+				copyLocalizationInfos((CommonToken) a6, proxy);
 			}
 		}
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[102]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[96]);
 	}
 	
 	a7 = ')' {
@@ -2063,12 +1979,12 @@ parse_ep_Gericht2Zutat returns [ep.Gericht2Zutat element = null]
 		}
 		collectHiddenTokens(element);
 		retrieveLayoutInformation(element, ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_7, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a7, element);
+		copyLocalizationInfos((CommonToken)a7, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(ep.MetamodelPackage.eINSTANCE.getGericht(), ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[103]);
-		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[104]);
+		addExpectedElement(ep.MetamodelPackage.eINSTANCE.getGericht(), ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[97]);
+		addExpectedElement(null, ep.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[98]);
 	}
 	
 ;

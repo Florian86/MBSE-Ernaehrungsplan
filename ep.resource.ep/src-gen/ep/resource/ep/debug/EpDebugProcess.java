@@ -6,13 +6,18 @@
  */
 package ep.resource.ep.debug;
 
-public class EpDebugProcess extends ep.resource.ep.debug.EpDebugElement implements org.eclipse.debug.core.model.IProcess, ep.resource.ep.debug.IEpDebugEventListener {
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IStreamsProxy;
+
+public class EpDebugProcess extends ep.resource.ep.debug.EpDebugElement implements IProcess, ep.resource.ep.debug.IEpDebugEventListener {
 	
-	private org.eclipse.debug.core.ILaunch launch;
+	private ILaunch launch;
 	
 	private boolean terminated = false;
 	
-	public EpDebugProcess(org.eclipse.debug.core.ILaunch launch) {
+	public EpDebugProcess(ILaunch launch) {
 		super(launch.getDebugTarget());
 		this.launch = launch;
 	}
@@ -25,7 +30,7 @@ public class EpDebugProcess extends ep.resource.ep.debug.EpDebugElement implemen
 		return terminated;
 	}
 	
-	public void terminate() throws org.eclipse.debug.core.DebugException {
+	public void terminate() throws DebugException {
 		terminated = true;
 	}
 	
@@ -33,11 +38,11 @@ public class EpDebugProcess extends ep.resource.ep.debug.EpDebugElement implemen
 		return null;
 	}
 	
-	public org.eclipse.debug.core.ILaunch getLaunch() {
+	public ILaunch getLaunch() {
 		return launch;
 	}
 	
-	public org.eclipse.debug.core.model.IStreamsProxy getStreamsProxy() {
+	public IStreamsProxy getStreamsProxy() {
 		return null;
 	}
 	
@@ -48,7 +53,7 @@ public class EpDebugProcess extends ep.resource.ep.debug.EpDebugElement implemen
 		return null;
 	}
 	
-	public int getExitValue() throws org.eclipse.debug.core.DebugException {
+	public int getExitValue() throws DebugException {
 		return 0;
 	}
 	

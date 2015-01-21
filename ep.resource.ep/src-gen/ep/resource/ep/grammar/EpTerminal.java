@@ -6,18 +6,20 @@
  */
 package ep.resource.ep.grammar;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
+
 public class EpTerminal extends ep.resource.ep.grammar.EpSyntaxElement {
 	
-	private final org.eclipse.emf.ecore.EStructuralFeature feature;
+	private final EStructuralFeature feature;
 	private final int mandatoryOccurencesAfter;
 	
-	public EpTerminal(org.eclipse.emf.ecore.EStructuralFeature feature, ep.resource.ep.grammar.EpCardinality cardinality, int mandatoryOccurencesAfter) {
+	public EpTerminal(EStructuralFeature feature, ep.resource.ep.grammar.EpCardinality cardinality, int mandatoryOccurencesAfter) {
 		super(cardinality, null);
 		this.feature = feature;
 		this.mandatoryOccurencesAfter = mandatoryOccurencesAfter;
 	}
 	
-	public org.eclipse.emf.ecore.EStructuralFeature getFeature() {
+	public EStructuralFeature getFeature() {
 		return feature;
 	}
 	

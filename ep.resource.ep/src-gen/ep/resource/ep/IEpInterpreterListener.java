@@ -6,7 +6,9 @@
  */
 package ep.resource.ep;
 
+import org.eclipse.emf.ecore.EObject;
+
 public interface IEpInterpreterListener {
 	
-	public void handleInterpreteObject(org.eclipse.emf.ecore.EObject element);
+	public void handleInterpreteObject(EObject element);
 }

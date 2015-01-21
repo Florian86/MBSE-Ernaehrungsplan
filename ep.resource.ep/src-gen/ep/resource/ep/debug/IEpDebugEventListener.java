@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.debug;
 
+
 public interface IEpDebugEventListener {
 	
 	/**

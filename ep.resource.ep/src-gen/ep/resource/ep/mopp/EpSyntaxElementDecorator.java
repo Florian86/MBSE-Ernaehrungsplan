@@ -6,6 +6,9 @@
  */
 package ep.resource.ep.mopp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EpSyntaxElementDecorator {
 	
 	/**
@@ -22,7 +25,7 @@ public class EpSyntaxElementDecorator {
 	/**
 	 * a list of the indices that must be printed
 	 */
-	private java.util.List<Integer> indicesToPrint = new java.util.ArrayList<Integer>();
+	private List<Integer> indicesToPrint = new ArrayList<Integer>();
 	
 	public EpSyntaxElementDecorator(ep.resource.ep.grammar.EpSyntaxElement decoratedElement, EpSyntaxElementDecorator[] childDecorators) {
 		super();

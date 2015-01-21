@@ -6,13 +6,18 @@
  */
 package ep.resource.ep.ui;
 
-public class EpAnnotationModel extends org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel {
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.ui.texteditor.MarkerAnnotation;
+import org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel;
+
+public class EpAnnotationModel extends ResourceMarkerAnnotationModel {
 	
-	public EpAnnotationModel(org.eclipse.core.resources.IResource resource) {
+	public EpAnnotationModel(IResource resource) {
 		super(resource);
 	}
 	
-	protected org.eclipse.ui.texteditor.MarkerAnnotation createMarkerAnnotation(org.eclipse.core.resources.IMarker marker) {
+	protected MarkerAnnotation createMarkerAnnotation(IMarker marker) {
 		return new ep.resource.ep.ui.EpMarkerAnnotation(marker);
 	}
 	

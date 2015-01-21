@@ -6,6 +6,9 @@
  */
 package ep.resource.ep.mopp;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * The EpTokenResolverFactory class provides access to all generated token
  * resolvers. By giving the name of a defined token, the corresponding resolve can
@@ -16,13 +19,13 @@ package ep.resource.ep.mopp;
  */
 public class EpTokenResolverFactory implements ep.resource.ep.IEpTokenResolverFactory {
 	
-	private java.util.Map<String, ep.resource.ep.IEpTokenResolver> tokenName2TokenResolver;
-	private java.util.Map<String, ep.resource.ep.IEpTokenResolver> featureName2CollectInTokenResolver;
+	private Map<String, ep.resource.ep.IEpTokenResolver> tokenName2TokenResolver;
+	private Map<String, ep.resource.ep.IEpTokenResolver> featureName2CollectInTokenResolver;
 	private static ep.resource.ep.IEpTokenResolver defaultResolver = new ep.resource.ep.analysis.EpDefaultTokenResolver();
 	
 	public EpTokenResolverFactory() {
-		tokenName2TokenResolver = new java.util.LinkedHashMap<String, ep.resource.ep.IEpTokenResolver>();
-		featureName2CollectInTokenResolver = new java.util.LinkedHashMap<String, ep.resource.ep.IEpTokenResolver>();
+		tokenName2TokenResolver = new LinkedHashMap<String, ep.resource.ep.IEpTokenResolver>();
+		featureName2CollectInTokenResolver = new LinkedHashMap<String, ep.resource.ep.IEpTokenResolver>();
 		registerTokenResolver("TEXT", new ep.resource.ep.analysis.EpTEXTTokenResolver());
 		registerTokenResolver("QUOTED_34_34", new ep.resource.ep.analysis.EpQUOTED_34_34TokenResolver());
 	}
@@ -47,7 +50,7 @@ public class EpTokenResolverFactory implements ep.resource.ep.IEpTokenResolverFa
 		return tokenName2TokenResolver.remove(tokenName);
 	}
 	
-	private ep.resource.ep.IEpTokenResolver internalCreateResolver(java.util.Map<String, ep.resource.ep.IEpTokenResolver> resolverMap, String key) {
+	private ep.resource.ep.IEpTokenResolver internalCreateResolver(Map<String, ep.resource.ep.IEpTokenResolver> resolverMap, String key) {
 		if (resolverMap.containsKey(key)){
 			return resolverMap.get(key);
 		} else {
@@ -55,7 +58,7 @@ public class EpTokenResolverFactory implements ep.resource.ep.IEpTokenResolverFa
 		}
 	}
 	
-	private boolean internalRegisterTokenResolver(java.util.Map<String, ep.resource.ep.IEpTokenResolver> resolverMap, String key, ep.resource.ep.IEpTokenResolver resolver) {
+	private boolean internalRegisterTokenResolver(Map<String, ep.resource.ep.IEpTokenResolver> resolverMap, String key, ep.resource.ep.IEpTokenResolver resolver) {
 		if (!resolverMap.containsKey(key)) {
 			resolverMap.put(key,resolver);
 			return true;

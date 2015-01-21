@@ -6,6 +6,24 @@
  */
 package ep.resource.ep.debug;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
 /**
  * The DebuggerListener receives commands from the Eclipse Debug framework and
  * sends these commands to a debuggable process (e.g., an interpreter or generated
@@ -61,7 +79,7 @@ public class EpDebuggerListener<ResultType, ContextType> implements Runnable {
 	/**
 	 * This map maps object ids to pairs of object names and object values.
 	 */
-	private java.util.Map<Long, ep.resource.ep.util.EpPair<String, Object>> objectMap = new java.util.LinkedHashMap<Long, ep.resource.ep.util.EpPair<String, Object>>();
+	private Map<Long, ep.resource.ep.util.EpPair<String, Object>> objectMap = new LinkedHashMap<Long, ep.resource.ep.util.EpPair<String, Object>>();
 	
 	private ep.resource.ep.debug.EpDebugCommunicationHelper communicationHelper = new ep.resource.ep.debug.EpDebugCommunicationHelper();
 	
@@ -75,17 +93,17 @@ public class EpDebuggerListener<ResultType, ContextType> implements Runnable {
 	public void run() {
 		try {
 			runDebugger();
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void runDebugger() throws java.io.IOException {
-		java.net.ServerSocket server = new java.net.ServerSocket(requestPort);
-		java.net.Socket accept = server.accept();
-		java.io.InputStream inputStream = accept.getInputStream();
-		java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream));
-		java.io.PrintStream output = new java.io.PrintStream(accept.getOutputStream());
+	private void runDebugger() throws IOException {
+		ServerSocket server = new ServerSocket(requestPort);
+		Socket accept = server.accept();
+		InputStream inputStream = accept.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		PrintStream output = new PrintStream(accept.getOutputStream());
 		
 		ep.resource.ep.debug.EpDebugMessage command;
 		while (!stop) {
@@ -119,9 +137,9 @@ public class EpDebuggerListener<ResultType, ContextType> implements Runnable {
 				communicationHelper.sendEvent(message, output);
 			} else if (command.hasType(ep.resource.ep.debug.EEpDebugMessageTypes.GET_FRAME_VARIABLES)) {
 				String stackFrame = command.getArgument(0);
-				java.util.Map<String, Object> frameVariables = debuggable.getFrameVariables(stackFrame);
+				Map<String, Object> frameVariables = debuggable.getFrameVariables(stackFrame);
 				
-				java.util.List<String> topVariableIDs = new java.util.ArrayList<String>();
+				List<String> topVariableIDs = new ArrayList<String>();
 				for (String name : frameVariables.keySet()) {
 					Object value = frameVariables.get(name);
 					long id = getObjectID(name, value);
@@ -158,20 +176,20 @@ public class EpDebuggerListener<ResultType, ContextType> implements Runnable {
 	private String convertToString(long id, Object object) {
 		String name = objectMap.get(id).getLeft();
 		
-		java.util.Map<String, Object> properties = new java.util.LinkedHashMap<String, Object>();
+		Map<String, Object> properties = new LinkedHashMap<String, Object>();
 		properties.put("!name", name);
 		properties.put("!id", Long.toString(id));
 		String valueString = object == null ? "null" : object.toString();
 		if (object != null) {
-			if (object instanceof org.eclipse.emf.ecore.EObject) {
-				org.eclipse.emf.ecore.EObject eObject = (org.eclipse.emf.ecore.EObject) object;
-				org.eclipse.emf.ecore.EClass eClass = eObject.eClass();
+			if (object instanceof EObject) {
+				EObject eObject = (EObject) object;
+				EClass eClass = eObject.eClass();
 				String eClassName = eClass.getName();
 				valueString = eClassName + " (id=" + id + ")";
 				properties.put("!type", eClassName);
 				
-				java.util.List<org.eclipse.emf.ecore.EStructuralFeature> features = eClass.getEAllStructuralFeatures();
-				for (org.eclipse.emf.ecore.EStructuralFeature feature : features) {
+				List<EStructuralFeature> features = eClass.getEAllStructuralFeatures();
+				for (EStructuralFeature feature : features) {
 					Object value = eObject.eGet(feature);
 					String featureName = feature.getName();
 					long valueID = getObjectID(featureName, value);
@@ -198,7 +216,7 @@ public class EpDebuggerListener<ResultType, ContextType> implements Runnable {
 					valueString = object.toString();
 				}
 				if (javaClass.isArray()) {
-					int length = java.lang.reflect.Array.getLength(object);
+					int length = Array.getLength(object);
 					int partitions = getPartitionCount(length);
 					Class<?> componentType = javaClass.getComponentType();
 					valueString = componentType.getName() + "[" + length + "] (id=" + id + ")";
@@ -206,7 +224,7 @@ public class EpDebuggerListener<ResultType, ContextType> implements Runnable {
 						// if there is only a single partition, the elements of the array are directly
 						// used a children
 						for (int i = 0; i < length; i++) {
-							Object objectAtIndex = java.lang.reflect.Array.get(object, i);
+							Object objectAtIndex = Array.get(object, i);
 							String fieldName = "[" + i + "]";
 							long valueID = getObjectID(fieldName, objectAtIndex);
 							properties.put(fieldName, Long.toString(valueID));
@@ -241,11 +259,11 @@ public class EpDebuggerListener<ResultType, ContextType> implements Runnable {
 		return numPartitions;
 	}
 	
-	private void addFields(Object object, java.util.Map<String, Object> properties, Class<?> javaClass) {
-		java.lang.reflect.Field[] fields = javaClass.getDeclaredFields();
-		for (java.lang.reflect.Field field : fields) {
+	private void addFields(Object object, Map<String, Object> properties, Class<?> javaClass) {
+		Field[] fields = javaClass.getDeclaredFields();
+		for (Field field : fields) {
 			// here we should check the settings of the debug view
-			if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+			if (Modifier.isStatic(field.getModifiers())) {
 				continue;
 			}
 			try {

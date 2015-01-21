@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.debug;
 
+
 public enum EEpDebugMessageTypes {
 	
 	// An enumeration of all commands that can be sent to the debug server from debug

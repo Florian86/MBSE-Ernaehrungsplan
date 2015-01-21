@@ -6,15 +6,17 @@
  */
 package ep.resource.ep.grammar;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
+
 /**
  * This class provides the follow sets for all terminals of the grammar. These
  * sets are used during code completion.
  */
 public class EpFollowSetProvider {
 	
-	public final static ep.resource.ep.IEpExpectedElement TERMINALS[] = new ep.resource.ep.IEpExpectedElement[62];
+	public final static ep.resource.ep.IEpExpectedElement TERMINALS[] = new ep.resource.ep.IEpExpectedElement[60];
 	
-	public final static org.eclipse.emf.ecore.EStructuralFeature[] FEATURES = new org.eclipse.emf.ecore.EStructuralFeature[5];
+	public final static EStructuralFeature[] FEATURES = new EStructuralFeature[5];
 	
 	public final static ep.resource.ep.mopp.EpContainedFeature[] LINKS = new ep.resource.ep.mopp.EpContainedFeature[34];
 	
@@ -66,23 +68,21 @@ public class EpFollowSetProvider {
 		TERMINALS[42] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_2);
 		TERMINALS[43] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_3);
 		TERMINALS[44] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_4);
-		TERMINALS[45] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_5_0_0_0);
+		TERMINALS[45] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_5);
 		TERMINALS[46] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_6);
-		TERMINALS[47] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_5_0_0_1);
-		TERMINALS[48] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_7);
-		TERMINALS[49] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_8);
-		TERMINALS[50] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_9);
-		TERMINALS[51] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_10_0_0_0);
+		TERMINALS[47] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_7);
+		TERMINALS[48] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_8);
+		TERMINALS[49] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_9_0_0_0);
+		TERMINALS[50] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_10);
+		TERMINALS[51] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_9_0_0_1);
 		TERMINALS[52] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_11);
-		TERMINALS[53] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_10_0_0_1);
-		TERMINALS[54] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_12);
-		TERMINALS[55] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_1);
-		TERMINALS[56] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_2);
-		TERMINALS[57] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_3);
-		TERMINALS[58] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_4);
-		TERMINALS[59] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_5);
-		TERMINALS[60] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_6);
-		TERMINALS[61] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_7);
+		TERMINALS[53] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_1);
+		TERMINALS[54] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_2);
+		TERMINALS[55] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_3);
+		TERMINALS[56] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_4);
+		TERMINALS[57] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_5);
+		TERMINALS[58] = new ep.resource.ep.mopp.EpExpectedStructuralFeature(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_6);
+		TERMINALS[59] = new ep.resource.ep.mopp.EpExpectedCsString(ep.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_7);
 	}
 	
 	public static void initializeTerminals() {
@@ -205,30 +205,26 @@ public class EpFollowSetProvider {
 		TERMINALS[42].addFollower(TERMINALS[43], EMPTY_LINK_ARRAY);
 		TERMINALS[43].addFollower(TERMINALS[44], EMPTY_LINK_ARRAY);
 		TERMINALS[44].addFollower(TERMINALS[45], EMPTY_LINK_ARRAY);
-		TERMINALS[44].addFollower(TERMINALS[46], EMPTY_LINK_ARRAY);
-		TERMINALS[45].addFollower(TERMINALS[47], EMPTY_LINK_ARRAY);
-		TERMINALS[47].addFollower(TERMINALS[45], EMPTY_LINK_ARRAY);
-		TERMINALS[47].addFollower(TERMINALS[46], EMPTY_LINK_ARRAY);
-		TERMINALS[46].addFollower(TERMINALS[48], EMPTY_LINK_ARRAY);
+		TERMINALS[45].addFollower(TERMINALS[46], EMPTY_LINK_ARRAY);
+		TERMINALS[46].addFollower(TERMINALS[47], EMPTY_LINK_ARRAY);
+		TERMINALS[47].addFollower(TERMINALS[48], EMPTY_LINK_ARRAY);
 		TERMINALS[48].addFollower(TERMINALS[49], EMPTY_LINK_ARRAY);
-		TERMINALS[49].addFollower(TERMINALS[50], EMPTY_LINK_ARRAY);
-		TERMINALS[50].addFollower(TERMINALS[51], EMPTY_LINK_ARRAY);
+		TERMINALS[48].addFollower(TERMINALS[50], EMPTY_LINK_ARRAY);
+		TERMINALS[49].addFollower(TERMINALS[51], EMPTY_LINK_ARRAY);
+		TERMINALS[51].addFollower(TERMINALS[49], EMPTY_LINK_ARRAY);
+		TERMINALS[51].addFollower(TERMINALS[50], EMPTY_LINK_ARRAY);
 		TERMINALS[50].addFollower(TERMINALS[52], EMPTY_LINK_ARRAY);
-		TERMINALS[51].addFollower(TERMINALS[53], EMPTY_LINK_ARRAY);
-		TERMINALS[53].addFollower(TERMINALS[51], EMPTY_LINK_ARRAY);
-		TERMINALS[53].addFollower(TERMINALS[52], EMPTY_LINK_ARRAY);
-		TERMINALS[52].addFollower(TERMINALS[54], EMPTY_LINK_ARRAY);
-		TERMINALS[54].addFollower(TERMINALS[7], new ep.resource.ep.mopp.EpContainedFeature[] {new ep.resource.ep.mopp.EpContainedFeature(ep.MetamodelPackage.eINSTANCE.getErnaehrungsplan(), FEATURES[4]), });
-		TERMINALS[54].addFollower(TERMINALS[8], EMPTY_LINK_ARRAY);
-		TERMINALS[38].addFollower(TERMINALS[55], EMPTY_LINK_ARRAY);
+		TERMINALS[52].addFollower(TERMINALS[7], new ep.resource.ep.mopp.EpContainedFeature[] {new ep.resource.ep.mopp.EpContainedFeature(ep.MetamodelPackage.eINSTANCE.getErnaehrungsplan(), FEATURES[4]), });
+		TERMINALS[52].addFollower(TERMINALS[8], EMPTY_LINK_ARRAY);
+		TERMINALS[38].addFollower(TERMINALS[53], EMPTY_LINK_ARRAY);
+		TERMINALS[53].addFollower(TERMINALS[54], EMPTY_LINK_ARRAY);
+		TERMINALS[54].addFollower(TERMINALS[55], EMPTY_LINK_ARRAY);
 		TERMINALS[55].addFollower(TERMINALS[56], EMPTY_LINK_ARRAY);
 		TERMINALS[56].addFollower(TERMINALS[57], EMPTY_LINK_ARRAY);
 		TERMINALS[57].addFollower(TERMINALS[58], EMPTY_LINK_ARRAY);
 		TERMINALS[58].addFollower(TERMINALS[59], EMPTY_LINK_ARRAY);
-		TERMINALS[59].addFollower(TERMINALS[60], EMPTY_LINK_ARRAY);
-		TERMINALS[60].addFollower(TERMINALS[61], EMPTY_LINK_ARRAY);
-		TERMINALS[61].addFollower(TERMINALS[38], new ep.resource.ep.mopp.EpContainedFeature[] {new ep.resource.ep.mopp.EpContainedFeature(ep.MetamodelPackage.eINSTANCE.getGericht2Zutat(), FEATURES[3]), });
-		TERMINALS[61].addFollower(TERMINALS[39], EMPTY_LINK_ARRAY);
+		TERMINALS[59].addFollower(TERMINALS[38], new ep.resource.ep.mopp.EpContainedFeature[] {new ep.resource.ep.mopp.EpContainedFeature(ep.MetamodelPackage.eINSTANCE.getGericht2Zutat(), FEATURES[3]), });
+		TERMINALS[59].addFollower(TERMINALS[39], EMPTY_LINK_ARRAY);
 	}
 	
 	public static void wire() {

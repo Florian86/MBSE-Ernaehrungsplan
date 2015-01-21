@@ -1,6 +1,11 @@
 // $ANTLR 3.4
 
 	package ep.resource.ep.mopp;
+	
+	import java.util.ArrayList;
+import java.util.List;
+import org.antlr.runtime3_4_0.ANTLRStringStream;
+import org.antlr.runtime3_4_0.RecognitionException;
 
 
 import org.antlr.runtime3_4_0.*;
@@ -37,12 +42,12 @@ public class EpLexer extends Lexer {
     public static final int TEXT=6;
     public static final int WHITESPACE=7;
 
-    	public java.util.List<org.antlr.runtime3_4_0.RecognitionException> lexerExceptions  = new java.util.ArrayList<org.antlr.runtime3_4_0.RecognitionException>();
-    	public java.util.List<Integer> lexerExceptionsPosition = new java.util.ArrayList<Integer>();
+    	public List<RecognitionException> lexerExceptions  = new ArrayList<RecognitionException>();
+    	public List<Integer> lexerExceptionPositions = new ArrayList<Integer>();
     	
-    	public void reportError(org.antlr.runtime3_4_0.RecognitionException e) {
+    	public void reportError(RecognitionException e) {
     		lexerExceptions.add(e);
-    		lexerExceptionsPosition.add(((org.antlr.runtime3_4_0.ANTLRStringStream) input).index());
+    		lexerExceptionPositions.add(((ANTLRStringStream) input).index());
     	}
 
 
@@ -66,8 +71,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__8;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:15:6: ( '(' )
-            // Ep.g:15:8: '('
+            // Ep.g:20:6: ( '(' )
+            // Ep.g:20:8: '('
             {
             match('('); 
 
@@ -87,8 +92,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__9;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:16:6: ( ')' )
-            // Ep.g:16:8: ')'
+            // Ep.g:21:6: ( ')' )
+            // Ep.g:21:8: ')'
             {
             match(')'); 
 
@@ -108,8 +113,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__10;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:17:7: ( ',' )
-            // Ep.g:17:9: ','
+            // Ep.g:22:7: ( ',' )
+            // Ep.g:22:9: ','
             {
             match(','); 
 
@@ -129,8 +134,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__11;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:18:7: ( 'Beilage' )
-            // Ep.g:18:9: 'Beilage'
+            // Ep.g:23:7: ( 'Beilage' )
+            // Ep.g:23:9: 'Beilage'
             {
             match("Beilage"); 
 
@@ -152,8 +157,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__12;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:19:7: ( 'Ernaehrungsplan' )
-            // Ep.g:19:9: 'Ernaehrungsplan'
+            // Ep.g:24:7: ( 'Ernaehrungsplan' )
+            // Ep.g:24:9: 'Ernaehrungsplan'
             {
             match("Ernaehrungsplan"); 
 
@@ -175,8 +180,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__13;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:20:7: ( 'Gericht' )
-            // Ep.g:20:9: 'Gericht'
+            // Ep.g:25:7: ( 'Gericht' )
+            // Ep.g:25:9: 'Gericht'
             {
             match("Gericht"); 
 
@@ -198,8 +203,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__14;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:21:7: ( 'Hauptbestandteil' )
-            // Ep.g:21:9: 'Hauptbestandteil'
+            // Ep.g:26:7: ( 'Hauptbestandteil' )
+            // Ep.g:26:9: 'Hauptbestandteil'
             {
             match("Hauptbestandteil"); 
 
@@ -221,8 +226,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__15;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:22:7: ( 'Person' )
-            // Ep.g:22:9: 'Person'
+            // Ep.g:27:7: ( 'Person' )
+            // Ep.g:27:9: 'Person'
             {
             match("Person"); 
 
@@ -244,8 +249,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__16;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:23:7: ( 'Sauce' )
-            // Ep.g:23:9: 'Sauce'
+            // Ep.g:28:7: ( 'Sauce' )
+            // Ep.g:28:9: 'Sauce'
             {
             match("Sauce"); 
 
@@ -267,8 +272,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__17;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:24:7: ( 'besteht aus' )
-            // Ep.g:24:9: 'besteht aus'
+            // Ep.g:29:7: ( 'besteht aus' )
+            // Ep.g:29:9: 'besteht aus'
             {
             match("besteht aus"); 
 
@@ -290,8 +295,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__18;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:25:7: ( 'eplan' )
-            // Ep.g:25:9: 'eplan'
+            // Ep.g:30:7: ( 'eplan' )
+            // Ep.g:30:9: 'eplan'
             {
             match("eplan"); 
 
@@ -313,8 +318,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__19;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:26:7: ( 'gerichte' )
-            // Ep.g:26:9: 'gerichte'
+            // Ep.g:31:7: ( 'gerichte' )
+            // Ep.g:31:9: 'gerichte'
             {
             match("gerichte"); 
 
@@ -336,8 +341,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__20;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:27:7: ( 'istSalat' )
-            // Ep.g:27:9: 'istSalat'
+            // Ep.g:32:7: ( 'istSalat' )
+            // Ep.g:32:9: 'istSalat'
             {
             match("istSalat"); 
 
@@ -359,8 +364,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__21;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:28:7: ( 'ja' )
-            // Ep.g:28:9: 'ja'
+            // Ep.g:33:7: ( 'ja' )
+            // Ep.g:33:9: 'ja'
             {
             match("ja"); 
 
@@ -382,8 +387,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__22;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:29:7: ( 'kommentar' )
-            // Ep.g:29:9: 'kommentar'
+            // Ep.g:34:7: ( 'kommentar' )
+            // Ep.g:34:9: 'kommentar'
             {
             match("kommentar"); 
 
@@ -405,8 +410,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__23;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:30:7: ( 'name' )
-            // Ep.g:30:9: 'name'
+            // Ep.g:35:7: ( 'name' )
+            // Ep.g:35:9: 'name'
             {
             match("name"); 
 
@@ -428,8 +433,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__24;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:31:7: ( 'nein' )
-            // Ep.g:31:9: 'nein'
+            // Ep.g:36:7: ( 'nein' )
+            // Ep.g:36:9: 'nein'
             {
             match("nein"); 
 
@@ -451,10 +456,10 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__25;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:32:7: ( 'personen' )
-            // Ep.g:32:9: 'personen'
+            // Ep.g:37:7: ( 'person' )
+            // Ep.g:37:9: 'person'
             {
-            match("personen"); 
+            match("person"); 
 
 
 
@@ -474,8 +479,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__26;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:33:7: ( 'zutat' )
-            // Ep.g:33:9: 'zutat'
+            // Ep.g:38:7: ( 'zutat' )
+            // Ep.g:38:9: 'zutat'
             {
             match("zutat"); 
 
@@ -497,8 +502,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__27;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:34:7: ( '{' )
-            // Ep.g:34:9: '{'
+            // Ep.g:39:7: ( '{' )
+            // Ep.g:39:9: '{'
             {
             match('{'); 
 
@@ -518,8 +523,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = T__28;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:35:7: ( '}' )
-            // Ep.g:35:9: '}'
+            // Ep.g:40:7: ( '}' )
+            // Ep.g:40:9: '}'
             {
             match('}'); 
 
@@ -539,13 +544,13 @@ public class EpLexer extends Lexer {
         try {
             int _type = TEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:2084:5: ( ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ ) )
-            // Ep.g:2085:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
+            // Ep.g:2000:5: ( ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ ) )
+            // Ep.g:2001:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
             {
-            // Ep.g:2085:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
-            // Ep.g:2085:3: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
+            // Ep.g:2001:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
+            // Ep.g:2001:3: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
             {
-            // Ep.g:2085:3: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
+            // Ep.g:2001:3: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
             int cnt1=0;
             loop1:
             do {
@@ -603,8 +608,8 @@ public class EpLexer extends Lexer {
         try {
             int _type = WHITESPACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:2087:11: ( ( ( ' ' | '\\t' | '\\f' ) ) )
-            // Ep.g:2088:2: ( ( ' ' | '\\t' | '\\f' ) )
+            // Ep.g:2003:11: ( ( ( ' ' | '\\t' | '\\f' ) ) )
+            // Ep.g:2004:2: ( ( ' ' | '\\t' | '\\f' ) )
             {
             if ( input.LA(1)=='\t'||input.LA(1)=='\f'||input.LA(1)==' ' ) {
                 input.consume();
@@ -634,13 +639,13 @@ public class EpLexer extends Lexer {
         try {
             int _type = LINEBREAK;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:2091:10: ( ( ( '\\r\\n' | '\\r' | '\\n' ) ) )
-            // Ep.g:2092:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
+            // Ep.g:2007:10: ( ( ( '\\r\\n' | '\\r' | '\\n' ) ) )
+            // Ep.g:2008:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
             {
-            // Ep.g:2092:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
-            // Ep.g:2092:3: ( '\\r\\n' | '\\r' | '\\n' )
+            // Ep.g:2008:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
+            // Ep.g:2008:3: ( '\\r\\n' | '\\r' | '\\n' )
             {
-            // Ep.g:2092:3: ( '\\r\\n' | '\\r' | '\\n' )
+            // Ep.g:2008:3: ( '\\r\\n' | '\\r' | '\\n' )
             int alt2=3;
             int LA2_0 = input.LA(1);
 
@@ -666,7 +671,7 @@ public class EpLexer extends Lexer {
             }
             switch (alt2) {
                 case 1 :
-                    // Ep.g:2092:4: '\\r\\n'
+                    // Ep.g:2008:4: '\\r\\n'
                     {
                     match("\r\n"); 
 
@@ -675,14 +680,14 @@ public class EpLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // Ep.g:2092:13: '\\r'
+                    // Ep.g:2008:13: '\\r'
                     {
                     match('\r'); 
 
                     }
                     break;
                 case 3 :
-                    // Ep.g:2092:20: '\\n'
+                    // Ep.g:2008:20: '\\n'
                     {
                     match('\n'); 
 
@@ -713,21 +718,21 @@ public class EpLexer extends Lexer {
         try {
             int _type = QUOTED_34_34;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ep.g:2095:13: ( ( ( '\"' ) (~ ( '\"' ) )* ( '\"' ) ) )
-            // Ep.g:2096:2: ( ( '\"' ) (~ ( '\"' ) )* ( '\"' ) )
+            // Ep.g:2011:13: ( ( ( '\"' ) (~ ( '\"' ) )* ( '\"' ) ) )
+            // Ep.g:2012:2: ( ( '\"' ) (~ ( '\"' ) )* ( '\"' ) )
             {
-            // Ep.g:2096:2: ( ( '\"' ) (~ ( '\"' ) )* ( '\"' ) )
-            // Ep.g:2096:3: ( '\"' ) (~ ( '\"' ) )* ( '\"' )
+            // Ep.g:2012:2: ( ( '\"' ) (~ ( '\"' ) )* ( '\"' ) )
+            // Ep.g:2012:3: ( '\"' ) (~ ( '\"' ) )* ( '\"' )
             {
-            // Ep.g:2096:3: ( '\"' )
-            // Ep.g:2096:4: '\"'
+            // Ep.g:2012:3: ( '\"' )
+            // Ep.g:2012:4: '\"'
             {
             match('\"'); 
 
             }
 
 
-            // Ep.g:2096:8: (~ ( '\"' ) )*
+            // Ep.g:2012:8: (~ ( '\"' ) )*
             loop3:
             do {
                 int alt3=2;
@@ -761,8 +766,8 @@ public class EpLexer extends Lexer {
             } while (true);
 
 
-            // Ep.g:2096:17: ( '\"' )
-            // Ep.g:2096:18: '\"'
+            // Ep.g:2012:17: ( '\"' )
+            // Ep.g:2012:18: '\"'
             {
             match('\"'); 
 
@@ -998,12 +1003,11 @@ public class EpLexer extends Lexer {
     static final String DFA4_eotS =
         "\4\uffff\17\25\6\uffff\12\25\1\63\17\25\1\uffff\20\25\1\123\1\124"+
         "\7\25\1\134\1\25\1\136\3\25\2\uffff\1\25\1\143\4\25\1\150\1\uffff"+
-        "\1\25\1\uffff\4\25\1\uffff\1\156\1\25\1\160\1\25\1\uffff\5\25\1"+
-        "\uffff\1\25\1\uffff\1\25\1\uffff\1\171\1\172\1\25\1\174\2\25\2\uffff"+
-        "\1\177\1\uffff\2\25\1\uffff\10\25\1\u008a\1\25\1\uffff\1\u008c\1"+
-        "\uffff";
+        "\1\25\1\uffff\3\25\1\155\1\uffff\1\156\1\25\1\160\1\25\1\uffff\4"+
+        "\25\2\uffff\1\25\1\uffff\1\25\1\uffff\1\170\1\171\3\25\2\uffff\1"+
+        "\175\2\25\1\uffff\10\25\1\u0088\1\25\1\uffff\1\u008a\1\uffff";
     static final String DFA4_eofS =
-        "\u008d\uffff";
+        "\u008b\uffff";
     static final String DFA4_minS =
         "\1\11\3\uffff\1\145\1\162\1\145\1\141\1\145\1\141\1\145\1\160\1"+
         "\145\1\163\1\141\1\157\1\141\1\145\1\165\6\uffff\1\151\1\156\1\162"+
@@ -1013,10 +1017,10 @@ public class EpLexer extends Lexer {
         "\145\1\156\1\143\1\141\1\145\2\55\1\157\1\164\1\147\2\150\1\142"+
         "\1\156\1\55\1\150\1\55\1\150\1\154\1\156\2\uffff\1\156\1\55\1\145"+
         "\1\162\1\164\1\145\1\55\1\uffff\1\164\1\uffff\1\164\1\141\1\164"+
-        "\1\145\1\uffff\1\55\1\165\1\55\1\163\1\uffff\1\40\1\145\1\164\1"+
-        "\141\1\156\1\uffff\1\156\1\uffff\1\164\1\uffff\2\55\1\162\1\55\1"+
-        "\147\1\141\2\uffff\1\55\1\uffff\1\163\1\156\1\uffff\1\160\1\144"+
-        "\1\154\1\164\1\141\1\145\1\156\1\151\1\55\1\154\1\uffff\1\55\1\uffff";
+        "\1\55\1\uffff\1\55\1\165\1\55\1\163\1\uffff\1\40\1\145\1\164\1\141"+
+        "\2\uffff\1\156\1\uffff\1\164\1\uffff\2\55\1\162\1\147\1\141\2\uffff"+
+        "\1\55\1\163\1\156\1\uffff\1\160\1\144\1\154\1\164\1\141\1\145\1"+
+        "\156\1\151\1\55\1\154\1\uffff\1\55\1\uffff";
     static final String DFA4_maxS =
         "\1\175\3\uffff\1\145\1\162\1\145\1\141\1\145\1\141\1\145\1\160\1"+
         "\145\1\163\1\141\1\157\2\145\1\165\6\uffff\1\151\1\156\1\162\1\165"+
@@ -1025,18 +1029,18 @@ public class EpLexer extends Lexer {
         "\1\155\1\145\1\156\1\163\2\141\1\145\1\143\1\164\1\157\2\145\1\156"+
         "\1\143\1\141\1\145\2\172\1\157\1\164\1\147\2\150\1\142\1\156\1\172"+
         "\1\150\1\172\1\150\1\154\1\156\2\uffff\1\156\1\172\1\145\1\162\1"+
-        "\164\1\145\1\172\1\uffff\1\164\1\uffff\1\164\1\141\1\164\1\145\1"+
-        "\uffff\1\172\1\165\1\172\1\163\1\uffff\1\40\1\145\1\164\1\141\1"+
-        "\156\1\uffff\1\156\1\uffff\1\164\1\uffff\2\172\1\162\1\172\1\147"+
-        "\1\141\2\uffff\1\172\1\uffff\1\163\1\156\1\uffff\1\160\1\144\1\154"+
-        "\1\164\1\141\1\145\1\156\1\151\1\172\1\154\1\uffff\1\172\1\uffff";
+        "\164\1\145\1\172\1\uffff\1\164\1\uffff\1\164\1\141\1\164\1\172\1"+
+        "\uffff\1\172\1\165\1\172\1\163\1\uffff\1\40\1\145\1\164\1\141\2"+
+        "\uffff\1\156\1\uffff\1\164\1\uffff\2\172\1\162\1\147\1\141\2\uffff"+
+        "\1\172\1\163\1\156\1\uffff\1\160\1\144\1\154\1\164\1\141\1\145\1"+
+        "\156\1\151\1\172\1\154\1\uffff\1\172\1\uffff";
     static final String DFA4_acceptS =
         "\1\uffff\1\1\1\2\1\3\17\uffff\1\24\1\25\1\26\1\27\1\30\1\31\32\uffff"+
         "\1\16\37\uffff\1\20\1\21\7\uffff\1\11\1\uffff\1\13\4\uffff\1\23"+
-        "\4\uffff\1\10\5\uffff\1\4\1\uffff\1\6\1\uffff\1\12\6\uffff\1\14"+
-        "\1\15\1\uffff\1\22\2\uffff\1\17\12\uffff\1\5\1\uffff\1\7";
+        "\4\uffff\1\10\4\uffff\1\22\1\4\1\uffff\1\6\1\uffff\1\12\5\uffff"+
+        "\1\14\1\15\3\uffff\1\17\12\uffff\1\5\1\uffff\1\7";
     static final String DFA4_specialS =
-        "\u008d\uffff}>";
+        "\u008b\uffff}>";
     static final String[] DFA4_transitionS = {
             "\1\26\1\27\1\uffff\1\26\1\27\22\uffff\1\26\1\uffff\1\30\5\uffff"+
             "\1\1\1\2\2\uffff\1\3\1\25\2\uffff\12\25\7\uffff\1\25\1\4\2\25"+
@@ -1140,7 +1144,7 @@ public class EpLexer extends Lexer {
             "\1\152",
             "\1\153",
             "\1\154",
-            "\1\155",
+            "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "",
             "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\157",
@@ -1151,35 +1155,33 @@ public class EpLexer extends Lexer {
             "\1\163",
             "\1\164",
             "\1\165",
+            "",
+            "",
             "\1\166",
             "",
             "\1\167",
             "",
-            "\1\170",
-            "",
             "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\1\172",
             "\1\173",
+            "\1\174",
+            "",
+            "",
             "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
-            "\1\175",
             "\1\176",
-            "",
-            "",
-            "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\1\177",
             "",
             "\1\u0080",
             "\1\u0081",
-            "",
             "\1\u0082",
             "\1\u0083",
             "\1\u0084",
             "\1\u0085",
             "\1\u0086",
             "\1\u0087",
-            "\1\u0088",
-            "\1\u0089",
             "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
-            "\1\u008b",
+            "\1\u0089",
             "",
             "\1\25\2\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             ""

@@ -6,24 +6,39 @@
  */
 package ep.resource.ep.mopp;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import org.eclipse.emf.ecore.EObject;
+
 public class EpParseResult implements ep.resource.ep.IEpParseResult {
 	
-	private org.eclipse.emf.ecore.EObject root;
-	private java.util.Collection<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>> commands = new java.util.ArrayList<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>>();
+	private EObject root;
+	
+	private ep.resource.ep.IEpLocationMap locationMap;
+	
+	private Collection<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>> commands = new ArrayList<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>>();
 	
 	public EpParseResult() {
 		super();
 	}
 	
-	public void setRoot(org.eclipse.emf.ecore.EObject root) {
-		this.root = root;
-	}
-	
-	public org.eclipse.emf.ecore.EObject getRoot() {
+	public EObject getRoot() {
 		return root;
 	}
 	
-	public java.util.Collection<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>> getPostParseCommands() {
+	public ep.resource.ep.IEpLocationMap getLocationMap() {
+		return locationMap;
+	}
+	
+	public void setRoot(EObject root) {
+		this.root = root;
+	}
+	
+	public void setLocationMap(ep.resource.ep.IEpLocationMap locationMap) {
+		this.locationMap = locationMap;
+	}
+	
+	public Collection<ep.resource.ep.IEpCommand<ep.resource.ep.IEpTextResource>> getPostParseCommands() {
 		return commands;
 	}
 	

@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.mopp;
 
+
 public class EpTextToken implements ep.resource.ep.IEpTextToken {
 	
 	private String name;

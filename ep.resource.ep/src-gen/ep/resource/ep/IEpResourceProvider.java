@@ -6,6 +6,7 @@
  */
 package ep.resource.ep;
 
+
 /**
  * Implementors of this interface provide an EMF resource.
  */

@@ -6,10 +6,12 @@
  */
 package ep.resource.ep.ui;
 
+import org.eclipse.jface.action.IAction;
+
 public class EpOutlinePageAutoExpandAction extends ep.resource.ep.ui.AbstractEpOutlinePageAction {
 	
 	public EpOutlinePageAutoExpandAction(ep.resource.ep.ui.EpOutlinePageTreeViewer treeViewer) {
-		super(treeViewer, "Auto expand", org.eclipse.jface.action.IAction.AS_CHECK_BOX);
+		super(treeViewer, "Auto expand", IAction.AS_CHECK_BOX);
 		initialize("icons/auto_expand_icon.gif");
 	}
 	

@@ -6,10 +6,12 @@
  */
 package ep.resource.ep.mopp;
 
+import org.eclipse.emf.ecore.EClass;
+
 public class EpFoldingInformationProvider {
 	
-	public org.eclipse.emf.ecore.EClass[] getFoldableClasses() {
-		return new org.eclipse.emf.ecore.EClass[] {
+	public EClass[] getFoldableClasses() {
+		return new EClass[] {
 		};
 	}
 	

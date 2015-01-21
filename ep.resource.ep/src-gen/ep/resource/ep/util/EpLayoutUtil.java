@@ -6,6 +6,18 @@
  */
 package ep.resource.ep.util;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+
 /**
  * A utility class to inject/extract layout information into/from a model.
  */
@@ -23,31 +35,31 @@ public class EpLayoutUtil {
 	public final String HIDDEN_TOKEN_TEXT_EATTRIBUTE_NAME = "hiddenTokenText";
 	public final String START_OFFSET_EATTRIBUTE_NAME = "startOffset";
 	
-	public void transferAllLayoutInformationToModel(org.eclipse.emf.ecore.EObject root) {
+	public void transferAllLayoutInformationToModel(EObject root) {
 		transferLayoutInformationToModel(root);
-		for (java.util.Iterator<org.eclipse.emf.ecore.EObject> i = root.eAllContents(); i.hasNext(); ) {
+		for (Iterator<EObject> i = root.eAllContents(); i.hasNext(); ) {
 			transferLayoutInformationToModel(i.next());
 		}
 	}
 	
-	public void transferAllLayoutInformationFromModel(org.eclipse.emf.ecore.EObject root) {
+	public void transferAllLayoutInformationFromModel(EObject root) {
 		transferLayoutInformationFromModel(root);
-		for (org.eclipse.emf.ecore.EObject next : new java.util.ArrayList<org.eclipse.emf.ecore.EObject>(root.eContents())) {
+		for (EObject next : new ArrayList<EObject>(root.eContents())) {
 			transferAllLayoutInformationFromModel(next);
 		}
 	}
 	
-	public void transferLayoutInformationToModel(org.eclipse.emf.ecore.EObject element) {
+	public void transferLayoutInformationToModel(EObject element) {
 		ep.resource.ep.mopp.EpLayoutInformationAdapter layoutInformationAdapter = getLayoutInformationAdapter(element);
 		layoutInformationAdapter.getLayoutInformations();
-		for (java.util.Iterator<ep.resource.ep.mopp.EpLayoutInformation> i = layoutInformationAdapter.getLayoutInformations().iterator(); i.hasNext(); ) {
+		for (Iterator<ep.resource.ep.mopp.EpLayoutInformation> i = layoutInformationAdapter.getLayoutInformations().iterator(); i.hasNext(); ) {
 			ep.resource.ep.mopp.EpLayoutInformation layoutInformation = i.next();
-			org.eclipse.emf.ecore.EReference layoutReference = findLayoutReference(element.eClass());
+			EReference layoutReference = findLayoutReference(element.eClass());
 			if (layoutReference != null) {
-				org.eclipse.emf.ecore.EObject layoutInformationModelElement = createLayoutInformationModelElement(layoutInformation, layoutReference.getEType().getEPackage());
+				EObject layoutInformationModelElement = createLayoutInformationModelElement(layoutInformation, layoutReference.getEType().getEPackage());
 				if (layoutInformationModelElement != null) {
-					@SuppressWarnings("unchecked")					
-					java.util.List<org.eclipse.emf.ecore.EObject> list = (java.util.List<org.eclipse.emf.ecore.EObject>) element.eGet(layoutReference);
+					@SuppressWarnings("unchecked")
+					List<EObject> list = (List<EObject>) element.eGet(layoutReference);
 					list.add(layoutInformationModelElement);
 					i.remove();
 				}
@@ -55,14 +67,14 @@ public class EpLayoutUtil {
 		}
 	}
 	
-	public void transferLayoutInformationFromModel(org.eclipse.emf.ecore.EObject element) {
-		org.eclipse.emf.ecore.EReference layoutReference = findLayoutReference(element.eClass());
+	public void transferLayoutInformationFromModel(EObject element) {
+		EReference layoutReference = findLayoutReference(element.eClass());
 		if (layoutReference != null) {
 			ep.resource.ep.mopp.EpLayoutInformationAdapter layoutInformationAdapter = getLayoutInformationAdapter(element);
-			@SuppressWarnings("unchecked")			
-			java.util.List<org.eclipse.emf.ecore.EObject> list = (java.util.List<org.eclipse.emf.ecore.EObject>) element.eGet(layoutReference);
-			for (java.util.Iterator<org.eclipse.emf.ecore.EObject> i = list.iterator(); i.hasNext(); ) {
-				org.eclipse.emf.ecore.EObject layoutModelElement = i.next();
+			@SuppressWarnings("unchecked")
+			List<EObject> list = (List<EObject>) element.eGet(layoutReference);
+			for (Iterator<EObject> i = list.iterator(); i.hasNext(); ) {
+				EObject layoutModelElement = i.next();
 				ep.resource.ep.mopp.EpLayoutInformation layoutInformation = createLayoutInformation(layoutModelElement);
 				if (layoutInformation != null) {
 					layoutInformationAdapter.getLayoutInformations().add(layoutInformation);
@@ -72,24 +84,24 @@ public class EpLayoutUtil {
 		}
 	}
 	
-	public org.eclipse.emf.ecore.EObject createLayoutInformationModelElement(ep.resource.ep.mopp.EpLayoutInformation layoutInformation, org.eclipse.emf.ecore.EPackage layoutPackage) {
-		org.eclipse.emf.ecore.EFactory factory = layoutPackage.getEFactoryInstance();
+	public EObject createLayoutInformationModelElement(ep.resource.ep.mopp.EpLayoutInformation layoutInformation, EPackage layoutPackage) {
+		EFactory factory = layoutPackage.getEFactoryInstance();
 		Object object = layoutInformation.getObject(null, false);
 		ep.resource.ep.grammar.EpSyntaxElement syntaxElement = layoutInformation.getSyntaxElement();
-		org.eclipse.emf.ecore.EClass layoutInformationEClass = null;
-		org.eclipse.emf.ecore.EObject layoutInformationModelElement = null;
+		EClass layoutInformationEClass = null;
+		EObject layoutInformationModelElement = null;
 		if (object == null) {
 			// keyword
-			layoutInformationEClass = (org.eclipse.emf.ecore.EClass) layoutPackage.getEClassifier(KEYWORD_LAYOUT_INFORMATION_ECLASS_NAME);
+			layoutInformationEClass = (EClass) layoutPackage.getEClassifier(KEYWORD_LAYOUT_INFORMATION_ECLASS_NAME);
 			layoutInformationModelElement = factory.create(layoutInformationEClass);
-		} else if (object instanceof org.eclipse.emf.ecore.EObject) {
+		} else if (object instanceof EObject) {
 			// reference
-			layoutInformationEClass = (org.eclipse.emf.ecore.EClass) layoutPackage.getEClassifier(REFERENCE_LAYOUT_INFORMATION_ECLASS_NAME);
+			layoutInformationEClass = (EClass) layoutPackage.getEClassifier(REFERENCE_LAYOUT_INFORMATION_ECLASS_NAME);
 			layoutInformationModelElement = factory.create(layoutInformationEClass);
 			layoutInformationModelElement.eSet(layoutInformationEClass.getEStructuralFeature(OBJECT_EATTRIBUTE_NAME), object);
 		} else {
 			// attribute
-			layoutInformationEClass = (org.eclipse.emf.ecore.EClass) layoutPackage.getEClassifier(ATTRIBUTE_LAYOUT_INFORMATION_ECLASS_NAME);
+			layoutInformationEClass = (EClass) layoutPackage.getEClassifier(ATTRIBUTE_LAYOUT_INFORMATION_ECLASS_NAME);
 			layoutInformationModelElement = factory.create(layoutInformationEClass);
 		}
 		layoutInformationModelElement.eSet(layoutInformationEClass.getEStructuralFeature(START_OFFSET_EATTRIBUTE_NAME), layoutInformation.getStartOffset());
@@ -99,9 +111,9 @@ public class EpLayoutUtil {
 		return layoutInformationModelElement;
 	}
 	
-	public ep.resource.ep.mopp.EpLayoutInformation createLayoutInformation(org.eclipse.emf.ecore.EObject layoutInformationModelElement) {
+	public ep.resource.ep.mopp.EpLayoutInformation createLayoutInformation(EObject layoutInformationModelElement) {
 		Object object = null;
-		org.eclipse.emf.ecore.EStructuralFeature objectFeature = layoutInformationModelElement.eClass().getEStructuralFeature(OBJECT_EATTRIBUTE_NAME);
+		EStructuralFeature objectFeature = layoutInformationModelElement.eClass().getEStructuralFeature(OBJECT_EATTRIBUTE_NAME);
 		int startOffset = (Integer) layoutInformationModelElement.eGet(layoutInformationModelElement.eClass().getEStructuralFeature(START_OFFSET_EATTRIBUTE_NAME));
 		String hiddenTokenText = (String) layoutInformationModelElement.eGet(layoutInformationModelElement.eClass().getEStructuralFeature(HIDDEN_TOKEN_TEXT_EATTRIBUTE_NAME));
 		String visibleTokenText = (String) layoutInformationModelElement.eGet(layoutInformationModelElement.eClass().getEStructuralFeature(VISIBLE_TOKEN_TEXT_EATTRIBUTE_NAME));
@@ -118,8 +130,8 @@ public class EpLayoutUtil {
 		return new ep.resource.ep.mopp.EpLayoutInformation(syntaxElement, object, startOffset, hiddenTokenText, visibleTokenText);
 	}
 	
-	public ep.resource.ep.mopp.EpLayoutInformationAdapter getLayoutInformationAdapter(org.eclipse.emf.ecore.EObject element) {
-		for (org.eclipse.emf.common.notify.Adapter adapter : element.eAdapters()) {
+	public ep.resource.ep.mopp.EpLayoutInformationAdapter getLayoutInformationAdapter(EObject element) {
+		for (Adapter adapter : element.eAdapters()) {
 			if (adapter instanceof ep.resource.ep.mopp.EpLayoutInformationAdapter) {
 				return (ep.resource.ep.mopp.EpLayoutInformationAdapter) adapter;
 			}
@@ -129,9 +141,24 @@ public class EpLayoutUtil {
 		return newAdapter;
 	}
 	
-	public org.eclipse.emf.ecore.EReference findLayoutReference(org.eclipse.emf.ecore.EClass eClass) {
-		for (org.eclipse.emf.ecore.EReference ref : eClass.getEAllReferences()) {
-			org.eclipse.emf.ecore.EClass type = ref.getEReferenceType();
+	public void removeLayoutInformationAdapter(EObject element) {
+		ep.resource.ep.mopp.EpLayoutInformationAdapter existingAdapter = getLayoutInformationAdapter(element);
+		if (existingAdapter != null) {
+			element.eAdapters().remove(existingAdapter);
+		}
+	}
+	
+	public void removeLayoutInformationAdapters(Resource resource) {
+		Iterator<EObject> it = resource.getAllContents();
+		while (it.hasNext()) {
+			EObject next = it.next();
+			removeLayoutInformationAdapter(next);
+		}
+	}
+	
+	public EReference findLayoutReference(EClass eClass) {
+		for (EReference ref : eClass.getEAllReferences()) {
+			EClass type = ref.getEReferenceType();
 			if (LAYOUT_PACKAGE_NS_URI.equals(type.getEPackage().getNsURI()) && ref.isMany() && LAYOUT_INFORMATION_ECLASS_NAME.equals(type.getName())) {
 				return ref;
 			}

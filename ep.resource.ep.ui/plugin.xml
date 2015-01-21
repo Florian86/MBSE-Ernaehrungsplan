@@ -25,6 +25,8 @@
 		</page>
 		<page name="Brackets" id="ep.resource.ep.ui.EpBracketPreferencePage" class="ep.resource.ep.ui.EpBracketPreferencePage" category="ep.resource.ep.ui.EpPreferencePage">
 		</page>
+		<page name="Content Assist" id="ep.resource.ep.ui.EpContentAssistPreferencePage" class="ep.resource.ep.ui.EpContentAssistPreferencePage" category="ep.resource.ep.ui.EpPreferencePage">
+		</page>
 	</extension>
 	
 	<extension point="org.eclipse.ui.newWizards">
@@ -70,6 +72,28 @@
 		</specification>
 		<specification annotationType="ep.resource.ep.ui.occurences.declaration" label="Declarations (in .ep files)" textPreferenceKey="ep.declarationIndication" textPreferenceValue="false" highlightPreferenceKey="ep.declarationHighlighting" highlightPreferenceValue="true" overviewRulerPreferenceKey="ep.declarationIndicationInOverviewRuler" overviewRulerPreferenceValue="true" verticalRulerPreferenceKey="ep.declarationIndicationInVerticalRuler" verticalRulerPreferenceValue="false" colorPreferenceKey="ep.declarationIndicationColor" colorPreferenceValue="240,216,168" presentationLayer="4" textStylePreferenceKey="ep.declarationTextStyle" textStylePreferenceValue="NONE">
 		</specification>
+	</extension>
+	
+	<extension point="org.eclipse.ui.commands">
+		<category description="All commands belonging to Ep" id="ep.resource.ep.ui.command.category" name="Ep">
+		</category>
+		<command categoryId="ep.resource.ep.ui.command.category" description="Toggle comment of the selected lines" id="ep.resource.ep.ui.command.togglecomment" name="Toggle Comment">
+		</command>
+	</extension>
+	
+	<extension point="org.eclipse.ui.handlers">
+		<handler class="ep.resource.ep.ui.EpToggleCommentHandler" commandId="ep.resource.ep.ui.command.togglecomment">
+		</handler>
+	</extension>
+	
+	<extension point="org.eclipse.ui.contexts">
+		<context name="Editing Ep Files" description="Editing Ep Files Context" parentId="org.eclipse.ui.textEditorScope" id="ep.resource.ep.EditorScope">
+		</context>
+	</extension>
+	
+	<extension point="org.eclipse.ui.bindings">
+		<key sequence="M1+7" commandId="ep.resource.ep.ui.command.togglecomment" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" contextId="ep.resource.ep.EditorScope">
+		</key>
 	</extension>
 	
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">

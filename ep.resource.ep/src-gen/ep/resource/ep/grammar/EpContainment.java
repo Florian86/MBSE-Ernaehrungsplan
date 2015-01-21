@@ -6,24 +6,27 @@
  */
 package ep.resource.ep.grammar;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
 public class EpContainment extends ep.resource.ep.grammar.EpTerminal {
 	
-	private final org.eclipse.emf.ecore.EClass[] allowedTypes;
+	private final EClass[] allowedTypes;
 	
-	public EpContainment(org.eclipse.emf.ecore.EStructuralFeature feature, ep.resource.ep.grammar.EpCardinality cardinality, org.eclipse.emf.ecore.EClass[] allowedTypes, int mandatoryOccurencesAfter) {
+	public EpContainment(EStructuralFeature feature, ep.resource.ep.grammar.EpCardinality cardinality, EClass[] allowedTypes, int mandatoryOccurencesAfter) {
 		super(feature, cardinality, mandatoryOccurencesAfter);
 		this.allowedTypes = allowedTypes;
 	}
 	
-	public org.eclipse.emf.ecore.EClass[] getAllowedTypes() {
+	public EClass[] getAllowedTypes() {
 		return allowedTypes;
 	}
 	
 	public String toString() {
 		String typeRestrictions = null;
 		if (allowedTypes != null && allowedTypes.length > 0) {
-			typeRestrictions = ep.resource.ep.util.EpStringUtil.explode(allowedTypes, ", ", new ep.resource.ep.IEpFunction1<String, org.eclipse.emf.ecore.EClass>() {
-				public String execute(org.eclipse.emf.ecore.EClass eClass) {
+			typeRestrictions = ep.resource.ep.util.EpStringUtil.explode(allowedTypes, ", ", new ep.resource.ep.IEpFunction1<String, EClass>() {
+				public String execute(EClass eClass) {
 					return eClass.getName();
 				}
 			});

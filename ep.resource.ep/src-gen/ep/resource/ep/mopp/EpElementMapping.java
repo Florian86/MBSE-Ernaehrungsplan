@@ -6,8 +6,11 @@
  */
 package ep.resource.ep.mopp;
 
+
 /**
+ * <p>
  * A basic implementation of the ep.resource.ep.IEpElementMapping interface.
+ * </p>
  * 
  * @param <ReferenceType> the type of the reference that can be mapped to
  */

@@ -6,9 +6,15 @@
  */
 package ep.resource.ep.mopp;
 
-public class EpResourceFactoryDelegator implements org.eclipse.emf.ecore.resource.Resource.Factory {
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.Resource.Factory;
+
+public class EpResourceFactoryDelegator implements Factory {
 	
-	protected java.util.Map<String, org.eclipse.emf.ecore.resource.Resource.Factory> factories = null;
+	protected Map<String, Factory> factories = null;
 	
 	public EpResourceFactoryDelegator() {
 		init();
@@ -16,7 +22,7 @@ public class EpResourceFactoryDelegator implements org.eclipse.emf.ecore.resourc
 	
 	protected void init() {
 		if (factories == null) {
-			factories = new java.util.LinkedHashMap<String, org.eclipse.emf.ecore.resource.Resource.Factory>();
+			factories = new LinkedHashMap<String, Factory>();
 		}
 		if (new ep.resource.ep.util.EpRuntimeUtil().isEclipsePlatformAvailable()) {
 			new ep.resource.ep.util.EpEclipseProxy().getResourceFactoryExtensions(factories);
@@ -26,21 +32,21 @@ public class EpResourceFactoryDelegator implements org.eclipse.emf.ecore.resourc
 		}
 	}
 	
-	public java.util.Map<String, org.eclipse.emf.ecore.resource.Resource.Factory> getResourceFactoriesMap() {
+	public Map<String, Factory> getResourceFactoriesMap() {
 		return factories;
 	}
 	
-	public org.eclipse.emf.ecore.resource.Resource.Factory getFactoryForURI(org.eclipse.emf.common.util.URI uri) {
-		org.eclipse.emf.common.util.URI trimmedURI = uri.trimFileExtension();
+	public Factory getFactoryForURI(URI uri) {
+		URI trimmedURI = uri.trimFileExtension();
 		String secondaryFileExtension = trimmedURI.fileExtension();
-		org.eclipse.emf.ecore.resource.Resource.Factory factory = factories.get(secondaryFileExtension);
+		Factory factory = factories.get(secondaryFileExtension);
 		if (factory == null) {
 			factory = factories.get("");
 		}
 		return factory;
 	}
 	
-	public org.eclipse.emf.ecore.resource.Resource createResource(org.eclipse.emf.common.util.URI uri) {
+	public Resource createResource(URI uri) {
 		return getFactoryForURI(uri).createResource(uri);
 	}
 	

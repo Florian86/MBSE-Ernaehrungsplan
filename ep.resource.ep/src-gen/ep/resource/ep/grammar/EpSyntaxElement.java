@@ -6,6 +6,8 @@
  */
 package ep.resource.ep.grammar;
 
+import org.eclipse.emf.ecore.EClass;
+
 /**
  * The abstract super class for all elements of a grammar. This class provides
  * methods to traverse the grammar rules.
@@ -50,7 +52,7 @@ public abstract class EpSyntaxElement {
 		return children;
 	}
 	
-	public org.eclipse.emf.ecore.EClass getMetaclass() {
+	public EClass getMetaclass() {
 		return parent.getMetaclass();
 	}
 	

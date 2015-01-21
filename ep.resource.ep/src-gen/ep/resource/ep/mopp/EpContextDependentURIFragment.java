@@ -6,26 +6,35 @@
  */
 package ep.resource.ep.mopp;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 /**
+ * <p>
  * Standard implementation of <code>IContextDependentURIFragment</code>.
+ * </p>
  * 
  * @param <ContainerType> the type of the object that contains the reference which
  * shall be resolved by this fragment.
  * @param <ReferenceType> the type of the reference which shall be resolved by
  * this fragment.
  */
-public abstract class EpContextDependentURIFragment<ContainerType extends org.eclipse.emf.ecore.EObject, ReferenceType extends org.eclipse.emf.ecore.EObject> implements ep.resource.ep.IEpContextDependentURIFragment<ReferenceType> {
+public abstract class EpContextDependentURIFragment<ContainerType extends EObject, ReferenceType extends EObject> implements ep.resource.ep.IEpContextDependentURIFragment<ReferenceType> {
 	
 	protected String identifier;
 	protected ContainerType container;
-	protected org.eclipse.emf.ecore.EReference reference;
+	protected EReference reference;
 	protected int positionInReference;
-	protected org.eclipse.emf.ecore.EObject proxy;
+	protected EObject proxy;
 	protected ep.resource.ep.IEpReferenceResolveResult<ReferenceType> result;
 	
 	private boolean resolving;
 	
-	public EpContextDependentURIFragment(String identifier, ContainerType container, org.eclipse.emf.ecore.EReference reference, int positionInReference, org.eclipse.emf.ecore.EObject proxy) {
+	public EpContextDependentURIFragment(String identifier, ContainerType container, EReference reference, int positionInReference, EObject proxy) {
 		this.identifier = identifier;
 		this.container = container;
 		this.reference = reference;
@@ -64,9 +73,9 @@ public abstract class EpContextDependentURIFragment<ContainerType extends org.ec
 	public abstract ep.resource.ep.IEpReferenceResolver<ContainerType, ReferenceType> getResolver();
 	
 	private void handleMultipleResults() {
-		org.eclipse.emf.common.util.EList<org.eclipse.emf.ecore.EObject> list = null;
+		EList<EObject> list = null;
 		Object temp = container.eGet(reference);
-		if (temp instanceof org.eclipse.emf.common.util.EList<?>) {
+		if (temp instanceof EList<?>) {
 			list = ep.resource.ep.util.EpCastUtil.cast(temp);
 		}
 		
@@ -82,16 +91,16 @@ public abstract class EpContextDependentURIFragment<ContainerType extends org.ec
 		}
 	}
 	
-	private void addResultToList(ep.resource.ep.IEpReferenceMapping<ReferenceType> mapping, org.eclipse.emf.ecore.EObject proxy, org.eclipse.emf.common.util.EList<org.eclipse.emf.ecore.EObject> list) {
-		org.eclipse.emf.ecore.EObject target = null;
+	private void addResultToList(ep.resource.ep.IEpReferenceMapping<ReferenceType> mapping, EObject proxy, EList<EObject> list) {
+		EObject target = null;
 		int proxyPosition = list.indexOf(proxy);
 		
 		if (mapping instanceof ep.resource.ep.IEpElementMapping<?>) {
 			target = ((ep.resource.ep.IEpElementMapping<ReferenceType>) mapping).getTargetElement();
 		} else if (mapping instanceof ep.resource.ep.IEpURIMapping<?>) {
-			target = org.eclipse.emf.ecore.util.EcoreUtil.copy(proxy);
-			org.eclipse.emf.common.util.URI uri = ((ep.resource.ep.IEpURIMapping<ReferenceType>) mapping).getTargetIdentifier();
-			((org.eclipse.emf.ecore.InternalEObject) target).eSetProxyURI(uri);
+			target = EcoreUtil.copy(proxy);
+			URI uri = ((ep.resource.ep.IEpURIMapping<ReferenceType>) mapping).getTargetIdentifier();
+			((InternalEObject) target).eSetProxyURI(uri);
 		} else {
 			assert false;
 		}
@@ -123,7 +132,7 @@ public abstract class EpContextDependentURIFragment<ContainerType extends org.ec
 		return container;
 	}
 	
-	public org.eclipse.emf.ecore.EReference getReference() {
+	public EReference getReference() {
 		return reference;
 	}
 	
@@ -131,7 +140,7 @@ public abstract class EpContextDependentURIFragment<ContainerType extends org.ec
 		return positionInReference;
 	}
 	
-	public org.eclipse.emf.ecore.EObject getProxy() {
+	public EObject getProxy() {
 		return proxy;
 	}
 	

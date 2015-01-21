@@ -6,6 +6,14 @@
  */
 package ep.resource.ep.mopp;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.resource.Resource.Factory;
+
 public class EpMetaInformation implements ep.resource.ep.IEpMetaInformation {
 	
 	public String getSyntaxName() {
@@ -20,19 +28,19 @@ public class EpMetaInformation implements ep.resource.ep.IEpMetaInformation {
 		return new ep.resource.ep.mopp.EpAntlrScanner(new ep.resource.ep.mopp.EpLexer());
 	}
 	
-	public ep.resource.ep.IEpTextParser createParser(java.io.InputStream inputStream, String encoding) {
+	public ep.resource.ep.IEpTextParser createParser(InputStream inputStream, String encoding) {
 		return new ep.resource.ep.mopp.EpParser().createInstance(inputStream, encoding);
 	}
 	
-	public ep.resource.ep.IEpTextPrinter createPrinter(java.io.OutputStream outputStream, ep.resource.ep.IEpTextResource resource) {
+	public ep.resource.ep.IEpTextPrinter createPrinter(OutputStream outputStream, ep.resource.ep.IEpTextResource resource) {
 		return new ep.resource.ep.mopp.EpPrinter2(outputStream, resource);
 	}
 	
-	public org.eclipse.emf.ecore.EClass[] getClassesWithSyntax() {
+	public EClass[] getClassesWithSyntax() {
 		return new ep.resource.ep.mopp.EpSyntaxCoverageInformationProvider().getClassesWithSyntax();
 	}
 	
-	public org.eclipse.emf.ecore.EClass[] getStartSymbols() {
+	public EClass[] getStartSymbols() {
 		return new ep.resource.ep.mopp.EpSyntaxCoverageInformationProvider().getStartSymbols();
 	}
 	
@@ -56,15 +64,15 @@ public class EpMetaInformation implements ep.resource.ep.IEpMetaInformation {
 		return new ep.resource.ep.mopp.EpTokenStyleInformationProvider().getDefaultTokenStyle(tokenName);
 	}
 	
-	public java.util.Collection<ep.resource.ep.IEpBracketPair> getBracketPairs() {
+	public Collection<ep.resource.ep.IEpBracketPair> getBracketPairs() {
 		return new ep.resource.ep.mopp.EpBracketInformationProvider().getBracketPairs();
 	}
 	
-	public org.eclipse.emf.ecore.EClass[] getFoldableClasses() {
+	public EClass[] getFoldableClasses() {
 		return new ep.resource.ep.mopp.EpFoldingInformationProvider().getFoldableClasses();
 	}
 	
-	public org.eclipse.emf.ecore.resource.Resource.Factory createResourceFactory() {
+	public Factory createResourceFactory() {
 		return new ep.resource.ep.mopp.EpResourceFactory();
 	}
 	
@@ -73,7 +81,10 @@ public class EpMetaInformation implements ep.resource.ep.IEpMetaInformation {
 	}
 	
 	public void registerResourceFactory() {
-		org.eclipse.emf.ecore.resource.Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(getSyntaxName(), new ep.resource.ep.mopp.EpResourceFactory());
+		// if no resource factory registered, register delegator
+		if (Factory.Registry.INSTANCE.getExtensionToFactoryMap().get(getSyntaxName()) == null) {
+			Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(getSyntaxName(), new ep.resource.ep.mopp.EpResourceFactoryDelegator());
+		}
 	}
 	
 	/**
@@ -106,7 +117,7 @@ public class EpMetaInformation implements ep.resource.ep.IEpMetaInformation {
 	
 	public String[] getSyntaxHighlightableTokenNames() {
 		ep.resource.ep.mopp.EpAntlrTokenHelper tokenHelper = new ep.resource.ep.mopp.EpAntlrTokenHelper();
-		java.util.List<String> highlightableTokens = new java.util.ArrayList<String>();
+		List<String> highlightableTokens = new ArrayList<String>();
 		String[] parserTokenNames = getTokenNames();
 		for (int i = 0; i < parserTokenNames.length; i++) {
 			// If ANTLR is used we need to normalize the token names

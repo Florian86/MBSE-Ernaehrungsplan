@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.grammar;
 
+
 public class EpChoice extends ep.resource.ep.grammar.EpSyntaxElement {
 	
 	public EpChoice(ep.resource.ep.grammar.EpCardinality cardinality, ep.resource.ep.grammar.EpSyntaxElement... choices) {

@@ -6,13 +6,23 @@
  */
 package ep.resource.ep.ui.debug;
 
-public class EpDebugModelPresentation implements org.eclipse.debug.ui.IDebugModelPresentation {
+import org.eclipse.core.resources.IFile;
+import org.eclipse.debug.core.model.ILineBreakpoint;
+import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.ui.IDebugModelPresentation;
+import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.part.FileEditorInput;
+
+public class EpDebugModelPresentation implements IDebugModelPresentation {
 	
 	public EpDebugModelPresentation() {
 		super();
 	}
 	
-	public void addListener(org.eclipse.jface.viewers.ILabelProviderListener listener) {
+	public void addListener(ILabelProviderListener listener) {
 		// do nothing
 	}
 	
@@ -24,22 +34,22 @@ public class EpDebugModelPresentation implements org.eclipse.debug.ui.IDebugMode
 		return false;
 	}
 	
-	public void removeListener(org.eclipse.jface.viewers.ILabelProviderListener listener) {
+	public void removeListener(ILabelProviderListener listener) {
 		// do nothing
 	}
 	
-	public org.eclipse.ui.IEditorInput getEditorInput(Object element) {
-		if (element instanceof org.eclipse.core.resources.IFile) {
-			return new org.eclipse.ui.part.FileEditorInput((org.eclipse.core.resources.IFile) element);
-		} else if (element instanceof org.eclipse.debug.core.model.ILineBreakpoint) {
-			return new org.eclipse.ui.part.FileEditorInput((org.eclipse.core.resources.IFile) ((org.eclipse.debug.core.model.ILineBreakpoint) element).getMarker().getResource());
+	public IEditorInput getEditorInput(Object element) {
+		if (element instanceof IFile) {
+			return new FileEditorInput((IFile) element);
+		} else if (element instanceof ILineBreakpoint) {
+			return new FileEditorInput((IFile) ((ILineBreakpoint) element).getMarker().getResource());
 		} else {
 			return null;
 		}
 	}
 	
-	public String getEditorId(org.eclipse.ui.IEditorInput input, Object element) {
-		if (element instanceof org.eclipse.core.resources.IFile || element instanceof org.eclipse.debug.core.model.ILineBreakpoint) {
+	public String getEditorId(IEditorInput input, Object element) {
+		if (element instanceof IFile || element instanceof ILineBreakpoint) {
 			return ep.resource.ep.ui.EpUIPlugin.EDITOR_ID;
 		}
 		return null;
@@ -49,7 +59,7 @@ public class EpDebugModelPresentation implements org.eclipse.debug.ui.IDebugMode
 		// not supported
 	}
 	
-	public org.eclipse.swt.graphics.Image getImage(Object element) {
+	public Image getImage(Object element) {
 		return null;
 	}
 	
@@ -57,7 +67,7 @@ public class EpDebugModelPresentation implements org.eclipse.debug.ui.IDebugMode
 		return null;
 	}
 	
-	public void computeDetail(org.eclipse.debug.core.model.IValue value, org.eclipse.debug.ui.IValueDetailListener listener) {
+	public void computeDetail(IValue value, IValueDetailListener listener) {
 		// listener.detailComputed(value, "detail");
 	}
 	

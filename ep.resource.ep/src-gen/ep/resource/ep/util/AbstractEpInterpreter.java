@@ -6,6 +6,24 @@
  */
 package ep.resource.ep.util;
 
+import ep.Beilage;
+import ep.EpElement;
+import ep.Ernaehrungsplan;
+import ep.Gericht;
+import ep.Gericht2Zutat;
+import ep.Hauptbestandteil;
+import ep.Person;
+import ep.Sauce;
+import ep.Zutat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EmptyStackException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * This class provides basic infrastructure to interpret models. To implement
  * concrete interpreters, subclass this abstract interpreter and override the
@@ -20,19 +38,19 @@ package ep.resource.ep.util;
  */
 public class AbstractEpInterpreter<ResultType, ContextType> {
 	
-	private java.util.Stack<org.eclipse.emf.ecore.EObject> interpretationStack = new java.util.Stack<org.eclipse.emf.ecore.EObject>();
-	private java.util.List<ep.resource.ep.IEpInterpreterListener> listeners = new java.util.ArrayList<ep.resource.ep.IEpInterpreterListener>();
-	private org.eclipse.emf.ecore.EObject nextObjectToInterprete;
-	private Object currentContext;
+	private Stack<EObject> interpretationStack = new Stack<EObject>();
+	private List<ep.resource.ep.IEpInterpreterListener> listeners = new ArrayList<ep.resource.ep.IEpInterpreterListener>();
+	private EObject nextObjectToInterprete;
+	private ContextType currentContext;
 	
 	public ResultType interprete(ContextType context) {
 		ResultType result = null;
-		org.eclipse.emf.ecore.EObject next = null;
+		EObject next = null;
 		currentContext = context;
 		while (!interpretationStack.empty()) {
 			try {
 				next = interpretationStack.pop();
-			} catch (java.util.EmptyStackException ese) {
+			} catch (EmptyStackException ese) {
 				// this can happen when the interpreter was terminated between the call to empty()
 				// and pop()
 				break;
@@ -56,7 +74,7 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 		return true;
 	}
 	
-	public ResultType interprete(org.eclipse.emf.ecore.EObject object, ContextType context) {
+	public ResultType interprete(EObject object, ContextType context) {
 		ResultType result = null;
 		if (object instanceof ep.Ernaehrungsplan) {
 			result = interprete_ep_Ernaehrungsplan((ep.Ernaehrungsplan) object, context);
@@ -115,43 +133,43 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 		return result;
 	}
 	
-	public ResultType interprete_ep_Ernaehrungsplan(ep.Ernaehrungsplan ernaehrungsplan, ContextType context) {
+	public ResultType interprete_ep_Ernaehrungsplan(Ernaehrungsplan ernaehrungsplan, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_Person(ep.Person person, ContextType context) {
+	public ResultType interprete_ep_Person(Person person, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_Gericht(ep.Gericht gericht, ContextType context) {
+	public ResultType interprete_ep_Gericht(Gericht gericht, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_Zutat(ep.Zutat zutat, ContextType context) {
+	public ResultType interprete_ep_Zutat(Zutat zutat, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_Hauptbestandteil(ep.Hauptbestandteil hauptbestandteil, ContextType context) {
+	public ResultType interprete_ep_Hauptbestandteil(Hauptbestandteil hauptbestandteil, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_Beilage(ep.Beilage beilage, ContextType context) {
+	public ResultType interprete_ep_Beilage(Beilage beilage, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_Sauce(ep.Sauce sauce, ContextType context) {
+	public ResultType interprete_ep_Sauce(Sauce sauce, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_Gericht2Zutat(ep.Gericht2Zutat gericht2Zutat, ContextType context) {
+	public ResultType interprete_ep_Gericht2Zutat(Gericht2Zutat gericht2Zutat, ContextType context) {
 		return null;
 	}
 	
-	public ResultType interprete_ep_EpElement(ep.EpElement epElement, ContextType context) {
+	public ResultType interprete_ep_EpElement(EpElement epElement, ContextType context) {
 		return null;
 	}
 	
-	private void notifyListeners(org.eclipse.emf.ecore.EObject element) {
+	private void notifyListeners(EObject element) {
 		for (ep.resource.ep.IEpInterpreterListener listener : listeners) {
 			listener.handleInterpreteObject(element);
 		}
@@ -161,7 +179,7 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 	 * Adds the given object to the interpretation stack. Attention: Objects that are
 	 * added first, are interpret last.
 	 */
-	public void addObjectToInterprete(org.eclipse.emf.ecore.EObject object) {
+	public void addObjectToInterprete(EObject object) {
 		interpretationStack.push(object);
 	}
 	
@@ -169,8 +187,8 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 	 * Adds the given collection of objects to the interpretation stack. Attention:
 	 * Collections that are added first, are interpret last.
 	 */
-	public void addObjectsToInterprete(java.util.Collection<? extends org.eclipse.emf.ecore.EObject> objects) {
-		for (org.eclipse.emf.ecore.EObject object : objects) {
+	public void addObjectsToInterprete(Collection<? extends EObject> objects) {
+		for (EObject object : objects) {
 			addObjectToInterprete(object);
 		}
 	}
@@ -179,10 +197,10 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 	 * Adds the given collection of objects in reverse order to the interpretation
 	 * stack.
 	 */
-	public void addObjectsToInterpreteInReverseOrder(java.util.Collection<? extends org.eclipse.emf.ecore.EObject> objects) {
-		java.util.List<org.eclipse.emf.ecore.EObject> reverse = new java.util.ArrayList<org.eclipse.emf.ecore.EObject>(objects.size());
+	public void addObjectsToInterpreteInReverseOrder(Collection<? extends EObject> objects) {
+		List<EObject> reverse = new ArrayList<EObject>(objects.size());
 		reverse.addAll(objects);
-		java.util.Collections.reverse(reverse);
+		Collections.reverse(reverse);
 		addObjectsToInterprete(reverse);
 	}
 	
@@ -190,12 +208,12 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 	 * Adds the given object and all its children to the interpretation stack such
 	 * that they are interpret in top down order.
 	 */
-	public void addObjectTreeToInterpreteTopDown(org.eclipse.emf.ecore.EObject root) {
-		java.util.List<org.eclipse.emf.ecore.EObject> objects = new java.util.ArrayList<org.eclipse.emf.ecore.EObject>();
+	public void addObjectTreeToInterpreteTopDown(EObject root) {
+		List<EObject> objects = new ArrayList<EObject>();
 		objects.add(root);
-		java.util.Iterator<org.eclipse.emf.ecore.EObject> it = root.eAllContents();
+		Iterator<EObject> it = root.eAllContents();
 		while (it.hasNext()) {
-			org.eclipse.emf.ecore.EObject eObject = (org.eclipse.emf.ecore.EObject) it.next();
+			EObject eObject = (EObject) it.next();
 			objects.add(eObject);
 		}
 		addObjectsToInterpreteInReverseOrder(objects);
@@ -209,11 +227,11 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 		return listeners.remove(listener);
 	}
 	
-	public org.eclipse.emf.ecore.EObject getNextObjectToInterprete() {
+	public EObject getNextObjectToInterprete() {
 		return nextObjectToInterprete;
 	}
 	
-	public java.util.Stack<org.eclipse.emf.ecore.EObject> getInterpretationStack() {
+	public Stack<EObject> getInterpretationStack() {
 		return interpretationStack;
 	}
 	
@@ -221,7 +239,7 @@ public class AbstractEpInterpreter<ResultType, ContextType> {
 		interpretationStack.clear();
 	}
 	
-	public Object getCurrentContext() {
+	public ContextType getCurrentContext() {
 		return currentContext;
 	}
 	

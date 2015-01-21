@@ -6,13 +6,20 @@
  */
 package ep.resource.ep.debug;
 
-public class EpDebugVariable extends ep.resource.ep.debug.EpDebugElement implements org.eclipse.debug.core.model.IVariable {
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.core.model.IVariable;
+
+public class EpDebugVariable extends ep.resource.ep.debug.EpDebugElement implements IVariable {
 	
 	private String name;
-	private org.eclipse.debug.core.model.IValue value;
+	private IValue value;
 	private String referenceTypeName;
 	
-	public EpDebugVariable(org.eclipse.debug.core.model.IDebugTarget debugTarget, String name, org.eclipse.debug.core.model.IValue value, String referenceTypeName) {
+	public EpDebugVariable(IDebugTarget debugTarget, String name, IValue value, String referenceTypeName) {
 		super(debugTarget);
 		this.name = name;
 		this.value = value;
@@ -23,35 +30,35 @@ public class EpDebugVariable extends ep.resource.ep.debug.EpDebugElement impleme
 		return false;
 	}
 	
-	public void setValue(org.eclipse.debug.core.model.IValue value) throws org.eclipse.debug.core.DebugException {
-		throw new org.eclipse.debug.core.DebugException(new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
+	public void setValue(IValue value) throws DebugException {
+		throw new DebugException(new Status(IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
 	}
 	
-	public void setValue(String expression) throws org.eclipse.debug.core.DebugException {
-		throw new org.eclipse.debug.core.DebugException(new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
+	public void setValue(String expression) throws DebugException {
+		throw new DebugException(new Status(IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
 	}
 	
-	public boolean verifyValue(org.eclipse.debug.core.model.IValue value) throws org.eclipse.debug.core.DebugException {
-		throw new org.eclipse.debug.core.DebugException(new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
+	public boolean verifyValue(IValue value) throws DebugException {
+		throw new DebugException(new Status(IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
 	}
 	
-	public boolean verifyValue(String expression) throws org.eclipse.debug.core.DebugException {
-		throw new org.eclipse.debug.core.DebugException(new org.eclipse.core.runtime.Status(org.eclipse.core.runtime.IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
+	public boolean verifyValue(String expression) throws DebugException {
+		throw new DebugException(new Status(IStatus.ERROR, ep.resource.ep.mopp.EpPlugin.PLUGIN_ID, "Can't set variable."));
 	}
 	
-	public org.eclipse.debug.core.model.IValue getValue() throws org.eclipse.debug.core.DebugException {
+	public IValue getValue() throws DebugException {
 		return value;
 	}
 	
-	public String getName() throws org.eclipse.debug.core.DebugException {
+	public String getName() throws DebugException {
 		return name;
 	}
 	
-	public String getReferenceTypeName() throws org.eclipse.debug.core.DebugException {
+	public String getReferenceTypeName() throws DebugException {
 		return referenceTypeName;
 	}
 	
-	public boolean hasValueChanged() throws org.eclipse.debug.core.DebugException {
+	public boolean hasValueChanged() throws DebugException {
 		return true;
 	}
 	

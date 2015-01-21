@@ -6,6 +6,20 @@
  */
 package ep.resource.ep.mopp;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 /**
  * The EpTaskItemBuilder is used to find task items in text documents. The current
  * implementation uses the generated lexer and the TaskItemDetector to detect task
@@ -14,17 +28,26 @@ package ep.resource.ep.mopp;
  */
 public class EpTaskItemBuilder {
 	
-	public void build(org.eclipse.core.resources.IFile resource, org.eclipse.emf.ecore.resource.ResourceSet resourceSet, org.eclipse.core.runtime.IProgressMonitor monitor) {
-		monitor.setTaskName("Searching for task items");
-		new ep.resource.ep.mopp.EpMarkerHelper().removeAllMarkers(resource, org.eclipse.core.resources.IMarker.TASK);
+	public void build(IFile resource, ResourceSet resourceSet, IProgressMonitor monitor) {
+		// We use one tick from the parent monitor because the BuilderAdapter reserves one
+		// tick for finding task items.
+		SubProgressMonitor subMonitor = new SubProgressMonitor(monitor, 1);
+		// We define the overall work to be 3 ticks (removing markers, scanning the
+		// resource, creating new markers).
+		subMonitor.beginTask("Searching for task items in " + new ep.resource.ep.mopp.EpMetaInformation().getSyntaxName() + " files", 3);
+		new ep.resource.ep.mopp.EpMarkerHelper().removeAllMarkers(resource, IMarker.TASK);
+		subMonitor.worked(1);
 		if (isInBinFolder(resource)) {
+			subMonitor.done();
 			return;
 		}
-		java.util.List<ep.resource.ep.mopp.EpTaskItem> taskItems = new java.util.ArrayList<ep.resource.ep.mopp.EpTaskItem>();
+		List<ep.resource.ep.mopp.EpTaskItem> taskItems = new ArrayList<ep.resource.ep.mopp.EpTaskItem>();
 		ep.resource.ep.mopp.EpTaskItemDetector taskItemDetector = new ep.resource.ep.mopp.EpTaskItemDetector();
+		InputStream inputStream = null;
 		try {
-			java.io.InputStream inputStream = resource.getContents();
-			String content = ep.resource.ep.util.EpStreamUtil.getContent(inputStream);
+			inputStream = resource.getContents();
+			String charset = resource.getCharset();
+			String content = ep.resource.ep.util.EpStreamUtil.getContent(inputStream, charset);
 			ep.resource.ep.IEpTextScanner lexer = new ep.resource.ep.mopp.EpMetaInformation().createLexer();
 			lexer.setText(content);
 			
@@ -34,30 +57,41 @@ public class EpTaskItemBuilder {
 				taskItems.addAll(taskItemDetector.findTaskItems(text, nextToken.getLine(), nextToken.getOffset()));
 				nextToken = lexer.getNextToken();
 			}
-		} catch (java.io.IOException e) {
+		} catch (IOException e) {
 			ep.resource.ep.mopp.EpPlugin.logError("Exception while searching for task items", e);
-		} catch (org.eclipse.core.runtime.CoreException e) {
+		} catch (CoreException e) {
 			ep.resource.ep.mopp.EpPlugin.logError("Exception while searching for task items", e);
 		}
 		
-		for (ep.resource.ep.mopp.EpTaskItem taskItem : taskItems) {
-			java.util.Map<String, Object> markerAttributes = new java.util.LinkedHashMap<String, Object>();
-			markerAttributes.put(org.eclipse.core.resources.IMarker.USER_EDITABLE, false);
-			markerAttributes.put(org.eclipse.core.resources.IMarker.DONE, false);
-			markerAttributes.put(org.eclipse.core.resources.IMarker.LINE_NUMBER, taskItem.getLine());
-			markerAttributes.put(org.eclipse.core.resources.IMarker.CHAR_START, taskItem.getCharStart());
-			markerAttributes.put(org.eclipse.core.resources.IMarker.CHAR_END, taskItem.getCharEnd());
-			markerAttributes.put(org.eclipse.core.resources.IMarker.MESSAGE, taskItem.getMessage());
-			new ep.resource.ep.mopp.EpMarkerHelper().createMarker(resource, org.eclipse.core.resources.IMarker.TASK, markerAttributes);
+		try {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		} catch (IOException e) {
+			// Ignore this
 		}
+		subMonitor.worked(1);
+		
+		for (ep.resource.ep.mopp.EpTaskItem taskItem : taskItems) {
+			Map<String, Object> markerAttributes = new LinkedHashMap<String, Object>();
+			markerAttributes.put(IMarker.USER_EDITABLE, false);
+			markerAttributes.put(IMarker.DONE, false);
+			markerAttributes.put(IMarker.LINE_NUMBER, taskItem.getLine());
+			markerAttributes.put(IMarker.CHAR_START, taskItem.getCharStart());
+			markerAttributes.put(IMarker.CHAR_END, taskItem.getCharEnd());
+			markerAttributes.put(IMarker.MESSAGE, taskItem.getMessage());
+			new ep.resource.ep.mopp.EpMarkerHelper().createMarker(resource, IMarker.TASK, markerAttributes);
+		}
+		subMonitor.worked(1);
+		subMonitor.done();
 	}
 	
 	public String getBuilderMarkerId() {
-		return org.eclipse.core.resources.IMarker.TASK;
+		return IMarker.TASK;
 	}
 	
-	public boolean isInBinFolder(org.eclipse.core.resources.IFile resource) {
-		org.eclipse.core.resources.IContainer parent = resource.getParent();
+	public boolean isInBinFolder(IFile resource) {
+		IContainer parent = resource.getParent();
 		while (parent != null) {
 			if ("bin".equals(parent.getName())) {
 				return true;

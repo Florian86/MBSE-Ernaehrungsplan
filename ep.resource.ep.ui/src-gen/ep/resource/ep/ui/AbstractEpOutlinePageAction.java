@@ -6,7 +6,12 @@
  */
 package ep.resource.ep.ui;
 
-public abstract class AbstractEpOutlinePageAction extends org.eclipse.jface.action.Action {
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.widgets.Display;
+
+public abstract class AbstractEpOutlinePageAction extends Action {
 	
 	private String preferenceKey = this.getClass().getSimpleName() + ".isChecked";
 	
@@ -18,7 +23,7 @@ public abstract class AbstractEpOutlinePageAction extends org.eclipse.jface.acti
 	}
 	
 	public void initialize(String imagePath) {
-		org.eclipse.jface.resource.ImageDescriptor descriptor = ep.resource.ep.ui.EpImageProvider.INSTANCE.getImageDescriptor(imagePath);
+		ImageDescriptor descriptor = ep.resource.ep.ui.EpImageProvider.INSTANCE.getImageDescriptor(imagePath);
 		setDisabledImageDescriptor(descriptor);
 		setImageDescriptor(descriptor);
 		setHoverImageDescriptor(descriptor);
@@ -26,7 +31,7 @@ public abstract class AbstractEpOutlinePageAction extends org.eclipse.jface.acti
 		valueChanged(checked, false);
 	}
 	
-	@Override	
+	@Override
 	public void run() {
 		if (keepState()) {
 			valueChanged(isChecked(), true);
@@ -36,7 +41,7 @@ public abstract class AbstractEpOutlinePageAction extends org.eclipse.jface.acti
 	}
 	
 	public void runBusy(final boolean on) {
-		org.eclipse.swt.custom.BusyIndicator.showWhile(org.eclipse.swt.widgets.Display.getCurrent(), new Runnable() {
+		BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
 			public void run() {
 				runInternal(on);
 			}

@@ -6,6 +6,7 @@
  */
 package ep.resource.ep;
 
+
 /**
  * Implementors of this interface can provide a post-processor for text resources.
  */

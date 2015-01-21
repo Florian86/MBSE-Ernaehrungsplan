@@ -6,6 +6,19 @@
  */
 package ep.resource.ep.debug;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
+import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.core.model.IVariable;
+
 /**
  * The DebugProxy allows to communicate between the interpreter, which runs in a
  * separate thread or process and the Eclipse Debug framework (i.e., the
@@ -15,15 +28,15 @@ public class EpDebugProxy {
 	
 	public static final int STARTUP_DELAY = 1000;
 	
-	private java.io.PrintStream output;
+	private PrintStream output;
 	
-	private java.io.BufferedReader reader;
+	private BufferedReader reader;
 	
 	private ep.resource.ep.debug.EpDebugTarget debugTarget;
 	
 	private ep.resource.ep.debug.EpDebugCommunicationHelper communicationHelper = new ep.resource.ep.debug.EpDebugCommunicationHelper();
 	
-	public EpDebugProxy(ep.resource.ep.debug.EpDebugTarget debugTarget, int requestPort) throws java.net.UnknownHostException, java.io.IOException {
+	public EpDebugProxy(ep.resource.ep.debug.EpDebugTarget debugTarget, int requestPort) throws UnknownHostException, IOException {
 		this.debugTarget = debugTarget;
 		// give interpreter a chance to start
 		try {
@@ -33,19 +46,19 @@ public class EpDebugProxy {
 		startSocket(requestPort);
 	}
 	
-	private void startSocket(int requestPort) throws java.net.UnknownHostException, java.io.IOException {
+	private void startSocket(int requestPort) throws UnknownHostException, IOException {
 		// creating client proxy socket (trying to connect)...
-		java.net.Socket client = new java.net.Socket("localhost", requestPort);
+		Socket client = new Socket("localhost", requestPort);
 		// creating client proxy socket - done. (connected)
 		try {
-			java.io.BufferedInputStream input = new java.io.BufferedInputStream(client.getInputStream());
-			reader = new java.io.BufferedReader(new java.io.InputStreamReader(input));
-		} catch (java.io.IOException e) {
+			BufferedInputStream input = new BufferedInputStream(client.getInputStream());
+			reader = new BufferedReader(new InputStreamReader(input));
+		} catch (IOException e) {
 			System.out.println(e);
 		}
 		try {
-			output = new java.io.PrintStream(client.getOutputStream());
-		} catch (java.io.IOException e) {
+			output = new PrintStream(client.getOutputStream());
+		} catch (IOException e) {
 			System.out.println(e);
 		}
 	}
@@ -84,26 +97,26 @@ public class EpDebugProxy {
 		communicationHelper.sendEvent(message, output);
 	}
 	
-	public org.eclipse.debug.core.model.IVariable[] getStackVariables(String stackFrame) {
+	public IVariable[] getStackVariables(String stackFrame) {
 		ep.resource.ep.debug.EpDebugMessage response = sendCommandAndRead(ep.resource.ep.debug.EEpDebugMessageTypes.GET_FRAME_VARIABLES, new String[] {stackFrame});
 		String[] ids = response.getArguments();
 		// fetch all variables
-		org.eclipse.debug.core.model.IVariable[] variables = getVariables(ids);
+		IVariable[] variables = getVariables(ids);
 		return variables;
 	}
 	
-	public org.eclipse.debug.core.model.IVariable[] getVariables(String... requestedIDs) {
+	public IVariable[] getVariables(String... requestedIDs) {
 		ep.resource.ep.debug.EpDebugMessage response = sendCommandAndRead(ep.resource.ep.debug.EEpDebugMessageTypes.GET_VARIABLES, requestedIDs);
 		String[] varStrings = response.getArguments();
 		ep.resource.ep.debug.EpDebugVariable[] variables  = new ep.resource.ep.debug.EpDebugVariable[varStrings.length];
 		int i = 0;
 		for (String varString : varStrings) {
-			java.util.Map<String, String> properties = ep.resource.ep.util.EpStringUtil.convertFromString(varString);
+			Map<String, String> properties = ep.resource.ep.util.EpStringUtil.convertFromString(varString);
 			
 			// convert varString to variables and values
 			String valueString = properties.get("!valueString");
 			String valueRefType = "valueRefType";
-			java.util.Map<String, Long> childVariables = new java.util.TreeMap<String, Long>(new java.util.Comparator<String>() {
+			Map<String, Long> childVariables = new TreeMap<String, Long>(new Comparator<String>() {
 				public int compare(String s1, String s2) {
 					return s1.compareToIgnoreCase(s2);
 				}
@@ -116,7 +129,7 @@ public class EpDebugProxy {
 				childVariables.put(property, Long.parseLong(properties.get(property)));
 			}
 			String id = properties.get("!id");
-			org.eclipse.debug.core.model.IValue value = new ep.resource.ep.debug.EpDebugValue(debugTarget, id, valueString, valueRefType, childVariables);
+			IValue value = new ep.resource.ep.debug.EpDebugValue(debugTarget, id, valueString, valueRefType, childVariables);
 			
 			String variableName = properties.get("!name");
 			String variableRefType = properties.get("!type");

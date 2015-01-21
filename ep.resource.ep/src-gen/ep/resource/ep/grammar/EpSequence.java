@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.grammar;
 
+
 public class EpSequence extends ep.resource.ep.grammar.EpSyntaxElement {
 	
 	public EpSequence(ep.resource.ep.grammar.EpCardinality cardinality, ep.resource.ep.grammar.EpSyntaxElement... elements) {

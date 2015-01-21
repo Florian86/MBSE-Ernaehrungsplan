@@ -6,7 +6,14 @@
  */
 package ep.resource.ep.debug;
 
-public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implements org.eclipse.debug.core.model.IThread, ep.resource.ep.debug.IEpDebugEventListener {
+import java.util.List;
+import org.eclipse.debug.core.DebugEvent;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.debug.core.model.IStackFrame;
+import org.eclipse.debug.core.model.IThread;
+
+public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implements IThread, ep.resource.ep.debug.IEpDebugEventListener {
 	
 	private boolean suspended = false;
 	private ep.resource.ep.debug.EpDebugTarget debugTarget;
@@ -16,25 +23,25 @@ public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implement
 		this.debugTarget = target;
 	}
 	
-	public org.eclipse.debug.core.model.IBreakpoint[] getBreakpoints() {
+	public IBreakpoint[] getBreakpoints() {
 		return null;
 	}
 	
-	public String getName() throws org.eclipse.debug.core.DebugException {
+	public String getName() throws DebugException {
 		return "Thread [main]";
 	}
 	
-	public int getPriority() throws org.eclipse.debug.core.DebugException {
+	public int getPriority() throws DebugException {
 		return 0;
 	}
 	
-	public org.eclipse.debug.core.model.IStackFrame[] getStackFrames() throws org.eclipse.debug.core.DebugException {
+	public IStackFrame[] getStackFrames() throws DebugException {
 		if (isSuspended()) {
 			ep.resource.ep.debug.EpDebugMessage stack = this.debugTarget.getDebugProxy().getStack();
 			String framesData = stack.getArgument(0);
 			if (framesData != null && !"".equals(framesData)) {
-				java.util.List<String> frames = ep.resource.ep.util.EpStringUtil.decode(framesData, '#');
-				org.eclipse.debug.core.model.IStackFrame[] theFrames = new org.eclipse.debug.core.model.IStackFrame[frames.size()];
+				List<String> frames = ep.resource.ep.util.EpStringUtil.decode(framesData, '#');
+				IStackFrame[] theFrames = new IStackFrame[frames.size()];
 				for (int i = 0; i < frames.size(); i++) {
 					String data = frames.get(i);
 					theFrames[frames.size() - i - 1] = new ep.resource.ep.debug.EpStackFrame(getTarget(), data);
@@ -42,18 +49,18 @@ public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implement
 				return theFrames;
 			}
 		}
-		return new org.eclipse.debug.core.model.IStackFrame[0];
+		return new IStackFrame[0];
 	}
 	
-	public org.eclipse.debug.core.model.IStackFrame getTopStackFrame() throws org.eclipse.debug.core.DebugException {
-		org.eclipse.debug.core.model.IStackFrame[] frames = getStackFrames();
+	public IStackFrame getTopStackFrame() throws DebugException {
+		IStackFrame[] frames = getStackFrames();
 		if (frames.length > 0) {
 			return frames[0];
 		}
 		return null;
 	}
 	
-	public boolean hasStackFrames() throws org.eclipse.debug.core.DebugException {
+	public boolean hasStackFrames() throws DebugException {
 		return isSuspended();
 	}
 	
@@ -69,14 +76,14 @@ public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implement
 		return suspended && !isTerminated();
 	}
 	
-	public void resume() throws org.eclipse.debug.core.DebugException {
+	public void resume() throws DebugException {
 		debugTarget.getDebugProxy().resume();
 		suspended = false;
 	}
 	
-	public void suspend() throws org.eclipse.debug.core.DebugException {
+	public void suspend() throws DebugException {
 		suspended = true;
-		fireSuspendEvent(org.eclipse.debug.core.DebugEvent.BREAKPOINT);
+		fireSuspendEvent(DebugEvent.BREAKPOINT);
 	}
 	
 	public boolean canStepInto() {
@@ -95,15 +102,15 @@ public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implement
 		return false;
 	}
 	
-	public void stepInto() throws org.eclipse.debug.core.DebugException {
+	public void stepInto() throws DebugException {
 		getTarget().getDebugProxy().stepInto();
 	}
 	
-	public void stepOver() throws org.eclipse.debug.core.DebugException {
+	public void stepOver() throws DebugException {
 		getTarget().getDebugProxy().stepOver();
 	}
 	
-	public void stepReturn() throws org.eclipse.debug.core.DebugException {
+	public void stepReturn() throws DebugException {
 		getTarget().getDebugProxy().stepReturn();
 	}
 	
@@ -115,7 +122,7 @@ public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implement
 		return getDebugTarget().isTerminated();
 	}
 	
-	public void terminate() throws org.eclipse.debug.core.DebugException {
+	public void terminate() throws DebugException {
 		getTarget().getDebugProxy().terminate();
 	}
 	
@@ -127,7 +134,7 @@ public class EpDebugThread extends ep.resource.ep.debug.EpDebugElement implement
 			fireResumeEvent(0);
 		} else if (message.hasType(ep.resource.ep.debug.EEpDebugMessageTypes.SUSPENDED)) {
 			suspended = true;
-			fireSuspendEvent(org.eclipse.debug.core.DebugEvent.BREAKPOINT);
+			fireSuspendEvent(DebugEvent.BREAKPOINT);
 		} else if (message.hasType(ep.resource.ep.debug.EEpDebugMessageTypes.TERMINATED)) {
 			// ignore this event
 		} else {

@@ -6,23 +6,23 @@
  */
 package ep.resource.ep.ui;
 
-public class EpEObjectSelection implements org.eclipse.jface.viewers.IStructuredSelection {
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IStructuredSelection;
+
+public class EpEObjectSelection implements IStructuredSelection {
 	
-	private final org.eclipse.emf.ecore.EObject selectedObject;
-	private final boolean highlighting;
+	private final EObject selectedObject;
 	
-	public EpEObjectSelection(org.eclipse.emf.ecore.EObject selectedObject, boolean highlighting) {
+	public EpEObjectSelection(EObject selectedObject) {
 		super();
 		this.selectedObject = selectedObject;
-		this.highlighting = highlighting;
 	}
 	
-	public org.eclipse.emf.ecore.EObject getSelectedObject() {
+	public EObject getSelectedObject() {
 		return selectedObject;
-	}
-	
-	public boolean doHighlighting() {
-		return highlighting;
 	}
 	
 	public boolean isEmpty() {
@@ -33,8 +33,8 @@ public class EpEObjectSelection implements org.eclipse.jface.viewers.IStructured
 		return selectedObject;
 	}
 	
-	public java.util.Iterator<?> iterator() {
-		return new java.util.Iterator<org.eclipse.emf.ecore.EObject>() {
+	public Iterator<?> iterator() {
+		return new Iterator<EObject>() {
 			
 			private boolean hasNext = true;
 			
@@ -42,7 +42,7 @@ public class EpEObjectSelection implements org.eclipse.jface.viewers.IStructured
 				return hasNext;
 			}
 			
-			public org.eclipse.emf.ecore.EObject next(){
+			public EObject next(){
 				hasNext = false;
 				return selectedObject;
 			}
@@ -60,10 +60,8 @@ public class EpEObjectSelection implements org.eclipse.jface.viewers.IStructured
 		return new Object[] {selectedObject};
 	}
 	
-	public java.util.List<?> toList() {
-		java.util.ArrayList<org.eclipse.emf.ecore.EObject> list = new java.util.ArrayList<org.eclipse.emf.ecore.EObject>();
-		list.add(selectedObject);
-		return list;
+	public List<?> toList() {
+		return Collections.singletonList(selectedObject);
 	}
 	
 }

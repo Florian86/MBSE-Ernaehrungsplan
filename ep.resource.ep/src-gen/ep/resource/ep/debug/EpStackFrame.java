@@ -6,7 +6,14 @@
  */
 package ep.resource.ep.debug;
 
-public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements org.eclipse.debug.core.model.IStackFrame {
+import java.util.List;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IRegisterGroup;
+import org.eclipse.debug.core.model.IStackFrame;
+import org.eclipse.debug.core.model.IThread;
+import org.eclipse.debug.core.model.IVariable;
+
+public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements IStackFrame {
 	
 	private ep.resource.ep.debug.EpDebugTarget target;
 	private String name;
@@ -20,7 +27,7 @@ public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements
 		super(target);
 		this.target = target;
 		
-		java.util.List<String> dataParts = ep.resource.ep.util.EpStringUtil.decode(data, ',');
+		List<String> dataParts = ep.resource.ep.util.EpStringUtil.decode(data, ',');
 		this.name = dataParts.get(0);
 		this.id = Integer.parseInt(dataParts.get(1));
 		this.resourceURI = dataParts.get(2);
@@ -33,41 +40,41 @@ public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements
 		return target;
 	}
 	
-	public int getLineNumber() throws org.eclipse.debug.core.DebugException {
+	public int getLineNumber() throws DebugException {
 		return this.line;
 	}
 	
-	public int getCharStart() throws org.eclipse.debug.core.DebugException {
+	public int getCharStart() throws DebugException {
 		return charStart;
 	}
 	
-	public int getCharEnd() throws org.eclipse.debug.core.DebugException {
+	public int getCharEnd() throws DebugException {
 		return charEnd;
 	}
 	
-	public String getName() throws org.eclipse.debug.core.DebugException {
+	public String getName() throws DebugException {
 		return this.name;
 	}
 	
-	public org.eclipse.debug.core.model.IRegisterGroup[] getRegisterGroups() throws org.eclipse.debug.core.DebugException {
-		return new org.eclipse.debug.core.model.IRegisterGroup[0];
+	public IRegisterGroup[] getRegisterGroups() throws DebugException {
+		return new IRegisterGroup[0];
 	}
 	
-	public org.eclipse.debug.core.model.IThread getThread() {
+	public IThread getThread() {
 		return target.getThread();
 	}
 	
-	public org.eclipse.debug.core.model.IVariable[] getVariables() throws org.eclipse.debug.core.DebugException {
+	public IVariable[] getVariables() throws DebugException {
 		// get root (top level) variables
-		org.eclipse.debug.core.model.IVariable[] variables = getTarget().getDebugProxy().getStackVariables(Integer.toString(id));
+		IVariable[] variables = getTarget().getDebugProxy().getStackVariables(Integer.toString(id));
 		return variables;
 	}
 	
-	public boolean hasRegisterGroups() throws org.eclipse.debug.core.DebugException {
+	public boolean hasRegisterGroups() throws DebugException {
 		return false;
 	}
 	
-	public boolean hasVariables() throws org.eclipse.debug.core.DebugException {
+	public boolean hasVariables() throws DebugException {
 		return false;
 	}
 	
@@ -87,15 +94,15 @@ public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements
 		return getThread().isStepping();
 	}
 	
-	public void stepInto() throws org.eclipse.debug.core.DebugException {
+	public void stepInto() throws DebugException {
 		getThread().stepInto();
 	}
 	
-	public void stepOver() throws org.eclipse.debug.core.DebugException {
+	public void stepOver() throws DebugException {
 		getThread().stepOver();
 	}
 	
-	public void stepReturn() throws org.eclipse.debug.core.DebugException {
+	public void stepReturn() throws DebugException {
 		getThread().stepReturn();
 	}
 	
@@ -111,11 +118,11 @@ public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements
 		return getThread().isSuspended();
 	}
 	
-	public void resume() throws org.eclipse.debug.core.DebugException {
+	public void resume() throws DebugException {
 		getThread().resume();
 	}
 	
-	public void suspend() throws org.eclipse.debug.core.DebugException {
+	public void suspend() throws DebugException {
 		getThread().suspend();
 	}
 	
@@ -127,7 +134,7 @@ public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements
 		return getThread().isTerminated();
 	}
 	
-	public void terminate() throws org.eclipse.debug.core.DebugException {
+	public void terminate() throws DebugException {
 		getThread().terminate();
 	}
 	
@@ -135,7 +142,7 @@ public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements
 		return this.resourceURI;
 	}
 	
-	@Override	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -144,7 +151,7 @@ public class EpStackFrame extends ep.resource.ep.debug.EpDebugElement implements
 		return result;
 	}
 	
-	@Override	
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)		return true;
 		if (obj == null)		return false;

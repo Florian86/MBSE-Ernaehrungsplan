@@ -6,6 +6,9 @@
  */
 package ep.resource.ep.mopp;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * A representation for a range in a document where a keyword (i.e., a static
  * string) is expected.
@@ -30,8 +33,8 @@ public class EpExpectedCsString extends ep.resource.ep.mopp.EpAbstractExpectedEl
 		return keyword;
 	}
 	
-	public java.util.Set<String> getTokenNames() {
-		return java.util.Collections.singleton("'" + getValue() + "'");
+	public Set<String> getTokenNames() {
+		return Collections.singleton("'" + getValue() + "'");
 	}
 	
 	public String toString() {
@@ -45,7 +48,7 @@ public class EpExpectedCsString extends ep.resource.ep.mopp.EpAbstractExpectedEl
 		return false;
 	}
 	
-	@Override	
+	@Override
 	public int hashCode() {
 		return getValue().hashCode();
 	}

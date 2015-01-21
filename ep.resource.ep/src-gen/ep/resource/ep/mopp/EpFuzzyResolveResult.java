@@ -6,19 +6,25 @@
  */
 package ep.resource.ep.mopp;
 
+import java.util.Collection;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+
 /**
+ * <p>
  * A FuzzyResolveResult is an implementation of the IEpReferenceResolveResult
  * interface that delegates all method calls to a given IEpReferenceResolveResult
  * with ReferenceType EObject. It is used by reference resolver switches to
  * collect results from different reference resolvers in a type safe manner.
+ * </p>
  * 
  * @param <ReferenceType> the type of the reference that is resolved
  */
-public class EpFuzzyResolveResult<ReferenceType extends org.eclipse.emf.ecore.EObject> implements ep.resource.ep.IEpReferenceResolveResult<ReferenceType> {
+public class EpFuzzyResolveResult<ReferenceType extends EObject> implements ep.resource.ep.IEpReferenceResolveResult<ReferenceType> {
 	
-	private ep.resource.ep.IEpReferenceResolveResult<org.eclipse.emf.ecore.EObject> delegate;
+	private ep.resource.ep.IEpReferenceResolveResult<EObject> delegate;
 	
-	public EpFuzzyResolveResult(ep.resource.ep.IEpReferenceResolveResult<org.eclipse.emf.ecore.EObject> delegate) {
+	public EpFuzzyResolveResult(ep.resource.ep.IEpReferenceResolveResult<EObject> delegate) {
 		this.delegate = delegate;
 	}
 	
@@ -26,7 +32,7 @@ public class EpFuzzyResolveResult<ReferenceType extends org.eclipse.emf.ecore.EO
 		return delegate.getErrorMessage();
 	}
 	
-	public java.util.Collection<ep.resource.ep.IEpReferenceMapping<ReferenceType>> getMappings() {
+	public Collection<ep.resource.ep.IEpReferenceMapping<ReferenceType>> getMappings() {
 		return null;
 	}
 	
@@ -47,22 +53,22 @@ public class EpFuzzyResolveResult<ReferenceType extends org.eclipse.emf.ecore.EO
 	}
 	
 	public void addMapping(String identifier, ReferenceType target) {
-		delegate.addMapping(identifier, (org.eclipse.emf.ecore.EObject) target);
+		delegate.addMapping(identifier, (EObject) target);
 	}
 	
-	public void addMapping(String identifier, org.eclipse.emf.common.util.URI uri) {
+	public void addMapping(String identifier, URI uri) {
 		delegate.addMapping(identifier, uri);
 	}
 	
 	public void addMapping(String identifier, ReferenceType target, String warning) {
-		delegate.addMapping(identifier, (org.eclipse.emf.ecore.EObject) target, warning);
+		delegate.addMapping(identifier, (EObject) target, warning);
 	}
 	
-	public void addMapping(String identifier, org.eclipse.emf.common.util.URI uri, String warning) {
+	public void addMapping(String identifier, URI uri, String warning) {
 		delegate.addMapping(identifier, uri, warning);
 	}
 	
-	public java.util.Collection<ep.resource.ep.IEpQuickFix> getQuickFixes() {
+	public Collection<ep.resource.ep.IEpQuickFix> getQuickFixes() {
 		return delegate.getQuickFixes();
 	}
 	

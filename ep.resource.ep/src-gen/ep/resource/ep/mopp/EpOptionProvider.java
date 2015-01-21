@@ -12,11 +12,14 @@
  */
 package ep.resource.ep.mopp;
 
+import java.util.Collections;
+import java.util.Map;
+
 public class EpOptionProvider implements ep.resource.ep.IEpOptionProvider {
 	
-	public java.util.Map<?,?> getOptions() {
+	public Map<?,?> getOptions() {
 		// create a map with static option providers here
-		return java.util.Collections.emptyMap();
+		return Collections.emptyMap();
 	}
 	
 }

@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.grammar;
 
+
 public class EpWhiteSpace extends ep.resource.ep.grammar.EpFormattingElement {
 	
 	private final int amount;

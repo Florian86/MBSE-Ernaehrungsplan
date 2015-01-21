@@ -6,10 +6,12 @@
  */
 package ep.resource.ep.ui;
 
+import org.eclipse.jface.action.IAction;
+
 public class EpOutlinePageExpandAllAction extends ep.resource.ep.ui.AbstractEpOutlinePageAction {
 	
 	public EpOutlinePageExpandAllAction(ep.resource.ep.ui.EpOutlinePageTreeViewer treeViewer) {
-		super(treeViewer, "Expand all", org.eclipse.jface.action.IAction.AS_PUSH_BUTTON);
+		super(treeViewer, "Expand all", IAction.AS_PUSH_BUTTON);
 		initialize("icons/expand_all_icon.gif");
 	}
 	

@@ -6,24 +6,41 @@
  */
 package ep.resource.ep.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.Token;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+
 /**
  * An adapter from the Eclipse
  * <code>org.eclipse.jface.text.rules.ITokenScanner</code> interface to the
  * generated lexer.
  */
-public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanner {
+public class EpTokenScanner implements ep.resource.ep.ui.IEpTokenScanner {
 	
 	private ep.resource.ep.IEpTextScanner lexer;
 	private ep.resource.ep.IEpTextToken currentToken;
-	private java.util.List<ep.resource.ep.IEpTextToken> nextTokens;
+	private List<ep.resource.ep.IEpTextToken> nextTokens;
 	private int offset;
 	private String languageId;
-	private org.eclipse.jface.preference.IPreferenceStore store;
+	private IPreferenceStore store;
 	private ep.resource.ep.ui.EpColorManager colorManager;
 	private ep.resource.ep.IEpTextResource resource;
 	
 	/**
+	 * <p>
+	 * Creates a new EpTokenScanner.
+	 * </p>
 	 * 
+	 * @param resource The resource to scan
 	 * @param colorManager A manager to obtain color objects
 	 */
 	public EpTokenScanner(ep.resource.ep.IEpTextResource resource, ep.resource.ep.ui.EpColorManager colorManager) {
@@ -35,7 +52,7 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 		if (plugin != null) {
 			this.store = plugin.getPreferenceStore();
 		}
-		this.nextTokens = new java.util.ArrayList<ep.resource.ep.IEpTextToken>();
+		this.nextTokens = new ArrayList<ep.resource.ep.IEpTextToken>();
 	}
 	
 	public int getTokenLength() {
@@ -46,7 +63,7 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 		return offset + currentToken.getOffset();
 	}
 	
-	public org.eclipse.jface.text.rules.IToken nextToken() {
+	public IToken nextToken() {
 		boolean isOriginalToken = true;
 		if (!nextTokens.isEmpty()) {
 			currentToken = nextTokens.remove(0);
@@ -55,14 +72,14 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 			currentToken = lexer.getNextToken();
 		}
 		if (currentToken == null || !currentToken.canBeUsedForSyntaxHighlighting()) {
-			return org.eclipse.jface.text.rules.Token.EOF;
+			return Token.EOF;
 		}
 		
 		if (isOriginalToken) {
 			splitCurrentToken();
 		}
 		
-		org.eclipse.jface.text.TextAttribute textAttribute = null;
+		TextAttribute textAttribute = null;
 		String tokenName = currentToken.getName();
 		if (tokenName != null) {
 			ep.resource.ep.IEpTokenStyle staticStyle = getStaticTokenStyle();
@@ -74,14 +91,14 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 			}
 		}
 		
-		return new org.eclipse.jface.text.rules.Token(textAttribute);
+		return new Token(textAttribute);
 	}
 	
-	public void setRange(org.eclipse.jface.text.IDocument document, int offset, int length) {
+	public void setRange(IDocument document, int offset, int length) {
 		this.offset = offset;
 		try {
 			lexer.setText(document.get(offset, length));
-		} catch (org.eclipse.jface.text.BadLocationException e) {
+		} catch (BadLocationException e) {
 			// ignore this error. It might occur during editing when locations are outdated
 			// quickly.
 		}
@@ -91,7 +108,7 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 		return currentToken.getText();
 	}
 	
-	public int[] convertToIntArray(org.eclipse.swt.graphics.RGB rgb) {
+	public int[] convertToIntArray(RGB rgb) {
 		if (rgb == null) {
 			return null;
 		}
@@ -99,57 +116,62 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 	}
 	
 	public ep.resource.ep.IEpTokenStyle getStaticTokenStyle() {
-		ep.resource.ep.IEpTokenStyle staticStyle = null;
 		String tokenName = currentToken.getName();
 		String enableKey = ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.ENABLE);
-		boolean enabled = store.getBoolean(enableKey);
-		if (enabled) {
-			String colorKey = ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.COLOR);
-			org.eclipse.swt.graphics.RGB foregroundRGB = org.eclipse.jface.preference.PreferenceConverter.getColor(store, colorKey);
-			org.eclipse.swt.graphics.RGB backgroundRGB = null;
-			boolean bold = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.BOLD));
-			boolean italic = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.ITALIC));
-			boolean strikethrough = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.STRIKETHROUGH));
-			boolean underline = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.UNDERLINE));
-			staticStyle = new ep.resource.ep.mopp.EpTokenStyle(convertToIntArray(foregroundRGB), convertToIntArray(backgroundRGB), bold, italic, strikethrough, underline);
+		if (store == null) {
+			return null;
 		}
-		return staticStyle;
+		
+		boolean enabled = store.getBoolean(enableKey);
+		if (!enabled) {
+			return null;
+		}
+		
+		String colorKey = ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.COLOR);
+		RGB foregroundRGB = PreferenceConverter.getColor(store, colorKey);
+		RGB backgroundRGB = null;
+		boolean bold = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.BOLD));
+		boolean italic = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.ITALIC));
+		boolean strikethrough = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.STRIKETHROUGH));
+		boolean underline = store.getBoolean(ep.resource.ep.ui.EpSyntaxColoringHelper.getPreferenceKey(languageId, tokenName, ep.resource.ep.ui.EpSyntaxColoringHelper.StyleProperty.UNDERLINE));
+		return new ep.resource.ep.mopp.EpTokenStyle(convertToIntArray(foregroundRGB), convertToIntArray(backgroundRGB), bold, italic, strikethrough, underline);
 	}
 	
 	public ep.resource.ep.IEpTokenStyle getDynamicTokenStyle(ep.resource.ep.IEpTokenStyle staticStyle) {
 		ep.resource.ep.mopp.EpDynamicTokenStyler dynamicTokenStyler = new ep.resource.ep.mopp.EpDynamicTokenStyler();
+		dynamicTokenStyler.setOffset(offset);
 		ep.resource.ep.IEpTokenStyle dynamicStyle = dynamicTokenStyler.getDynamicTokenStyle(resource, currentToken, staticStyle);
 		return dynamicStyle;
 	}
 	
-	public org.eclipse.jface.text.TextAttribute getTextAttribute(ep.resource.ep.IEpTokenStyle tokeStyle) {
+	public TextAttribute getTextAttribute(ep.resource.ep.IEpTokenStyle tokeStyle) {
 		int[] foregroundColorArray = tokeStyle.getColorAsRGB();
-		org.eclipse.swt.graphics.Color foregroundColor = null;
+		Color foregroundColor = null;
 		if (colorManager != null) {
-			foregroundColor = colorManager.getColor(new org.eclipse.swt.graphics.RGB(foregroundColorArray[0], foregroundColorArray[1], foregroundColorArray[2]));
+			foregroundColor = colorManager.getColor(new RGB(foregroundColorArray[0], foregroundColorArray[1], foregroundColorArray[2]));
 		}
 		int[] backgroundColorArray = tokeStyle.getBackgroundColorAsRGB();
-		org.eclipse.swt.graphics.Color backgroundColor = null;
+		Color backgroundColor = null;
 		if (backgroundColorArray != null) {
-			org.eclipse.swt.graphics.RGB backgroundRGB = new org.eclipse.swt.graphics.RGB(backgroundColorArray[0], backgroundColorArray[1], backgroundColorArray[2]);
+			RGB backgroundRGB = new RGB(backgroundColorArray[0], backgroundColorArray[1], backgroundColorArray[2]);
 			if (colorManager != null) {
 				backgroundColor = colorManager.getColor(backgroundRGB);
 			}
 		}
-		int style = org.eclipse.swt.SWT.NORMAL;
+		int style = SWT.NORMAL;
 		if (tokeStyle.isBold()) {
-			style = style | org.eclipse.swt.SWT.BOLD;
+			style = style | SWT.BOLD;
 		}
 		if (tokeStyle.isItalic()) {
-			style = style | org.eclipse.swt.SWT.ITALIC;
+			style = style | SWT.ITALIC;
 		}
 		if (tokeStyle.isStrikethrough()) {
-			style = style | org.eclipse.jface.text.TextAttribute.STRIKETHROUGH;
+			style = style | TextAttribute.STRIKETHROUGH;
 		}
 		if (tokeStyle.isUnderline()) {
-			style = style | org.eclipse.jface.text.TextAttribute.UNDERLINE;
+			style = style | TextAttribute.UNDERLINE;
 		}
-		return new org.eclipse.jface.text.TextAttribute(foregroundColor, backgroundColor, style);
+		return new TextAttribute(foregroundColor, backgroundColor, style);
 	}
 	
 	/**
@@ -162,19 +184,19 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 		final int charStart = currentToken.getOffset();
 		final int column = currentToken.getColumn();
 		
-		java.util.List<ep.resource.ep.mopp.EpTaskItem> taskItems = new ep.resource.ep.mopp.EpTaskItemDetector().findTaskItems(text, line, charStart);
+		List<ep.resource.ep.mopp.EpTaskItem> taskItems = new ep.resource.ep.mopp.EpTaskItemDetector().findTaskItems(text, line, charStart);
 		
 		// this is the offset for the next token to be added
 		int offset = charStart;
 		int itemBeginRelative;
-		java.util.List<ep.resource.ep.IEpTextToken> newItems = new java.util.ArrayList<ep.resource.ep.IEpTextToken>();
+		List<ep.resource.ep.IEpTextToken> newItems = new ArrayList<ep.resource.ep.IEpTextToken>();
 		for (ep.resource.ep.mopp.EpTaskItem taskItem : taskItems) {
 			int itemBegin = taskItem.getCharStart();
 			int itemLine = taskItem.getLine();
 			int itemColumn = 0;
 			
 			itemBeginRelative = itemBegin - charStart;
-			// create token before task item (TODO if required)
+			// create token before task item
 			String textBefore = text.substring(offset - charStart, itemBeginRelative);
 			int textBeforeLength = textBefore.length();
 			newItems.add(new ep.resource.ep.mopp.EpTextToken(name, textBefore, offset, textBeforeLength, line, column, true));
@@ -189,7 +211,7 @@ public class EpTokenScanner implements org.eclipse.jface.text.rules.ITokenScanne
 		}
 		
 		if (!taskItems.isEmpty()) {
-			// create token after last task item (TODO if required)
+			// create token after last task item
 			String textAfter = text.substring(offset - charStart);
 			newItems.add(new ep.resource.ep.mopp.EpTextToken(name, textAfter, offset, textAfter.length(), line, column, true));
 		}

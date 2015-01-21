@@ -6,19 +6,21 @@
  */
 package ep.resource.ep.grammar;
 
+import org.eclipse.emf.ecore.EClass;
+
 /**
  * A class to represent a rules in the grammar.
  */
 public class EpRule extends ep.resource.ep.grammar.EpSyntaxElement {
 	
-	private final org.eclipse.emf.ecore.EClass metaclass;
+	private final EClass metaclass;
 	
-	public EpRule(org.eclipse.emf.ecore.EClass metaclass, ep.resource.ep.grammar.EpChoice choice, ep.resource.ep.grammar.EpCardinality cardinality) {
+	public EpRule(EClass metaclass, ep.resource.ep.grammar.EpChoice choice, ep.resource.ep.grammar.EpCardinality cardinality) {
 		super(cardinality, new ep.resource.ep.grammar.EpSyntaxElement[] {choice});
 		this.metaclass = metaclass;
 	}
 	
-	public org.eclipse.emf.ecore.EClass getMetaclass() {
+	public EClass getMetaclass() {
 		return metaclass;
 	}
 	

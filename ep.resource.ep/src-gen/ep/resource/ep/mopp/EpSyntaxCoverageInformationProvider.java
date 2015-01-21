@@ -6,10 +6,12 @@
  */
 package ep.resource.ep.mopp;
 
+import org.eclipse.emf.ecore.EClass;
+
 public class EpSyntaxCoverageInformationProvider {
 	
-	public org.eclipse.emf.ecore.EClass[] getClassesWithSyntax() {
-		return new org.eclipse.emf.ecore.EClass[] {
+	public EClass[] getClassesWithSyntax() {
+		return new EClass[] {
 			ep.MetamodelPackage.eINSTANCE.getEpElement(),
 			ep.MetamodelPackage.eINSTANCE.getPerson(),
 			ep.MetamodelPackage.eINSTANCE.getHauptbestandteil(),
@@ -21,8 +23,8 @@ public class EpSyntaxCoverageInformationProvider {
 		};
 	}
 	
-	public org.eclipse.emf.ecore.EClass[] getStartSymbols() {
-		return new org.eclipse.emf.ecore.EClass[] {
+	public EClass[] getStartSymbols() {
+		return new EClass[] {
 			ep.MetamodelPackage.eINSTANCE.getEpElement(),
 		};
 	}

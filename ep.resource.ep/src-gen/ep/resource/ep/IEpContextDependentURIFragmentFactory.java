@@ -6,19 +6,26 @@
  */
 package ep.resource.ep;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+
 /**
+ * <p>
  * An interface for factories to create instances of
  * ep.resource.ep.IEpContextDependentURIFragment.
+ * </p>
  * 
  * @param <ContainerType> the type of the class containing the reference to be
  * resolved
  * @param <ReferenceType> the type of the reference to be resolved
  */
-public interface IEpContextDependentURIFragmentFactory<ContainerType extends org.eclipse.emf.ecore.EObject, ReferenceType extends org.eclipse.emf.ecore.EObject> {
+public interface IEpContextDependentURIFragmentFactory<ContainerType extends EObject, ReferenceType extends EObject> {
 	
 	/**
+	 * <p>
 	 * Create a new instance of the ep.resource.ep.IEpContextDependentURIFragment
 	 * interface.
+	 * </p>
 	 * 
 	 * @param identifier the identifier that references an Object
 	 * @param container the object that contains the reference
@@ -29,5 +36,5 @@ public interface IEpContextDependentURIFragmentFactory<ContainerType extends org
 	 * 
 	 * @return the new instance of ep.resource.ep.IEpContextDependentURIFragment
 	 */
-	public ep.resource.ep.IEpContextDependentURIFragment<?> create(String identifier, ContainerType container, org.eclipse.emf.ecore.EReference reference, int positionInReference, org.eclipse.emf.ecore.EObject proxy);
+	public ep.resource.ep.IEpContextDependentURIFragment<?> create(String identifier, ContainerType container, EReference reference, int positionInReference, EObject proxy);
 }

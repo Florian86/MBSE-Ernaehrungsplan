@@ -6,6 +6,7 @@
  */
 package ep.resource.ep.mopp;
 
+
 public class EpTokenStyleInformationProvider {
 	
 	public static String TASK_ITEM_TOKEN_NAME = "TASK_ITEM";
@@ -50,7 +51,7 @@ public class EpTokenStyleInformationProvider {
 		if ("eplan".equals(tokenName)) {
 			return new ep.resource.ep.mopp.EpTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
 		}
-		if ("personen".equals(tokenName)) {
+		if ("person".equals(tokenName)) {
 			return new ep.resource.ep.mopp.EpTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
 		}
 		if ("gerichte".equals(tokenName)) {

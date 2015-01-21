@@ -6,10 +6,12 @@
  */
 package ep.resource.ep.ui;
 
+import org.eclipse.jface.action.IAction;
+
 public class EpOutlinePageCollapseAllAction extends ep.resource.ep.ui.AbstractEpOutlinePageAction {
 	
 	public EpOutlinePageCollapseAllAction(ep.resource.ep.ui.EpOutlinePageTreeViewer treeViewer) {
-		super(treeViewer, "Collapse all", org.eclipse.jface.action.IAction.AS_PUSH_BUTTON);
+		super(treeViewer, "Collapse all", IAction.AS_PUSH_BUTTON);
 		initialize("icons/collapse_all_icon.gif");
 	}
 	
