@@ -5,7 +5,6 @@ package de.tu_bs.cs.isf.mbse.Ernaehrungsplan.impl;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.*;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -57,10 +56,14 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case ErnaehrungsplanPackage.DATA_TYPE: return createDataType();
-			case ErnaehrungsplanPackage.ENTITY: return createEntity();
-			case ErnaehrungsplanPackage.ENTITY_MODEL: return createEntityModel();
-			case ErnaehrungsplanPackage.FEATURE: return createFeature();
+			case ErnaehrungsplanPackage.ERNAEHRUNGSPLAN: return createErnaehrungsplan();
+			case ErnaehrungsplanPackage.PERSON: return createPerson();
+			case ErnaehrungsplanPackage.GERICHT: return createGericht();
+			case ErnaehrungsplanPackage.HAUPTBESTANDTEIL: return createHauptbestandteil();
+			case ErnaehrungsplanPackage.BEILAGE: return createBeilage();
+			case ErnaehrungsplanPackage.SAUCE: return createSauce();
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT: return createGericht2Zutat();
+			case ErnaehrungsplanPackage.EP_ELEMENT: return createEpElement();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -71,14 +74,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public Object createFromString(EDataType eDataType, String initialValue) {
-		switch (eDataType.getClassifierID()) {
-			case ErnaehrungsplanPackage.FEATURE_KIND:
-				return createFeatureKindFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
+	public Ernaehrungsplan createErnaehrungsplan() {
+		ErnaehrungsplanImpl ernaehrungsplan = new ErnaehrungsplanImpl();
+		return ernaehrungsplan;
 	}
 
 	/**
@@ -86,14 +84,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public String convertToString(EDataType eDataType, Object instanceValue) {
-		switch (eDataType.getClassifierID()) {
-			case ErnaehrungsplanPackage.FEATURE_KIND:
-				return convertFeatureKindToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
+	public Person createPerson() {
+		PersonImpl person = new PersonImpl();
+		return person;
 	}
 
 	/**
@@ -101,9 +94,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DataType createDataType() {
-		DataTypeImpl dataType = new DataTypeImpl();
-		return dataType;
+	public Gericht createGericht() {
+		GerichtImpl gericht = new GerichtImpl();
+		return gericht;
 	}
 
 	/**
@@ -111,9 +104,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Entity createEntity() {
-		EntityImpl entity = new EntityImpl();
-		return entity;
+	public Hauptbestandteil createHauptbestandteil() {
+		HauptbestandteilImpl hauptbestandteil = new HauptbestandteilImpl();
+		return hauptbestandteil;
 	}
 
 	/**
@@ -121,9 +114,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EntityModel createEntityModel() {
-		EntityModelImpl entityModel = new EntityModelImpl();
-		return entityModel;
+	public Beilage createBeilage() {
+		BeilageImpl beilage = new BeilageImpl();
+		return beilage;
 	}
 
 	/**
@@ -131,9 +124,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Feature createFeature() {
-		FeatureImpl feature = new FeatureImpl();
-		return feature;
+	public Sauce createSauce() {
+		SauceImpl sauce = new SauceImpl();
+		return sauce;
 	}
 
 	/**
@@ -141,10 +134,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FeatureKind createFeatureKindFromString(EDataType eDataType, String initialValue) {
-		FeatureKind result = FeatureKind.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
+	public Gericht2Zutat createGericht2Zutat() {
+		Gericht2ZutatImpl gericht2Zutat = new Gericht2ZutatImpl();
+		return gericht2Zutat;
 	}
 
 	/**
@@ -152,8 +144,9 @@ public class ErnaehrungsplanFactoryImpl extends EFactoryImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertFeatureKindToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
+	public EpElement createEpElement() {
+		EpElementImpl epElement = new EpElementImpl();
+		return epElement;
 	}
 
 	/**

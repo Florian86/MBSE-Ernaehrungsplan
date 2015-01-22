@@ -1,0 +1,286 @@
+/**
+ */
+package de.tu_bs.cs.isf.mbse.Ernaehrungsplan.impl;
+
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Gericht2 Zutat</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.impl.Gericht2ZutatImpl#getMenge <em>Menge</em>}</li>
+ *   <li>{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.impl.Gericht2ZutatImpl#getGericht <em>Gericht</em>}</li>
+ *   <li>{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.impl.Gericht2ZutatImpl#getZutat <em>Zutat</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @generated
+ */
+public class Gericht2ZutatImpl extends EObjectImpl implements Gericht2Zutat {
+	/**
+	 * The default value of the '{@link #getMenge() <em>Menge</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMenge()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MENGE_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getMenge() <em>Menge</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMenge()
+	 * @generated
+	 * @ordered
+	 */
+	protected int menge = MENGE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getGericht() <em>Gericht</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGericht()
+	 * @generated
+	 * @ordered
+	 */
+	protected Gericht gericht;
+
+	/**
+	 * The cached value of the '{@link #getZutat() <em>Zutat</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getZutat()
+	 * @generated
+	 * @ordered
+	 */
+	protected Zutat zutat;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected Gericht2ZutatImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return ErnaehrungsplanPackage.Literals.GERICHT2_ZUTAT;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMenge() {
+		return menge;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMenge(int newMenge) {
+		int oldMenge = menge;
+		menge = newMenge;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE, oldMenge, menge));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Gericht getGericht() {
+		if (gericht != null && gericht.eIsProxy()) {
+			InternalEObject oldGericht = (InternalEObject)gericht;
+			gericht = (Gericht)eResolveProxy(oldGericht);
+			if (gericht != oldGericht) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ErnaehrungsplanPackage.GERICHT2_ZUTAT__GERICHT, oldGericht, gericht));
+			}
+		}
+		return gericht;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Gericht basicGetGericht() {
+		return gericht;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setGericht(Gericht newGericht) {
+		Gericht oldGericht = gericht;
+		gericht = newGericht;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ErnaehrungsplanPackage.GERICHT2_ZUTAT__GERICHT, oldGericht, gericht));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Zutat getZutat() {
+		if (zutat != null && zutat.eIsProxy()) {
+			InternalEObject oldZutat = (InternalEObject)zutat;
+			zutat = (Zutat)eResolveProxy(oldZutat);
+			if (zutat != oldZutat) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ErnaehrungsplanPackage.GERICHT2_ZUTAT__ZUTAT, oldZutat, zutat));
+			}
+		}
+		return zutat;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Zutat basicGetZutat() {
+		return zutat;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setZutat(Zutat newZutat) {
+		Zutat oldZutat = zutat;
+		zutat = newZutat;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ErnaehrungsplanPackage.GERICHT2_ZUTAT__ZUTAT, oldZutat, zutat));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE:
+				return getMenge();
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__GERICHT:
+				if (resolve) return getGericht();
+				return basicGetGericht();
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__ZUTAT:
+				if (resolve) return getZutat();
+				return basicGetZutat();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE:
+				setMenge((Integer)newValue);
+				return;
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__GERICHT:
+				setGericht((Gericht)newValue);
+				return;
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__ZUTAT:
+				setZutat((Zutat)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE:
+				setMenge(MENGE_EDEFAULT);
+				return;
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__GERICHT:
+				setGericht((Gericht)null);
+				return;
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__ZUTAT:
+				setZutat((Zutat)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE:
+				return menge != MENGE_EDEFAULT;
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__GERICHT:
+				return gericht != null;
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT__ZUTAT:
+				return zutat != null;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (menge: ");
+		result.append(menge);
+		result.append(')');
+		return result.toString();
+	}
+
+} //Gericht2ZutatImpl

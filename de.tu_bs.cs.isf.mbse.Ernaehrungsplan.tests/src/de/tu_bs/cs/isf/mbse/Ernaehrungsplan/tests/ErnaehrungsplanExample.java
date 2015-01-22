@@ -2,7 +2,7 @@
  */
 package de.tu_bs.cs.isf.mbse.Ernaehrungsplan.tests;
 
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.DataType;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage;
 
@@ -60,7 +60,7 @@ public class ErnaehrungsplanExample {
 			System.out.println("Enter a list of file paths or URIs that have content like this:");
 			try {
 				Resource resource = resourceSet.createResource(URI.createURI("http:///My.ernaehrungsplan"));
-				DataType root = ErnaehrungsplanFactory.eINSTANCE.createDataType();
+				Ernaehrungsplan root = ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
 				resource.getContents().add(root);
 				resource.save(System.out, null);
 			}

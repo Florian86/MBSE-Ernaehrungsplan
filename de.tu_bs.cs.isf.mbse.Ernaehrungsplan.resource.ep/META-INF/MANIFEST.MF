@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EMFText Parser Plugin: ep
+Bundle-SymbolicName: de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Software Technology Group - TU Dresden Germany
+Require-Bundle: org.eclipse.core.runtime;resolution:=optional,
+  org.eclipse.core.resources;resolution:=optional,
+  org.eclipse.emf.ecore,
+  org.eclipse.emf.ecore.change,
+  org.eclipse.emf.validation;resolution:=optional,
+  org.emftext.access;resolution:=optional,
+  org.eclipse.debug.core;resolution:=optional,
+  org.emftext.commons.antlr3_4_0,
+  de.tu_bs.cs.isf.mbse.Ernaehrungsplan
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep,
+  de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.analysis,
+  de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp,
+  de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.debug,
+  de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.launch,
+  de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar,
+  de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.util
+Bundle-Activator: de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpPlugin

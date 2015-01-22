@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated Ernaehrungsplan -->
       <factory
-            uri="http://www.emftext.org/language/Ernaehrungsplan"
+            uri="http://www.example.org/metamodel"
             class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.provider.ErnaehrungsplanItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider

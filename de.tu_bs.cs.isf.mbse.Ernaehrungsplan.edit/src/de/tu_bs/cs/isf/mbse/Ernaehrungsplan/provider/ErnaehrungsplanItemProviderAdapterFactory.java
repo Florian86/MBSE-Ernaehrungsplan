@@ -72,95 +72,187 @@ public class ErnaehrungsplanItemProviderAdapterFactory extends ErnaehrungsplanAd
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.DataType} instances.
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected DataTypeItemProvider dataTypeItemProvider;
+	protected ErnaehrungsplanItemProvider ernaehrungsplanItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.DataType}.
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createDataTypeAdapter() {
-		if (dataTypeItemProvider == null) {
-			dataTypeItemProvider = new DataTypeItemProvider(this);
+	public Adapter createErnaehrungsplanAdapter() {
+		if (ernaehrungsplanItemProvider == null) {
+			ernaehrungsplanItemProvider = new ErnaehrungsplanItemProvider(this);
 		}
 
-		return dataTypeItemProvider;
+		return ernaehrungsplanItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Entity} instances.
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EntityItemProvider entityItemProvider;
+	protected PersonItemProvider personItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Entity}.
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createEntityAdapter() {
-		if (entityItemProvider == null) {
-			entityItemProvider = new EntityItemProvider(this);
+	public Adapter createPersonAdapter() {
+		if (personItemProvider == null) {
+			personItemProvider = new PersonItemProvider(this);
 		}
 
-		return entityItemProvider;
+		return personItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EntityModel} instances.
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EntityModelItemProvider entityModelItemProvider;
+	protected GerichtItemProvider gerichtItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EntityModel}.
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createEntityModelAdapter() {
-		if (entityModelItemProvider == null) {
-			entityModelItemProvider = new EntityModelItemProvider(this);
+	public Adapter createGerichtAdapter() {
+		if (gerichtItemProvider == null) {
+			gerichtItemProvider = new GerichtItemProvider(this);
 		}
 
-		return entityModelItemProvider;
+		return gerichtItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Feature} instances.
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Hauptbestandteil} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected FeatureItemProvider featureItemProvider;
+	protected HauptbestandteilItemProvider hauptbestandteilItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Feature}.
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Hauptbestandteil}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createFeatureAdapter() {
-		if (featureItemProvider == null) {
-			featureItemProvider = new FeatureItemProvider(this);
+	public Adapter createHauptbestandteilAdapter() {
+		if (hauptbestandteilItemProvider == null) {
+			hauptbestandteilItemProvider = new HauptbestandteilItemProvider(this);
 		}
 
-		return featureItemProvider;
+		return hauptbestandteilItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Beilage} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected BeilageItemProvider beilageItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Beilage}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createBeilageAdapter() {
+		if (beilageItemProvider == null) {
+			beilageItemProvider = new BeilageItemProvider(this);
+		}
+
+		return beilageItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Sauce} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SauceItemProvider sauceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Sauce}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createSauceAdapter() {
+		if (sauceItemProvider == null) {
+			sauceItemProvider = new SauceItemProvider(this);
+		}
+
+		return sauceItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected Gericht2ZutatItemProvider gericht2ZutatItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGericht2ZutatAdapter() {
+		if (gericht2ZutatItemProvider == null) {
+			gericht2ZutatItemProvider = new Gericht2ZutatItemProvider(this);
+		}
+
+		return gericht2ZutatItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EpElement} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EpElementItemProvider epElementItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EpElement}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createEpElementAdapter() {
+		if (epElementItemProvider == null) {
+			epElementItemProvider = new EpElementItemProvider(this);
+		}
+
+		return epElementItemProvider;
 	}
 
 	/**
@@ -262,10 +354,14 @@ public class ErnaehrungsplanItemProviderAdapterFactory extends ErnaehrungsplanAd
 	 * @generated
 	 */
 	public void dispose() {
-		if (dataTypeItemProvider != null) dataTypeItemProvider.dispose();
-		if (entityItemProvider != null) entityItemProvider.dispose();
-		if (entityModelItemProvider != null) entityModelItemProvider.dispose();
-		if (featureItemProvider != null) featureItemProvider.dispose();
+		if (ernaehrungsplanItemProvider != null) ernaehrungsplanItemProvider.dispose();
+		if (personItemProvider != null) personItemProvider.dispose();
+		if (gerichtItemProvider != null) gerichtItemProvider.dispose();
+		if (hauptbestandteilItemProvider != null) hauptbestandteilItemProvider.dispose();
+		if (beilageItemProvider != null) beilageItemProvider.dispose();
+		if (sauceItemProvider != null) sauceItemProvider.dispose();
+		if (gericht2ZutatItemProvider != null) gericht2ZutatItemProvider.dispose();
+		if (epElementItemProvider != null) epElementItemProvider.dispose();
 	}
 
 }

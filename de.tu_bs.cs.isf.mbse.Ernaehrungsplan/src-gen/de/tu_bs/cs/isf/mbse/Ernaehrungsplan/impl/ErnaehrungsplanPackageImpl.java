@@ -2,19 +2,20 @@
  */
 package de.tu_bs.cs.isf.mbse.Ernaehrungsplan.impl;
 
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.DataType;
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Entity;
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EntityModel;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Beilage;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EpElement;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage;
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Feature;
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.FeatureKind;
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.NamedElement;
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Type;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Hauptbestandteil;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Sauce;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -32,49 +33,63 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass namedElementEClass = null;
+	private EClass ernaehrungsplanEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass typeEClass = null;
+	private EClass personEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass dataTypeEClass = null;
+	private EClass gerichtEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass entityEClass = null;
+	private EClass zutatEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass entityModelEClass = null;
+	private EClass hauptbestandteilEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass featureEClass = null;
+	private EClass beilageEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EEnum featureKindEEnum = null;
+	private EClass sauceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass gericht2ZutatEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass epElementEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -142,8 +157,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getNamedElement() {
-		return namedElementEClass;
+	public EClass getErnaehrungsplan() {
+		return ernaehrungsplanEClass;
 	}
 
 	/**
@@ -151,8 +166,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getNamedElement_Name() {
-		return (EAttribute)namedElementEClass.getEStructuralFeatures().get(0);
+	public EReference getErnaehrungsplan_Personen() {
+		return (EReference)ernaehrungsplanEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -160,8 +175,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getType() {
-		return typeEClass;
+	public EReference getErnaehrungsplan_Gerichte() {
+		return (EReference)ernaehrungsplanEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -169,8 +184,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getDataType() {
-		return dataTypeEClass;
+	public EClass getPerson() {
+		return personEClass;
 	}
 
 	/**
@@ -178,8 +193,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEntity() {
-		return entityEClass;
+	public EAttribute getPerson_Name() {
+		return (EAttribute)personEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -187,8 +202,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getEntity_Abstract() {
-		return (EAttribute)entityEClass.getEStructuralFeatures().get(0);
+	public EAttribute getPerson_Kcal() {
+		return (EAttribute)personEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -196,8 +211,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEntity_Features() {
-		return (EReference)entityEClass.getEStructuralFeatures().get(1);
+	public EClass getGericht() {
+		return gerichtEClass;
 	}
 
 	/**
@@ -205,8 +220,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEntityModel() {
-		return entityModelEClass;
+	public EAttribute getGericht_Name() {
+		return (EAttribute)gerichtEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -214,8 +229,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEntityModel_Types() {
-		return (EReference)entityModelEClass.getEStructuralFeatures().get(0);
+	public EAttribute getGericht_Kommentar() {
+		return (EAttribute)gerichtEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -223,8 +238,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getFeature() {
-		return featureEClass;
+	public EReference getGericht_Zutaten() {
+		return (EReference)gerichtEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -232,8 +247,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getFeature_Kind() {
-		return (EAttribute)featureEClass.getEStructuralFeatures().get(0);
+	public EAttribute getGericht_IstSalat() {
+		return (EAttribute)gerichtEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -241,8 +256,8 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getFeature_Type() {
-		return (EReference)featureEClass.getEStructuralFeatures().get(1);
+	public EClass getZutat() {
+		return zutatEClass;
 	}
 
 	/**
@@ -250,8 +265,125 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EEnum getFeatureKind() {
-		return featureKindEEnum;
+	public EAttribute getZutat_Name() {
+		return (EAttribute)zutatEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getZutat_Kcal() {
+		return (EAttribute)zutatEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getHauptbestandteil() {
+		return hauptbestandteilEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getBeilage() {
+		return beilageEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSauce() {
+		return sauceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGericht2Zutat() {
+		return gericht2ZutatEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGericht2Zutat_Menge() {
+		return (EAttribute)gericht2ZutatEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGericht2Zutat_Gericht() {
+		return (EReference)gericht2ZutatEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGericht2Zutat_Zutat() {
+		return (EReference)gericht2ZutatEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getEpElement() {
+		return epElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEpElement_EplanElement() {
+		return (EReference)epElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEpElement_PersonElement() {
+		return (EReference)epElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEpElement_ZutatElement() {
+		return (EReference)epElementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEpElement_GerichtElement() {
+		return (EReference)epElementEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -282,26 +414,40 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 		isCreated = true;
 
 		// Create classes and their features
-		namedElementEClass = createEClass(NAMED_ELEMENT);
-		createEAttribute(namedElementEClass, NAMED_ELEMENT__NAME);
+		ernaehrungsplanEClass = createEClass(ERNAEHRUNGSPLAN);
+		createEReference(ernaehrungsplanEClass, ERNAEHRUNGSPLAN__PERSONEN);
+		createEReference(ernaehrungsplanEClass, ERNAEHRUNGSPLAN__GERICHTE);
 
-		typeEClass = createEClass(TYPE);
+		personEClass = createEClass(PERSON);
+		createEAttribute(personEClass, PERSON__NAME);
+		createEAttribute(personEClass, PERSON__KCAL);
 
-		dataTypeEClass = createEClass(DATA_TYPE);
+		gerichtEClass = createEClass(GERICHT);
+		createEAttribute(gerichtEClass, GERICHT__NAME);
+		createEAttribute(gerichtEClass, GERICHT__KOMMENTAR);
+		createEReference(gerichtEClass, GERICHT__ZUTATEN);
+		createEAttribute(gerichtEClass, GERICHT__IST_SALAT);
 
-		entityEClass = createEClass(ENTITY);
-		createEAttribute(entityEClass, ENTITY__ABSTRACT);
-		createEReference(entityEClass, ENTITY__FEATURES);
+		zutatEClass = createEClass(ZUTAT);
+		createEAttribute(zutatEClass, ZUTAT__NAME);
+		createEAttribute(zutatEClass, ZUTAT__KCAL);
 
-		entityModelEClass = createEClass(ENTITY_MODEL);
-		createEReference(entityModelEClass, ENTITY_MODEL__TYPES);
+		hauptbestandteilEClass = createEClass(HAUPTBESTANDTEIL);
 
-		featureEClass = createEClass(FEATURE);
-		createEAttribute(featureEClass, FEATURE__KIND);
-		createEReference(featureEClass, FEATURE__TYPE);
+		beilageEClass = createEClass(BEILAGE);
 
-		// Create enums
-		featureKindEEnum = createEEnum(FEATURE_KIND);
+		sauceEClass = createEClass(SAUCE);
+
+		gericht2ZutatEClass = createEClass(GERICHT2_ZUTAT);
+		createEAttribute(gericht2ZutatEClass, GERICHT2_ZUTAT__MENGE);
+		createEReference(gericht2ZutatEClass, GERICHT2_ZUTAT__GERICHT);
+		createEReference(gericht2ZutatEClass, GERICHT2_ZUTAT__ZUTAT);
+
+		epElementEClass = createEClass(EP_ELEMENT);
+		createEReference(epElementEClass, EP_ELEMENT__EPLAN_ELEMENT);
+		createEReference(epElementEClass, EP_ELEMENT__PERSON_ELEMENT);
+		createEReference(epElementEClass, EP_ELEMENT__ZUTAT_ELEMENT);
+		createEReference(epElementEClass, EP_ELEMENT__GERICHT_ELEMENT);
 	}
 
 	/**
@@ -332,35 +478,45 @@ public class ErnaehrungsplanPackageImpl extends EPackageImpl implements Ernaehru
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		typeEClass.getESuperTypes().add(this.getNamedElement());
-		dataTypeEClass.getESuperTypes().add(this.getType());
-		entityEClass.getESuperTypes().add(this.getType());
-		featureEClass.getESuperTypes().add(this.getNamedElement());
+		hauptbestandteilEClass.getESuperTypes().add(this.getZutat());
+		beilageEClass.getESuperTypes().add(this.getZutat());
+		sauceEClass.getESuperTypes().add(this.getZutat());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(namedElementEClass, NamedElement.class, "NamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNamedElement_Name(), ecorePackage.getEString(), "name", null, 1, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(ernaehrungsplanEClass, Ernaehrungsplan.class, "Ernaehrungsplan", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getErnaehrungsplan_Personen(), this.getPerson(), null, "personen", null, 1, 1, Ernaehrungsplan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getErnaehrungsplan_Gerichte(), this.getGericht(), null, "gerichte", null, 1, -1, Ernaehrungsplan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(typeEClass, Type.class, "Type", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(personEClass, Person.class, "Person", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPerson_Name(), ecorePackage.getEString(), "name", null, 1, 1, Person.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPerson_Kcal(), ecorePackage.getEInt(), "kcal", null, 0, 1, Person.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(dataTypeEClass, DataType.class, "DataType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(gerichtEClass, Gericht.class, "Gericht", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGericht_Name(), ecorePackage.getEString(), "name", null, 1, 1, Gericht.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGericht_Kommentar(), ecorePackage.getEString(), "kommentar", null, 0, 1, Gericht.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGericht_Zutaten(), this.getGericht2Zutat(), null, "zutaten", null, 1, -1, Gericht.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGericht_IstSalat(), ecorePackage.getEBoolean(), "istSalat", null, 0, 1, Gericht.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(entityEClass, Entity.class, "Entity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEntity_Abstract(), ecorePackage.getEBoolean(), "abstract", null, 1, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntity_Features(), this.getFeature(), null, "features", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(zutatEClass, Zutat.class, "Zutat", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getZutat_Name(), ecorePackage.getEString(), "name", null, 1, 1, Zutat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getZutat_Kcal(), ecorePackage.getEInt(), "kcal", null, 0, 1, Zutat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(entityModelEClass, EntityModel.class, "EntityModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEntityModel_Types(), this.getType(), null, "types", null, 0, -1, EntityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(hauptbestandteilEClass, Hauptbestandteil.class, "Hauptbestandteil", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getFeature_Kind(), this.getFeatureKind(), "kind", null, 1, 1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getFeature_Type(), this.getType(), null, "type", null, 1, 1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(beilageEClass, Beilage.class, "Beilage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		// Initialize enums and add enum literals
-		initEEnum(featureKindEEnum, FeatureKind.class, "FeatureKind");
-		addEEnumLiteral(featureKindEEnum, FeatureKind.ATTRIBUTE);
-		addEEnumLiteral(featureKindEEnum, FeatureKind.REFERENCE);
-		addEEnumLiteral(featureKindEEnum, FeatureKind.CONTAINMENT);
+		initEClass(sauceEClass, Sauce.class, "Sauce", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(gericht2ZutatEClass, Gericht2Zutat.class, "Gericht2Zutat", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGericht2Zutat_Menge(), ecorePackage.getEInt(), "menge", null, 1, 1, Gericht2Zutat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGericht2Zutat_Gericht(), this.getGericht(), null, "gericht", null, 1, 1, Gericht2Zutat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGericht2Zutat_Zutat(), this.getZutat(), null, "zutat", null, 1, 1, Gericht2Zutat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(epElementEClass, EpElement.class, "EpElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEpElement_EplanElement(), this.getErnaehrungsplan(), null, "eplanElement", null, 1, -1, EpElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpElement_PersonElement(), this.getPerson(), null, "personElement", null, 1, -1, EpElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpElement_ZutatElement(), this.getZutat(), null, "zutatElement", null, 1, -1, EpElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEpElement_GerichtElement(), this.getGericht(), null, "gerichtElement", null, 1, -1, EpElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

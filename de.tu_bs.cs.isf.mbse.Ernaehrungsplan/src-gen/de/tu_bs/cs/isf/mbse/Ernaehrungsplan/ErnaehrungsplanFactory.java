@@ -22,40 +22,76 @@ public interface ErnaehrungsplanFactory extends EFactory {
 	ErnaehrungsplanFactory eINSTANCE = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.impl.ErnaehrungsplanFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Data Type</em>'.
+	 * Returns a new object of class '<em>Ernaehrungsplan</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Data Type</em>'.
+	 * @return a new object of class '<em>Ernaehrungsplan</em>'.
 	 * @generated
 	 */
-	DataType createDataType();
+	Ernaehrungsplan createErnaehrungsplan();
 
 	/**
-	 * Returns a new object of class '<em>Entity</em>'.
+	 * Returns a new object of class '<em>Person</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Entity</em>'.
+	 * @return a new object of class '<em>Person</em>'.
 	 * @generated
 	 */
-	Entity createEntity();
+	Person createPerson();
 
 	/**
-	 * Returns a new object of class '<em>Entity Model</em>'.
+	 * Returns a new object of class '<em>Gericht</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Entity Model</em>'.
+	 * @return a new object of class '<em>Gericht</em>'.
 	 * @generated
 	 */
-	EntityModel createEntityModel();
+	Gericht createGericht();
 
 	/**
-	 * Returns a new object of class '<em>Feature</em>'.
+	 * Returns a new object of class '<em>Hauptbestandteil</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Feature</em>'.
+	 * @return a new object of class '<em>Hauptbestandteil</em>'.
 	 * @generated
 	 */
-	Feature createFeature();
+	Hauptbestandteil createHauptbestandteil();
+
+	/**
+	 * Returns a new object of class '<em>Beilage</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Beilage</em>'.
+	 * @generated
+	 */
+	Beilage createBeilage();
+
+	/**
+	 * Returns a new object of class '<em>Sauce</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Sauce</em>'.
+	 * @generated
+	 */
+	Sauce createSauce();
+
+	/**
+	 * Returns a new object of class '<em>Gericht2 Zutat</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Gericht2 Zutat</em>'.
+	 * @generated
+	 */
+	Gericht2Zutat createGericht2Zutat();
+
+	/**
+	 * Returns a new object of class '<em>Ep Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Ep Element</em>'.
+	 * @generated
+	 */
+	EpElement createEpElement();
 
 	/**
 	 * Returns the package supported by this factory.

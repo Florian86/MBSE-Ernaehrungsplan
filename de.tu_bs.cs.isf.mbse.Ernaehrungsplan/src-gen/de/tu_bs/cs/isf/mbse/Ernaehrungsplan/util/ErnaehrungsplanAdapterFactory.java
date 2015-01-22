@@ -68,28 +68,40 @@ public class ErnaehrungsplanAdapterFactory extends AdapterFactoryImpl {
 	protected ErnaehrungsplanSwitch<Adapter> modelSwitch =
 		new ErnaehrungsplanSwitch<Adapter>() {
 			@Override
-			public Adapter caseNamedElement(NamedElement object) {
-				return createNamedElementAdapter();
+			public Adapter caseErnaehrungsplan(Ernaehrungsplan object) {
+				return createErnaehrungsplanAdapter();
 			}
 			@Override
-			public Adapter caseType(Type object) {
-				return createTypeAdapter();
+			public Adapter casePerson(Person object) {
+				return createPersonAdapter();
 			}
 			@Override
-			public Adapter caseDataType(DataType object) {
-				return createDataTypeAdapter();
+			public Adapter caseGericht(Gericht object) {
+				return createGerichtAdapter();
 			}
 			@Override
-			public Adapter caseEntity(Entity object) {
-				return createEntityAdapter();
+			public Adapter caseZutat(Zutat object) {
+				return createZutatAdapter();
 			}
 			@Override
-			public Adapter caseEntityModel(EntityModel object) {
-				return createEntityModelAdapter();
+			public Adapter caseHauptbestandteil(Hauptbestandteil object) {
+				return createHauptbestandteilAdapter();
 			}
 			@Override
-			public Adapter caseFeature(Feature object) {
-				return createFeatureAdapter();
+			public Adapter caseBeilage(Beilage object) {
+				return createBeilageAdapter();
+			}
+			@Override
+			public Adapter caseSauce(Sauce object) {
+				return createSauceAdapter();
+			}
+			@Override
+			public Adapter caseGericht2Zutat(Gericht2Zutat object) {
+				return createGericht2ZutatAdapter();
+			}
+			@Override
+			public Adapter caseEpElement(EpElement object) {
+				return createEpElementAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -112,86 +124,128 @@ public class ErnaehrungsplanAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.NamedElement <em>Named Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan <em>Ernaehrungsplan</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.NamedElement
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan
 	 * @generated
 	 */
-	public Adapter createNamedElementAdapter() {
+	public Adapter createErnaehrungsplanAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Type <em>Type</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person <em>Person</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Type
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person
 	 * @generated
 	 */
-	public Adapter createTypeAdapter() {
+	public Adapter createPersonAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.DataType <em>Data Type</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht <em>Gericht</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.DataType
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht
 	 * @generated
 	 */
-	public Adapter createDataTypeAdapter() {
+	public Adapter createGerichtAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Entity <em>Entity</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat <em>Zutat</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Entity
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat
 	 * @generated
 	 */
-	public Adapter createEntityAdapter() {
+	public Adapter createZutatAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EntityModel <em>Entity Model</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Hauptbestandteil <em>Hauptbestandteil</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EntityModel
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Hauptbestandteil
 	 * @generated
 	 */
-	public Adapter createEntityModelAdapter() {
+	public Adapter createHauptbestandteilAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Feature <em>Feature</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Beilage <em>Beilage</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Feature
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Beilage
 	 * @generated
 	 */
-	public Adapter createFeatureAdapter() {
+	public Adapter createBeilageAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Sauce <em>Sauce</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Sauce
+	 * @generated
+	 */
+	public Adapter createSauceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat <em>Gericht2 Zutat</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat
+	 * @generated
+	 */
+	public Adapter createGericht2ZutatAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EpElement <em>Ep Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EpElement
+	 * @generated
+	 */
+	public Adapter createEpElementAdapter() {
 		return null;
 	}
 

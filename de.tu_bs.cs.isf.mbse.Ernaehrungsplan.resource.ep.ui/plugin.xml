@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension point="org.emftext.access.syntax.ui">
+		<metaInformationProvider class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpUIMetaInformation" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpUIMetaInformation">
+		</metaInformationProvider>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editors">
+		<editor class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpEditor" contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor" extensions="ep" icon="icons/editor_icon.gif" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpEditor" name="EMFText ep Editor">
+			<contentTypeBinding contentTypeId="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep">
+			</contentTypeBinding>
+		</editor>
+	</extension>
+	
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpPreferenceInitializer">
+		</initializer>
+	</extension>
+	
+	<extension point="org.eclipse.ui.preferencePages">
+		<page name="Ep Text Editor" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpPreferencePage" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpPreferencePage" category="org.eclipse.ui.preferencePages.GeneralTextEditor">
+		</page>
+		<page name="Syntax Coloring" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpSyntaxColoringPreferencePage" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpSyntaxColoringPreferencePage" category="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpPreferencePage">
+		</page>
+		<page name="Brackets" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpBracketPreferencePage" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpBracketPreferencePage" category="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpPreferencePage">
+		</page>
+		<page name="Content Assist" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpContentAssistPreferencePage" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpContentAssistPreferencePage" category="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpPreferencePage">
+		</page>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<category id="org.emftext.runtime.ui.EMFTextFileCategory" name="EMFText File">
+		</category>
+		<wizard category="org.emftext.runtime.ui.EMFTextFileCategory" icon="/icons/default_new_icon.gif" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpNewFileWizard" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpNewFileWizard" name="EMFText .ep file">
+		</wizard>
+		<category id="org.emftext.runtime.ui.EMFTextProjectCategory" name="EMFText Project">
+		</category>
+		<wizard category="org.emftext.runtime.ui.EMFTextProjectCategory" icon="/icons/default_new_icon.gif" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpNewProjectWizard" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpNewProjectWizard" name="EMFText ep project" project="true">
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.ide.markerResolution">
+		<markerResolutionGenerator class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpMarkerResolutionGenerator" markerType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.problem">
+		</markerResolutionGenerator>
+	</extension>
+	
+	<extension point="org.eclipse.core.filebuffers.annotationModelCreation">
+		<factory class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpAnnotationModelFactory" extensions="ep">
+		</factory>
+	</extension>
+	
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep" name=".ep File" base-type="org.eclipse.core.runtime.text" file-extensions="ep">
+		</content-type>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editors.documentProviders">
+		<provider class="org.eclipse.ui.editors.text.TextFileDocumentProvider" extensions="ep" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.provider">
+		</provider>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editors.annotationTypes">
+		<type name="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.occurences">
+		</type>
+		<type name="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.occurences.declaration" super="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.occurences">
+		</type>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+		<specification annotationType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.occurences" label="Occurrences (in .ep files)" icon="/icons/occurrence_icon.gif" textPreferenceKey="ep.occurrenceIndication" textPreferenceValue="false" highlightPreferenceKey="ep.occurrenceHighlighting" highlightPreferenceValue="true" contributesToHeader="false" overviewRulerPreferenceKey="ep.occurrenceIndicationInOverviewRuler" overviewRulerPreferenceValue="true" verticalRulerPreferenceKey="ep.occurrenceIndicationInVerticalRuler" verticalRulerPreferenceValue="false" colorPreferenceKey="ep.occurrenceIndicationColor" colorPreferenceValue="212,212,212" presentationLayer="4" showInNextPrevDropdownToolbarActionKey="ep.showOccurrenceInNextPrevDropdownToolbarAction" showInNextPrevDropdownToolbarAction="true" isGoToNextNavigationTargetKey="ep.isOccurrenceGoToNextNavigationTarget" isGoToNextNavigationTarget="false" isGoToPreviousNavigationTargetKey="ep.isOccurrenceGoToPreviousNavigationTarget" isGoToPreviousNavigationTarget="false" textStylePreferenceKey="ep.occurrenceTextStyle" textStylePreferenceValue="NONE">
+		</specification>
+		<specification annotationType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.occurences.declaration" label="Declarations (in .ep files)" textPreferenceKey="ep.declarationIndication" textPreferenceValue="false" highlightPreferenceKey="ep.declarationHighlighting" highlightPreferenceValue="true" overviewRulerPreferenceKey="ep.declarationIndicationInOverviewRuler" overviewRulerPreferenceValue="true" verticalRulerPreferenceKey="ep.declarationIndicationInVerticalRuler" verticalRulerPreferenceValue="false" colorPreferenceKey="ep.declarationIndicationColor" colorPreferenceValue="240,216,168" presentationLayer="4" textStylePreferenceKey="ep.declarationTextStyle" textStylePreferenceValue="NONE">
+		</specification>
+	</extension>
+	
+	<extension point="org.eclipse.ui.commands">
+		<category description="All commands belonging to Ep" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.command.category" name="Ep">
+		</category>
+		<command categoryId="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.command.category" description="Toggle comment of the selected lines" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.command.togglecomment" name="Toggle Comment">
+		</command>
+	</extension>
+	
+	<extension point="org.eclipse.ui.handlers">
+		<handler class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpToggleCommentHandler" commandId="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.command.togglecomment">
+		</handler>
+	</extension>
+	
+	<extension point="org.eclipse.ui.contexts">
+		<context name="Editing Ep Files" description="Editing Ep Files Context" parentId="org.eclipse.ui.textEditorScope" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.EditorScope">
+		</context>
+	</extension>
+	
+	<extension point="org.eclipse.ui.bindings">
+		<key sequence="M1+7" commandId="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.command.togglecomment" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" contextId="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.EditorScope">
+		</key>
+	</extension>
+	
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+		<launchConfigurationTypeImage icon="/icons/launch_type_icon.gif" configTypeID="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.launchConfigurationType" id="de.tu_bs.cs.isf.mbse.ep.launchImage">
+		</launchConfigurationTypeImage>
+	</extension>
+	
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+		<launchConfigurationTabGroup type="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.launchConfigurationType" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.launch.EpLaunchConfigurationTabGroup" id="de.tu_bs.cs.isf.mbse.ep.launchConfigurationTabGroup" helpContextId="de.tu_bs.cs.isf.mbse.ep.launchConfigHelpContext">
+			<launchMode mode="debug" perspective="org.eclipse.debug.ui.DebugPerspective" description="Debug ep model.">
+			</launchMode>
+			<launchMode mode="run" description="Run ep model.">
+			</launchMode>
+		</launchConfigurationTabGroup>
+	</extension>
+	
+	<extension point="org.eclipse.debug.ui.launchShortcuts">
+		<shortcut label="ep Application" icon="/icons/launch_shortcut_icon.gif" helpContextId="de.tu_bs.cs.isf.mbse.ep.launch" modes="run,debug" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.launch.EpLaunchShortcut" description="Launch a ep model" id="de.tu_bs.cs.isf.mbse.ep.launchShortcut">
+			<description description="Run ep model" mode="run">
+			</description>
+			<description description="Debug ep model" mode="debug">
+			</description>
+			<contextualLaunch>
+				<enablement>
+					<with variable="selection">
+						<count value="1">
+						</count>
+						<iterate>
+							<test property="de.tu_bs.cs.isf.mbse.ep.isLaunchable">
+							</test>
+						</iterate>
+					</with>
+				</enablement>
+			</contextualLaunch>
+			<configurationType id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.launchConfigurationType">
+			</configurationType>
+		</shortcut>
+	</extension>
+	
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester id="de.tu_bs.cs.isf.mbse.ep.PropertyTester" type="java.lang.Object" namespace="de.tu_bs.cs.isf.mbse.ep" properties="isLaunchable" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpPropertyTester">
+		</propertyTester>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editors.annotationTypes">
+		<type name="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.debug.lineBreakpoint" markerType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.debug.lineBreakpoint.marker" super="org.eclipse.debug.core.breakpoint">
+		</type>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+		<specification annotationType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.debug.lineBreakpoint" label="Breakpoints (in .ep files)" icon="/icons/breakpoint_icon.gif" textPreferenceKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.lineBreakpoint" textPreferenceValue="false" highlightPreferenceKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.lineBreakpointHighlighting" highlightPreferenceValue="true" contributesToHeader="false" overviewRulerPreferenceKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.lineBreakpointIndicationInOverviewRuler" overviewRulerPreferenceValue="true" verticalRulerPreferenceKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.lineBreakpointIndicationInVerticalRuler" verticalRulerPreferenceValue="false" colorPreferenceKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.lineBreakpointColor" colorPreferenceValue="212,212,212" presentationLayer="4" showInNextPrevDropdownToolbarActionKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.showLineBreakpointInNextPrevDropdownToolbarAction" showInNextPrevDropdownToolbarAction="true" isGoToNextNavigationTargetKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.isLineBreakpointGoToNextNavigationTarget" isGoToNextNavigationTarget="false" isGoToPreviousNavigationTargetKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.isLineBreakpointGoToPreviousNavigationTarget" isGoToPreviousNavigationTarget="false" textStylePreferenceKey="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.lineBreakpointTextStyle" textStylePreferenceValue="NONE">
+		</specification>
+	</extension>
+	
+	<extension point="org.eclipse.core.runtime.adapters">
+		<factory adaptableType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpEditor" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.debug.EpAdapterFactory">
+			<adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget">
+			</adapter>
+		</factory>
+		<factory adaptableType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.debug.EpDebugVariable" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.debug.EpAdapterFactory">
+			<adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider">
+			</adapter>
+		</factory>
+		<factory adaptableType="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.debug.EpDebugVariable" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.debug.EpAdapterFactory">
+			<adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider">
+			</adapter>
+		</factory>
+	</extension>
+	
+	<extension point="org.eclipse.ui.popupMenus">
+		<viewerContribution id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.RulerPopupActions" targetID="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.EditorRuler">
+			<action id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.toggleBreakpointAction" icon="icons/breakpoint_icon.gif" label="Toggle Breakpoint" class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate" menubarPath="debug">
+			</action>
+		</viewerContribution>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editorActions">
+		<editorContribution targetID="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.EpEditor" id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.BreakpointRulerActions">
+			<action id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.debug.RulerToggleBreakpointAction" label="Add breakpoint" class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate" actionID="RulerDoubleClick">
+			</action>
+		</editorContribution>
+	</extension>
+	
+	<extension point="org.eclipse.debug.ui.debugModelPresentations">
+		<debugModelPresentation id="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.debugModel" class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.ui.debug.EpDebugModelPresentation">
+		</debugModelPresentation>
+	</extension>
+	
+</plugin>

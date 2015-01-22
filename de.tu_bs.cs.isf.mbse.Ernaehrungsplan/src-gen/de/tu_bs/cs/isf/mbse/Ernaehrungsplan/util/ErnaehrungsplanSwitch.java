@@ -66,45 +66,60 @@ public class ErnaehrungsplanSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case ErnaehrungsplanPackage.NAMED_ELEMENT: {
-				NamedElement namedElement = (NamedElement)theEObject;
-				T result = caseNamedElement(namedElement);
+			case ErnaehrungsplanPackage.ERNAEHRUNGSPLAN: {
+				Ernaehrungsplan ernaehrungsplan = (Ernaehrungsplan)theEObject;
+				T result = caseErnaehrungsplan(ernaehrungsplan);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ErnaehrungsplanPackage.TYPE: {
-				Type type = (Type)theEObject;
-				T result = caseType(type);
-				if (result == null) result = caseNamedElement(type);
+			case ErnaehrungsplanPackage.PERSON: {
+				Person person = (Person)theEObject;
+				T result = casePerson(person);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ErnaehrungsplanPackage.DATA_TYPE: {
-				DataType dataType = (DataType)theEObject;
-				T result = caseDataType(dataType);
-				if (result == null) result = caseType(dataType);
-				if (result == null) result = caseNamedElement(dataType);
+			case ErnaehrungsplanPackage.GERICHT: {
+				Gericht gericht = (Gericht)theEObject;
+				T result = caseGericht(gericht);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ErnaehrungsplanPackage.ENTITY: {
-				Entity entity = (Entity)theEObject;
-				T result = caseEntity(entity);
-				if (result == null) result = caseType(entity);
-				if (result == null) result = caseNamedElement(entity);
+			case ErnaehrungsplanPackage.ZUTAT: {
+				Zutat zutat = (Zutat)theEObject;
+				T result = caseZutat(zutat);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ErnaehrungsplanPackage.ENTITY_MODEL: {
-				EntityModel entityModel = (EntityModel)theEObject;
-				T result = caseEntityModel(entityModel);
+			case ErnaehrungsplanPackage.HAUPTBESTANDTEIL: {
+				Hauptbestandteil hauptbestandteil = (Hauptbestandteil)theEObject;
+				T result = caseHauptbestandteil(hauptbestandteil);
+				if (result == null) result = caseZutat(hauptbestandteil);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ErnaehrungsplanPackage.FEATURE: {
-				Feature feature = (Feature)theEObject;
-				T result = caseFeature(feature);
-				if (result == null) result = caseNamedElement(feature);
+			case ErnaehrungsplanPackage.BEILAGE: {
+				Beilage beilage = (Beilage)theEObject;
+				T result = caseBeilage(beilage);
+				if (result == null) result = caseZutat(beilage);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ErnaehrungsplanPackage.SAUCE: {
+				Sauce sauce = (Sauce)theEObject;
+				T result = caseSauce(sauce);
+				if (result == null) result = caseZutat(sauce);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ErnaehrungsplanPackage.GERICHT2_ZUTAT: {
+				Gericht2Zutat gericht2Zutat = (Gericht2Zutat)theEObject;
+				T result = caseGericht2Zutat(gericht2Zutat);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ErnaehrungsplanPackage.EP_ELEMENT: {
+				EpElement epElement = (EpElement)theEObject;
+				T result = caseEpElement(epElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -113,92 +128,137 @@ public class ErnaehrungsplanSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Ernaehrungsplan</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Ernaehrungsplan</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNamedElement(NamedElement object) {
+	public T caseErnaehrungsplan(Ernaehrungsplan object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Person</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Person</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseType(Type object) {
+	public T casePerson(Person object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Data Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Gericht</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Data Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Gericht</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseDataType(DataType object) {
+	public T caseGericht(Gericht object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Entity</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Zutat</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Entity</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Zutat</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEntity(Entity object) {
+	public T caseZutat(Zutat object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Entity Model</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Hauptbestandteil</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Entity Model</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Hauptbestandteil</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEntityModel(EntityModel object) {
+	public T caseHauptbestandteil(Hauptbestandteil object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Feature</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Beilage</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Feature</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Beilage</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseFeature(Feature object) {
+	public T caseBeilage(Beilage object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Sauce</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Sauce</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSauce(Sauce object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Gericht2 Zutat</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Gericht2 Zutat</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGericht2Zutat(Gericht2Zutat object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Ep Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Ep Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEpElement(EpElement object) {
 		return null;
 	}
 

@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated Ernaehrungsplan -->
       <package
-            uri="http://www.emftext.org/language/Ernaehrungsplan"
+            uri="http://www.example.org/metamodel"
             class="de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage"
             genModel="metamodel/Ernaehrungsplan.genmodel"/>
    </extension>
