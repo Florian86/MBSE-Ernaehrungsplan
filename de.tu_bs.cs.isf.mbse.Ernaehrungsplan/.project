@@ -31,4 +31,11 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.emftext.sdk.concretesyntax.resource.cs.nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep</name>
+			<type>2</type>
+			<location>/Users/florianfranke/Documents/MBSE-Ernaehrungsplan/de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep</location>
+		</link>
+	</linkedResources>
 </projectDescription>
