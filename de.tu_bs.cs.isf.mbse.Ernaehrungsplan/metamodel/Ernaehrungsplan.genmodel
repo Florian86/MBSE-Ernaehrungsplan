@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.tu_bs.cs.isf.mbse.Ernaehrungsplan/src-gen"
+    modelPluginID="de.tu_bs.cs.isf.mbse.Ernaehrungsplan" modelName="Ernaehrungsplan"
+    complianceLevel="5.0" copyrightFields="false">
+  <genPackages prefix="Ernaehrungsplan" basePackage="de.tu_bs.cs.isf.mbse" disposableProviderFactory="true"
+      ecorePackage="Ernaehrungsplan.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Ernaehrungsplan.ecore#//FeatureKind">
+      <genEnumLiterals ecoreEnumLiteral="Ernaehrungsplan.ecore#//FeatureKind/attribute"/>
+      <genEnumLiterals ecoreEnumLiteral="Ernaehrungsplan.ecore#//FeatureKind/reference"/>
+      <genEnumLiterals ecoreEnumLiteral="Ernaehrungsplan.ecore#//FeatureKind/containment"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="Ernaehrungsplan.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//NamedElement/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Ernaehrungsplan.ecore#//Type"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//DataType"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Entity">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Entity/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Entity/features"/>
+    </genClasses>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//EntityModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//EntityModel/types"/>
+    </genClasses>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Feature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Feature/kind"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Feature/type"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
