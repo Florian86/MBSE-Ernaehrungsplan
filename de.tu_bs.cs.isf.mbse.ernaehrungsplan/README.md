@@ -1,2 +1,0 @@
-Modellbasierte Softwareentwicklung
-==================================
