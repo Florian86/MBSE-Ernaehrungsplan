@@ -5,26 +5,37 @@
     complianceLevel="5.0" copyrightFields="false">
   <genPackages prefix="Ernaehrungsplan" basePackage="de.tu_bs.cs.isf.mbse" disposableProviderFactory="true"
       ecorePackage="Ernaehrungsplan.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Ernaehrungsplan.ecore#//FeatureKind">
-      <genEnumLiterals ecoreEnumLiteral="Ernaehrungsplan.ecore#//FeatureKind/attribute"/>
-      <genEnumLiterals ecoreEnumLiteral="Ernaehrungsplan.ecore#//FeatureKind/reference"/>
-      <genEnumLiterals ecoreEnumLiteral="Ernaehrungsplan.ecore#//FeatureKind/containment"/>
-    </genEnums>
-    <genClasses image="false" ecoreClass="Ernaehrungsplan.ecore#//NamedElement">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//NamedElement/name"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Ernaehrungsplan">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Ernaehrungsplan/personen"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Ernaehrungsplan/gerichte"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="Ernaehrungsplan.ecore#//Type"/>
-    <genClasses ecoreClass="Ernaehrungsplan.ecore#//DataType"/>
-    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Entity">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Entity/abstract"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Entity/features"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Person">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Person/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Person/kcal"/>
     </genClasses>
-    <genClasses ecoreClass="Ernaehrungsplan.ecore#//EntityModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//EntityModel/types"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Gericht">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Gericht/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Gericht/kommentar"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Gericht/zutaten"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Gericht/istSalat"/>
     </genClasses>
-    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Feature">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Feature/kind"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Feature/type"/>
+    <genClasses image="false" ecoreClass="Ernaehrungsplan.ecore#//Zutat">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Zutat/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Zutat/kcal"/>
+    </genClasses>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Hauptbestandteil"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Beilage"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Sauce"/>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//Gericht2Zutat">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ernaehrungsplan.ecore#//Gericht2Zutat/menge"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Gericht2Zutat/gericht"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//Gericht2Zutat/zutat"/>
+    </genClasses>
+    <genClasses ecoreClass="Ernaehrungsplan.ecore#//EpElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//EpElement/eplanElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//EpElement/personElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//EpElement/zutatElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ernaehrungsplan.ecore#//EpElement/gerichtElement"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

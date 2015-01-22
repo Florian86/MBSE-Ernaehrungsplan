@@ -1,16 +1,41 @@
-SYNTAXDEF Ernaehrungsplan
-FOR <http://www.emftext.org/language/Ernaehrungsplan>
-START EntityModel
+SYNTAXDEF ep
+FOR <http://www.example.org/metamodel>
+START EpElement
 
-
-OPTIONS {
+OPTIONS{
 	reloadGeneratorModel = "true";
+	generateCodeFromGeneratorModel = "true";
 }
 
 
 RULES {
-	EntityModel ::= "model" types*;
-	Entity ::= abstract["abstract" : ""] "entity" name[] "{" features* "}";
-	DataType ::= "datatype" name[] ";";
-	Feature ::= kind[attribute:"att", reference:"ref", containment:"cont"] type[] name[] ";";
+	EpElement ::= "Ernaehrungsplan" "{"  
+					personElement+
+					zutatElement+
+					gerichtElement+
+					eplanElement+
+				   "}";
+				   
+	Person ::= "Person" "(" name[] "," kcal[]?")";
+	
+	Hauptbestandteil ::= "Hauptbestandteil" "(" name[] "," kcal[]?")";
+	
+	Beilage ::= "Beilage" "(" name[] "," kcal[]?")";
+	
+	Sauce ::= "Sauce" "(" name[] "," kcal[]?")";
+	
+	Gericht ::= "Gericht" "{"
+				"name" name[]
+				"kommentar" kommentar['"','"']?
+				"istSalat" istSalat["ja":"nein"]?
+				"besteht aus" "{"zutaten+ "}"
+				"}";
+	
+	Ernaehrungsplan ::= "eplan" "{"
+						"person" "(" personen[] ")"
+						"gerichte" "(" gerichte[] ("," gerichte[])* ")"
+						"}";
+	
+	Gericht2Zutat ::= "zutat" "("menge[]"," zutat[] "," gericht[] ")";
+	
 }
