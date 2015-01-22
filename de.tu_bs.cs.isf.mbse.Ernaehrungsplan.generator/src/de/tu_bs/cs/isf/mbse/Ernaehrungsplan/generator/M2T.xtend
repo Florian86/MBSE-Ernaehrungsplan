@@ -3,27 +3,48 @@ package de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.EpElement
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat
 import java.io.File
 import java.io.FileOutputStream
+import java.util.ArrayList
+import java.util.HashMap
 import java.util.List
+import java.util.Map
 
 class M2T {
 	
 	ModelLoader loader = new ModelLoader();
-	List<Ernaehrungsplan> eplans; 		// alle im Modell vorhandenen Ernährungspläne
-	List<Gericht> meals;
+	
+	List<Ernaehrungsplan> eplans; 					// alle im Modell vorhandenen Ernährungspläne
+	List<Gericht> meals;	// hier sollen sieben Random-Gerichte drin sein
+	List<Gericht> salads;	// hier sollen zwei Salate und null-Objekte drin sein
+	
 	EpElement epElement;
+	
 	File targetLatexFile;
 	File targetHtmlFile_EP;
 	File targetHtmlFile_EL;
+	
 	FileOutputStream latexStream; 	
 	FileOutputStream htmlStream_EP;
 	FileOutputStream htmlStream_EL;
+	
 	String latexOutput;
 	String htmlOutput_EP;
 	String htmlOutput_EL;
-
-	String current_personname;		
+	
+	// Name der aktuellen Person eines Ernährungsplans
+	String current_personname;						
+	
+	// Listen für die berechnete Kalorienanzahl eines Gerichts oder eines Salats	
+	List<Integer> mealsKcals;
+	List<Integer> saladsKcals;
+	// Berechnete Kalorienanzahl, die in der Woche verbraucht wurden
+	int usedKcalWeek = 0;	
+	
+	// Verwendete Zutaten mit ihrer im Ernährungsplan vorkommenden Menge für die 
+	// Einkaufsliste; eine Zutat ist der Key, die Menge davon der Value
+	Map<Zutat, Integer> amoutOfIngredients; 
 
 	def M2T() {
 		
@@ -40,7 +61,7 @@ class M2T {
 		
 		// Prüfen ob die Datei existiert
 		if (!fileExists(folder, file)) {
-			println("Datei nicht vorhanden " + folder + "/" + file + ".ep")
+			println("Datei nicht vorhanden " + folder + "" + file)
 			return
 		}
 		
@@ -48,37 +69,52 @@ class M2T {
 		this.epElement = loader.loadModel(folder, file);
         this.eplans = this.epElement.eplanElement;
         
-        // ------------ zu Testzwecken --------------
-        
-//        for (e: this.eplans) {
-//        	// Aufruf, neues Modell
-//        	// println(e.personen.name + ", " + e.personen.kcal)
-//        	for (p:e.personen) {
-//        		println(p.name + ", " + p.kcal)
-//        	}
-//        	for (g: e.gerichte) {
-//        		println(g.name + ", Salat? " + g.istSalat + ", " + g.kommentar)
-//        		for (z:g.zutaten) {
-//        		// Zutatennamen der Gerichte: epElement.gerichtElement.zutaten.zutat.name
-//        		// zutaten ist die Beziehung zwischen Gericht und Gericht2Zutat
-//        		// zutat ist die Beziehung zwischen Gericht2Zutat und der abtrakten 
-//        		// Klasse Zutat, die die Attribute name und kcal hat
-//        		println(z.zutat.name + ", " + z.menge +", " + z.zutat.kcal)
-//           		}  
-//        	}
-//        }
-                
-        //TODO: Hier müsste schon ein zufällige Auswahl der Gerichte stattfinden, da die Auswahl für HTML und Latex gleich sein muss
-        
+        // alle in der ep-Datei vorhandenen Ernährungspläne durchlaufen
         for (e: this.eplans) {
-        
+        	
+        	// aktuellen Namen zwischenspeichern
         	this.current_personname = e.personen.name
         	
-        	this.meals = e.gerichte;
-        
+        	// alles hier initialisieren, damit jeder Ernährungsplan eigene Werte hat
+        	this.salads = new ArrayList<Gericht>
+        	this.meals = new ArrayList<Gericht>
+        	this.amoutOfIngredients = new HashMap<Zutat, Integer>()
+        	this.saladsKcals = new ArrayList<Integer>
+        	this.mealsKcals = new ArrayList<Integer>
+        	this.usedKcalWeek = 0;	
+        	
+        	// Aufteilung der Gerichte in normale Gerichte und Salate, um später die Tabelle 
+        	// einfacher aufbauen zu können
+        	for (g: e.gerichte) {
+        		if (g.isIstSalat) {
+        			this.salads.add(g)
+        		} 
+        		else {
+        			this.meals.add(g) 
+        		}
+        	} 
+        	
+			//TODO Zufällige Auswahl von sieben Gerichten und zwei Salaten
+			// d.h. this.meals enthält dann nur noch sieben Elemente und this.salads nur zwei
+			// this.salads braucht aber auch sieben Elemente, wegen des Tabellenaufbaus
+			// zufällige Auswahl, an welchem Tag es Salat gibt, bzw. so gewählt, dass in Kombination mit 
+			// einem Gericht, der Tagesbedarf nicht überschritten wird
+			// an einem Tag ohne Salat enthält this.salads ein null-Object
+			
+			// Notlösung: entsprechend viele Null-Objekte erst einmal hinten angefügt
+			if (this.salads.length < 7) {
+				for (var i = this.salads.length-1; i < 6; i++) {
+					this.salads.add(null)
+				}
+			}  	
+			
+			// die Anzahl der Kalorien für die Gerichte der Woche berechnen
+        	this.computeKcals()
+        	// die Mengenangaben für alle benötigten Zutaten berechnen
+        	this.computeAmout()        	
+        	         
 	        //--------------------LaTeX--------------------
 	        targetLatexFile = new File("output" + File.separator + this.current_personname + "_Latex.tex");
-	        										// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".tex"); 
 	        targetLatexFile.createNewFile(); 						// Datei erstellen
 	        latexStream = new FileOutputStream(targetLatexFile); 	// um Zeug in die Datei zu schreiben
 	        
@@ -87,8 +123,8 @@ class M2T {
 	        latexStream.close(); 									// Stream schließen und Resourcen freigeben
 	        
 	        //--------------------HTML--------------------
-	        targetHtmlFile_EP = new File("output" + File.separator + this.current_personname + "_EP_HTML.html");  
-	                   								// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".html");
+	        // ------ Ernährungsplan ------
+	        targetHtmlFile_EP = new File("output" + File.separator + this.current_personname + "_EP_HTML.html"); 
 	        targetHtmlFile_EP.createNewFile();
 	        htmlStream_EP = new FileOutputStream(targetHtmlFile_EP);
 	        
@@ -96,8 +132,8 @@ class M2T {
 	        htmlStream_EP.write(htmlOutput_EP.getBytes());
 	        htmlStream_EP.close();
 	        
-	        targetHtmlFile_EL = new File("output" + File.separator + this.current_personname + "_EL_HTML.html");  
-	                   								// new File(folder + File.separator + file + "_" + p.getName().toLowerCase + ".html");
+	        // ------ Einkaufsliste ------
+	        targetHtmlFile_EL = new File("output" + File.separator + this.current_personname + "_EL_HTML.html");
 	        targetHtmlFile_EL.createNewFile();
 	        htmlStream_EL = new FileOutputStream(targetHtmlFile_EL);
 	        
@@ -111,7 +147,7 @@ class M2T {
 	
 	/*
 	 * "Startmethode" der Latex-Generierung
-	 * ohne p erstmal !!!!!!!!!!
+	 * aktueller Ernährungsplan wird übergeben
 	 */
 	def String generateLatex(Ernaehrungsplan e){
         '''
@@ -125,10 +161,9 @@ class M2T {
     }
     
     /*
-     * 
+     * Latexkopf mit allen Einstellungen, Packages, ... 
      */
     def String generateLatexHead(){
-        //TODO: hier kommt documentclass, usepackages etc. rein (alles was vor begin(document) kommt), einfach copy-paste aus Latex
         
         '''
 		\documentclass[10pt, a4paper]{article}
@@ -153,36 +188,98 @@ class M2T {
 		'''
     }
     
-	/*
-	 * Generiert den Ernährungsplan für Latex.
-	 */
-	def String generateLatexSchedule(Ernaehrungsplan e) {
-		//TODO: Latex-Code für den Wochenplan; zu befüllen mit den Informationen aus unserer Modellinstanz "plan" (später)
+    /*
+     * Berechnung der Kalorienanzahl der jeweiligen Gerichte
+     */
+    def computeKcals() {
+    	
+    	//TODO Listen sollten hier jeweils sieben Elemente enthalten 
 		
-		//TODO Liste mit Gerichten darf hier schon nur 7 Elemente enthalten!!
-		
-		var kcal = 0
-		var int[] kcal_array = newIntArrayOfSize(7)
-		var String[] name_array = newArrayOfSize(7)
-		
+		var kcal = 0		
 		var i = 0;
 		
+		// alle Gerichte durchlaufen
 		for(g: this.meals) {
+			// alle Zutaten durchlaufen
 			for (z: g.zutaten) {
+				// kcal für ein Gericht ausrechnen (kcal sind pro hundert gramm, also multiplizieren) 
 				kcal = kcal + (z.zutat.kcal * z.menge/100)
 			}
+			// TODO IF-Bedingung mit Zähler kann weg, wenn this.meals bereits nur sieben Elemente enthält
+			// hier: Notlösung, nur die ersten sieben Gerichte der Liste verwenden
 			if (i <= 6) {
-				name_array.set(i, g.name)
-				kcal_array.set(i, kcal)
+				// berechnete Kalorienanzahl für ein Gericht in die Liste speichern
+				this.mealsKcals.add(kcal)
+				// Kalorienanzahl zu den bereits gebrauchten zurechnen
+				this.usedKcalWeek = this.usedKcalWeek + kcal
 				i++
 			}
 			kcal = 0
 		}
 		
-		// kcal sind pro hundert gramm, also multiplizieren 
-		// 200g Kartoffeln 73kcal + 500g Lammfleisch 73kcal	
-		// = 200/100*73 + 500/100*73 = 2*73 + 5*73 = 146 + 365 = 511kcal
-		
+		// wie für die Gerichte
+		for (i = 0; i < 7; i++) {
+			// da es nur zwei Salate pro Woche geben soll, werden die NULL-Elemente abgefangen
+			if (this.salads.get(i) != null) {
+				for (z: this.salads.get(i).zutaten) {
+					// kcal für ein Gericht ausrechnen
+					kcal = kcal + (z.zutat.kcal * z.menge/100)
+				}
+				this.saladsKcals.add(kcal)
+				this.usedKcalWeek = this.usedKcalWeek + kcal
+				kcal = 0
+			} else {
+				// Bei einem Null-Objekt einfach 0 Kalorien einfügen
+				this.saladsKcals.add(kcal)	
+			}			
+		}
+    }
+    
+    /*
+     * Menge der benötigten Zutaten für die Einkaufsliste berechnen
+     */
+    def computeAmout() {
+    	
+    	var amount = 0
+    	
+    	// alle Gerichte durchlaufen
+		for (g: this.meals) {
+			// alle Zutaten durchlaufen
+			for (g2z: g.zutaten) {
+				// wenn es die Zutat noch nicht als Key gibt (die soll ja nur einmal
+				// in der Liste auftauchen, deshalb Key), dann wird sie als Key mit der 
+				// entsprechenden Menge zugefügt
+				if (!this.amoutOfIngredients.containsKey(g2z.zutat)) {
+					this.amoutOfIngredients.put(g2z.zutat, g2z.menge)				
+				} else {
+					// gibt es den Key schonmal, müssen die Mengen addiert werden, 
+					// also alter + neuer Wert
+					amount = this.amoutOfIngredients.get(g2z.zutat) + g2z.menge
+					this.amoutOfIngredients.replace(g2z.zutat, amount)
+				}
+			}
+		}
+		// gleiches für die Salate
+		for (s: this.salads) {
+			if (s != null) {
+				for (g2z: s.zutaten) {
+					if (!this.amoutOfIngredients.containsKey(g2z.zutat)) {
+						this.amoutOfIngredients.put(g2z.zutat, g2z.menge)				
+					} else {
+						amount = this.amoutOfIngredients.get(g2z.zutat) + g2z.menge
+						this.amoutOfIngredients.replace(g2z.zutat, amount)
+					}
+				}
+			}
+		}
+
+    }
+    
+	/*
+	 * Generiert den Ernährungsplan für Latex.
+	 */
+	def String generateLatexSchedule(Ernaehrungsplan e) {
+						
 		'''
 		
 		\begin{landscape}
@@ -190,7 +287,6 @@ class M2T {
 			{\Large \textbf{Ernährungsplan}} \medskip \\
 			«this.current_personname»
 			\\ Empfohlener Energiebedarf pro Woche: 
-		
 			«e.personen.kcal»
 			 Kalorien $\rightarrow$ 
 			«e.personen.kcal/7»
@@ -202,92 +298,56 @@ class M2T {
 		%		&  &  &  &  &  &  \\
 				&  &  &  &  &  &  \\
 				\hline
-				«name_array.get(0)»	\newline {\scriptsize «kcal_array.get(0)» kcal} 
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 100g Spaghetti
-					\item 200g Bolognesesoße 
-					\smallskip
-				\end{itemize}
-				\end{small}
-				\begin{scriptsize}
-				Anmerkung: Gericht ist in Buch blablabla auf S.30 zu finden.
-				\end{scriptsize}
-				& «name_array.get(1)» \newline {\scriptsize «kcal_array.get(1)» kcal} 
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 500g Kartoffeln
-					\item 200g Rührei 
-					\item 100g Spinat
-				\end{itemize}
-				\end{small}
-				& «name_array.get(2)» \newline {\scriptsize «kcal_array.get(2)» kcal}  
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 300g Pfannkuchen
-				\end{itemize}
-				\end{small}
-				&  «name_array.get(3)» \newline {\scriptsize «kcal_array.get(3)» kcal}  
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 500g Kartoffeln
-					\item 200g Rührei 
-					\item 100g Spinat
-				\end{itemize}
-				\end{small}
-				&  «name_array.get(4)» \newline {\scriptsize «kcal_array.get(4)» kcal}  
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 500g Kartoffelbrei
-					\item 200g Rührei 
-					\item 100g Spinat
-				\end{itemize}
-				\end{small}
-				&  «name_array.get(5)» \newline {\scriptsize «kcal_array.get(5)» kcal}  
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 500g Zungenragout
-					\item 200g Rührei 
-					\item 100g Spinat
-				\end{itemize}
-				\end{small}
-				&  «name_array.get(6)» \newline {\scriptsize «kcal_array.get(6)» kcal}  
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 500g Kartoffeln
-					\item 200g Rührei 
-					\item 100g Rotkohl 
-				\end{itemize}
-				\end{small} 
-				\\
+				«FOR j : 0 ..< 7»
+					«this.meals.get(j).name» \newline {\scriptsize «this.mealsKcals.get(j)» kcal}
+					\begin{small}
+						\begin{itemize}
+						\itemsep0pt
+							«FOR g2z:this.meals.get(j).zutaten»
+								\item «g2z.menge»g «g2z.zutat.name»
+							«ENDFOR»
+						\end{itemize}
+					\end{small}
+					«IF this.meals.get(j).kommentar.length > 0»
+						\begin{scriptsize}
+							Anmerkung: «this.meals.get(j).kommentar»
+						\end{scriptsize}
+					«ENDIF»
+					«IF j < 6»
+						&
+					«ELSE»
+						\\
+					«ENDIF»	
+				«ENDFOR»
 				\hline
-				& & Salat \newline {\scriptsize 300 kcal} 
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 500g Salat
-					\item 50ml Dressing
-				\end{itemize}
-				\end{small}
-				& & & & Salat \newline {\scriptsize 300 kcal}  
-				\begin{small}
-				\begin{itemize}
-				\itemsep0pt
-					\item 500g Salat
-					\item 50ml Dressing
-				\end{itemize}
-				\end{small}
-				\\
+				«FOR j : 0 ..< 7»
+					«IF this.salads.get(j) != null»
+						«this.salads.get(j).name» \newline {\scriptsize «this.saladsKcals.get(j)» kcal}
+						\begin{small}
+							\begin{itemize}
+							\itemsep0pt
+								«FOR g2z:this.salads.get(j).zutaten»
+									\item «g2z.menge»g «g2z.zutat.name»
+								«ENDFOR»
+							\end{itemize}
+						\end{small}
+						«IF this.salads.get(j).kommentar.length > 0»
+							\begin{scriptsize}
+								Anmerkung: «this.salads.get(j).kommentar»
+							\end{scriptsize}
+						«ENDIF»
+					«ENDIF»
+					«IF j < 6»
+						&
+					«ELSE»
+						\\
+					«ENDIF»
+				«ENDFOR»
 				\hline
 			\end{tabularx} \medskip \\ 
-		Für diese Woche wurden xxxxx von 14.000 kcal verbraucht. 
+		Diese Woche wurden «this.usedKcalWeek» von 
+		«e.personen.kcal»
+		Kalorien verbraucht. 
 		
 		\end{landscape}
 		'''
@@ -297,15 +357,14 @@ class M2T {
 	 * Generiert die Einkaufsliste für Latex.
 	 */
 	def String generateLatexShoppingList(Ernaehrungsplan e) {
-		//TODO: Latex-Code für die Einkaufsliste; zu befüllen mit den Informationen aus unserer Modellinstanz "plan" (später)
 		
 		'''
 		{\Large \textbf{Einkaufsliste}} \medskip \\
 		
 		\begin{itemize}
-			\item 100g Spaghetti ($\rightarrow$ 100 = Mo + Di + Mi + ... + So)
-			\item 500g Kartoffeln 
-			\item 
+			«FOR Zutat key : this.amoutOfIngredients.keySet()»
+				\item «this.amoutOfIngredients.get(key)»g «key.name»
+			«ENDFOR»
 		\end{itemize}
 		'''
 	}
@@ -316,6 +375,7 @@ class M2T {
 	 * Generiert den Ernährungsplan für HTML.
 	 */
 	def String generateHtmlSchedule(Ernaehrungsplan e) {
+		
 		'''
 		<!DOCTYPE html>
 		<html lang="en">
@@ -341,7 +401,8 @@ class M2T {
 		      <div class="container">
 		        <div class="row">
 		          <h1>Ernährungsplan</h1>
-		          <p>«this.current_personname»<br />Empfohlener Energiebedarf pro Woche: 14.000 Kalorien &rarr; 2.000 Kalorien pro Tag</p>
+		          <p>«this.current_personname»<br />Empfohlener Energiebedarf pro Woche:
+			 		«e.personen.kcal» Kalorien &rarr; «e.personen.kcal» Kalorien pro Tag</p>
 		          <table class="table table-bordered">
 		            <thead>
 		              <tr>
@@ -356,75 +417,40 @@ class M2T {
 		            </thead>
 		            <tbody>
 		              <tr>
-		                <td>Spaghetti Bolognese <br /> <small>1000 kcal</small><br /> 
+		              «FOR j : 0 ..< 7»
+		                <td>«this.meals.get(j).name» <br /> <small>«this.mealsKcals.get(j)» kcal</small><br /> 
 		                  <ul>
-		                    <li>100g Spaghetti</li>
-		                    <li>200g Bolognesesoße</li>
+		                  	«FOR g2z:this.meals.get(j).zutaten»
+								<li>«g2z.menge»g «g2z.zutat.name»</li>
+							«ENDFOR»
 		                  </ul>
+		                  «IF this.meals.get(j).kommentar.length > 0»
+							<small>Anmerkung: «this.meals.get(j).kommentar»</small>
+						  «ENDIF»
 		                </td>
-		                <td>Gericht A <br /> <small>1000 kcal</small><br /> 
-		                  <ul>
-		                    <li>500g Kartoffeln</li>
-		                    <li>200g Rührei</li>
-		                    <li>100g Spinat</li>
-		                  </ul> 
-		                </td>
-		                <td>Pfannkuchen <br /> <small>500 kcal</small><br /> 
-		                  <ul> 
-		                    <li>300g Pfannkuchen</li>
-		                  </ul>
-		                </td>
-		                <td>Gericht A <br /> <small>1000 kcal</small><br /> 
-		                  <ul>
-		                    <li>500g Kartoffeln</li>
-		                    <li>200g Rührei</li>
-		                    <li>100g Spinat</li>
-		                  </ul> 
-		                </td>
-		                <td>Gericht A <br /> <small>1000 kcal</small><br /> 
-		                  <ul>
-		                    <li>500g Kartoffelbrei</li>
-		                    <li>200g Rührei</li>
-		                    <li>100g Spinat</li>
-		                  </ul> 
-		                </td>
-		                <td>Gericht A <br /> <small>1000 kcal</small><br /> 
-		                  <ul>
-		                    <li>500g Zungenragout</li>
-		                    <li>200g Rührei</li>
-		                    <li>100g Spinat</li>
-		                  </ul> 
-		                </td>
-		                <td>Gericht A <br /> <small>1000 kcal</small><br /> 
-		                  <ul>
-		                    <li>500g Kartoffeln</li>
-		                    <li>200g Rührei</li>
-		                    <li>100g Rotkohl</li>
-		                  </ul> 
-		                </td>
+		              «ENDFOR»
 		              </tr>
 		              <tr>
-		                <td></td>
-		                <td></td>
-		                <td>Salat <br /> <small>300 kcal</small><br /> 
-		                  <ul>
-		                    <li>500g Salat</li>
-		                    <li>50ml Dressing</li>
-		                  </ul>
-		                </td>
-		                <td></td>
-		                <td></td>
-		                <td></td>
-		                <td>Salat <br /> <small>300 kcal</small><br /> 
-		                  <ul>
-		                    <li>500g Salat</li>
-		                    <li>50ml Dressing</li>
-		                  </ul>
-		                </td>
+		              «FOR j : 0 ..< 7»
+						«IF this.salads.get(j) != null»
+						  <td>«this.salads.get(j).name»<br /> <small>«this.saladsKcals.get(j)» kcal</small><br /> 
+							<ul>
+							«FOR g2z:this.salads.get(j).zutaten»
+								<li>«g2z.menge»g «g2z.zutat.name»</li>
+							«ENDFOR»
+		                    </ul>
+		                    «IF this.meals.get(j).kommentar.length > 0»
+								<small>Anmerkung: «this.salads.get(j).kommentar»</small>
+						  	«ENDIF»
+		                  </td>
+						«ELSE»
+							<td></td>
+						«ENDIF»
+					  «ENDFOR»
 		              </tr>
 		            </tbody>
 		          </table>
-		          <p>Für diese Woche wurden xxxxx von 14.000 kcal verbraucht.</p>
+		          <p>Diese Woche wurden «this.usedKcalWeek» von «e.personen.kcal» Kalorien verbraucht.</p>
 		        </div>
 		      </div>
 		
@@ -467,8 +493,9 @@ class M2T {
 		  		<div class="row">
 		  			<h1>Einkaufsliste</h1>
 		        <ul>
-		          <li>100g Spaghetti</li>
-		          <li>500g Kartoffeln</li>
+		        «FOR Zutat key : this.amoutOfIngredients.keySet()»
+					<li> «this.amoutOfIngredients.get(key)»g «key.name» </li>
+				«ENDFOR»
 		        </ul>
 		  		</div>
 		  	</div>
@@ -482,6 +509,9 @@ class M2T {
 		'''
 	}
 	
+	/*
+	 * Prüft, ob die Datei existiert
+	 */
 	def boolean fileExists(String folder, String file) {
 		
 		val path = new StringBuffer
@@ -490,6 +520,7 @@ class M2T {
 		if(folder.charAt(folder.length-1) != "/") {
 			path.append("/")
 		}
+		
 		path.append(file)
 		path.append(".ep")
 		

@@ -11,10 +11,10 @@ Ernaehrungsplan
 	Hauptbestandteil (Kartoffelauflauf, 200)
 	Hauptbestandteil (Salat, 200)
 	Hauptbestandteil (Pfannkuchen, 200)
-	Sauce (Bechamel, 100)
-	Sauce (Bolognese, 100)
+	Sauce (Bechamelsauce, 100)
+	Sauce (Bolognesesauce, 100)
 	Sauce (Dressing, 100)
-	Sauce (Curry, 100)
+	Sauce (Currysauce, 100)
 	Beilage (Kartoffeln, 73)
 	Beilage (Reis, 20)
 	Beilage (Nudeln, 50)
@@ -66,7 +66,7 @@ Ernaehrungsplan
 		besteht aus 
 			{
 			zutat (200, Nudeln, SpaghettiBolognese)
-			zutat (100, Bolognese, SpaghettiBolognese)
+			zutat (100, Bolognesesauce, SpaghettiBolognese)
 			}
 	}
 	
@@ -91,7 +91,7 @@ Ernaehrungsplan
 		besteht aus 
 			{
 			zutat (200, Reis, CurryReis)
-			zutat (100, Curry, CurryReis)
+			zutat (100, Currysauce, CurryReis)
 			}
 	}
 	
@@ -131,13 +131,13 @@ Ernaehrungsplan
 	
 	eplan 
 	{
-		person (Marcel)
+		personen (Marcel)
 		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
 	}
 	
 	eplan 
 	{
-		person (Tabea)
+		personen (Tabea)
 		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
 	}
 	
