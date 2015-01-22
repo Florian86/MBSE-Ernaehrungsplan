@@ -74,14 +74,14 @@ class M2T {
         	
         	// aktuellen Namen zwischenspeichern
         	this.current_personname = e.personen.name
-        	
+ 
         	// alles hier initialisieren, damit jeder Ernährungsplan eigene Werte hat
         	this.salads = new ArrayList<Gericht>
         	this.meals = new ArrayList<Gericht>
         	this.amoutOfIngredients = new HashMap<Zutat, Integer>()
         	this.saladsKcals = new ArrayList<Integer>
         	this.mealsKcals = new ArrayList<Integer>
-        	this.usedKcalWeek = 0;	
+        	this.usedKcalWeek = 0	
         	
         	// Aufteilung der Gerichte in normale Gerichte und Salate, um später die Tabelle 
         	// einfacher aufbauen zu können

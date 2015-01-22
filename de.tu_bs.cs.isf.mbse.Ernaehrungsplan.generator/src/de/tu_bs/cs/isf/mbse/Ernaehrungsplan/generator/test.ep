@@ -131,13 +131,13 @@ Ernaehrungsplan
 	
 	eplan 
 	{
-		personen (Marcel)
+		person (Marcel)
 		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
 	}
 	
 	eplan 
 	{
-		personen (Tabea)
+		person (Tabea)
 		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
 	}
 	
