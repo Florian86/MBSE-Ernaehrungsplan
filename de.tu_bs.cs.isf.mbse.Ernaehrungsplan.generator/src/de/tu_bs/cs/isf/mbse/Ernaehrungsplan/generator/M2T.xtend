@@ -431,7 +431,7 @@ class M2T {
 		        <div class="row">
 		          <h1>Ernährungsplan</h1>
 		          <p>«this.current_personname»<br />Empfohlener Energiebedarf pro Woche:
-			 		«e.personen.kcal» Kalorien &rarr; «e.personen.kcal» Kalorien pro Tag</p>
+			 		«e.personen.kcal» Kalorien &rarr; «e.personen.kcal/7» Kalorien pro Tag</p>
 		          <table class="table table-bordered">
 		            <thead>
 		              <tr>
