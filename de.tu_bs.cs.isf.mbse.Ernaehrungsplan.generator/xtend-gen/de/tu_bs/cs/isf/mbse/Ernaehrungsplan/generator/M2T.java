@@ -95,6 +95,8 @@ public class M2T {
           this.computeAmount();
           File _file = new File(((("output" + File.separator) + this.current_personname) + "_Latex.tex"));
           this.targetLatexFile = _file;
+          File _parentFile = this.targetLatexFile.getParentFile();
+          _parentFile.mkdirs();
           this.targetLatexFile.createNewFile();
           FileOutputStream _fileOutputStream = new FileOutputStream(this.targetLatexFile);
           this.latexStream = _fileOutputStream;
@@ -244,7 +246,7 @@ public class M2T {
   /**
    * Menge der benötigten Zutaten für die Einkaufsliste berechnen
    */
-  public void computeAmount() {
+  public Integer computeAmount() {
     int amount = 0;
     for (final Gericht g : this.meals) {
       EList<Gericht2Zutat> _zutaten = g.getZutaten();
@@ -263,7 +265,7 @@ public class M2T {
           int _plus = ((_get).intValue() + _menge_1);
           amount = _plus;
           Zutat _zutat_3 = g2z.getZutat();
-          this.amoutOfIngredients.replace(_zutat_3, Integer.valueOf(amount));
+          this.amoutOfIngredients.put(_zutat_3, Integer.valueOf(amount));
         }
       }
     }
@@ -286,11 +288,12 @@ public class M2T {
             int _plus_1 = ((_get_1).intValue() + _menge_3);
             amount = _plus_1;
             Zutat _zutat_7 = g2z_1.getZutat();
-            this.amoutOfIngredients.replace(_zutat_7, Integer.valueOf(amount));
+            return this.amoutOfIngredients.put(_zutat_7, Integer.valueOf(amount));
           }
         }
       }
     }
+    return null;
   }
   
   /**

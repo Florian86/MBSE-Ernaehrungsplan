@@ -240,7 +240,7 @@ class M2T {
 					// gibt es den Key schonmal, müssen die Mengen addiert werden, 
 					// also alter + neuer Wert
 					amount = this.amoutOfIngredients.get(g2z.zutat) + g2z.menge
-					this.amoutOfIngredients.replace(g2z.zutat, amount)
+                    this.amoutOfIngredients.put(g2z.zutat, amount);
 				}
 			}
 		}
@@ -252,7 +252,7 @@ class M2T {
 						this.amoutOfIngredients.put(g2z.zutat, g2z.menge)				
 					} else {
 						amount = this.amoutOfIngredients.get(g2z.zutat) + g2z.menge
-						this.amoutOfIngredients.replace(g2z.zutat, amount)
+                            return this.amoutOfIngredients.put(g2z.zutat, amount);
 					}
 				}
 			}
@@ -451,7 +451,7 @@ class M2T {
 		                <td>«this.meals.get(j).name» <br /> <small>«this.mealsKcals.get(j)» kcal</small><br /> 
 		                  <ul>
 		                  	«FOR g2z:this.meals.get(j).zutaten»
-								<li>«g2z.menge»g «g2z.zutat.name»</li>
+                                <li>«g2z.menge»g «g2z.zutat.name»</li>
 							«ENDFOR»
 		                  </ul>
 		                  «IF this.meals.get(j).kommentar.length > 0»
