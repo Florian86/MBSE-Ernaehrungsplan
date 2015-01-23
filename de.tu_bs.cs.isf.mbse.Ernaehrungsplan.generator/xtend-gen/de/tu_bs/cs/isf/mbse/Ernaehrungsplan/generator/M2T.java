@@ -7,6 +7,7 @@ import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.GeneratePDF;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.ModelLoader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -93,8 +94,16 @@ public class M2T {
           this.preparations(e);
           this.computeKcals();
           this.computeAmount();
-          File _file = new File(((("output" + File.separator) + this.current_personname) + "_Latex.tex"));
-          this.targetLatexFile = _file;
+          File _file = new File(".");
+          final File currentDirectory = _file.getCanonicalFile();
+          String _plus = (currentDirectory + File.separator);
+          String _plus_1 = (_plus + "output");
+          final File outputPath = new File(_plus_1);
+          String _plus_2 = (outputPath + File.separator);
+          String _plus_3 = (_plus_2 + this.current_personname);
+          String _plus_4 = (_plus_3 + "_Latex.tex");
+          File _file_1 = new File(_plus_4);
+          this.targetLatexFile = _file_1;
           File _parentFile = this.targetLatexFile.getParentFile();
           _parentFile.mkdirs();
           this.targetLatexFile.createNewFile();
@@ -106,8 +115,10 @@ public class M2T {
           byte[] _bytes = this.latexOutput.getBytes();
           this.latexStream.write(_bytes);
           this.latexStream.close();
-          File _file_1 = new File(((("output" + File.separator) + this.current_personname) + "_EP_HTML.html"));
-          this.targetHtmlFile_EP = _file_1;
+          final File workingDirectory = outputPath;
+          GeneratePDF.latex2PDF(this.targetLatexFile, outputPath, workingDirectory);
+          File _file_2 = new File(((("output" + File.separator) + this.current_personname) + "_EP_HTML.html"));
+          this.targetHtmlFile_EP = _file_2;
           this.targetHtmlFile_EP.createNewFile();
           FileOutputStream _fileOutputStream_1 = new FileOutputStream(this.targetHtmlFile_EP);
           this.htmlStream_EP = _fileOutputStream_1;
@@ -116,8 +127,8 @@ public class M2T {
           byte[] _bytes_1 = this.htmlOutput_EP.getBytes();
           this.htmlStream_EP.write(_bytes_1);
           this.htmlStream_EP.close();
-          File _file_2 = new File(((("output" + File.separator) + this.current_personname) + "_EL_HTML.html"));
-          this.targetHtmlFile_EL = _file_2;
+          File _file_3 = new File(((("output" + File.separator) + this.current_personname) + "_EL_HTML.html"));
+          this.targetHtmlFile_EL = _file_3;
           this.targetHtmlFile_EL.createNewFile();
           FileOutputStream _fileOutputStream_2 = new FileOutputStream(this.targetHtmlFile_EL);
           this.htmlStream_EL = _fileOutputStream_2;
@@ -246,7 +257,7 @@ public class M2T {
   /**
    * Menge der benötigten Zutaten für die Einkaufsliste berechnen
    */
-  public Integer computeAmount() {
+  public void computeAmount() {
     int amount = 0;
     for (final Gericht g : this.meals) {
       EList<Gericht2Zutat> _zutaten = g.getZutaten();
@@ -265,7 +276,7 @@ public class M2T {
           int _plus = ((_get).intValue() + _menge_1);
           amount = _plus;
           Zutat _zutat_3 = g2z.getZutat();
-          this.amoutOfIngredients.put(_zutat_3, Integer.valueOf(amount));
+          this.amoutOfIngredients.replace(_zutat_3, Integer.valueOf(amount));
         }
       }
     }
@@ -288,12 +299,11 @@ public class M2T {
             int _plus_1 = ((_get_1).intValue() + _menge_3);
             amount = _plus_1;
             Zutat _zutat_7 = g2z_1.getZutat();
-            return this.amoutOfIngredients.put(_zutat_7, Integer.valueOf(amount));
+            this.amoutOfIngredients.replace(_zutat_7, Integer.valueOf(amount));
           }
         }
       }
     }
-    return null;
   }
   
   /**
