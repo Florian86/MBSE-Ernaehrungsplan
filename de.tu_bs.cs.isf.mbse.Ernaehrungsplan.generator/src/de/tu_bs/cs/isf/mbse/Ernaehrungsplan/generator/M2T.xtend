@@ -83,13 +83,17 @@ class M2T {
         	this.computeAmount()        	
         	         
 	        //--------------------LaTeX--------------------
-	        targetLatexFile = new File("output" + File.separator + this.current_personname + "_Latex.tex");
+	        val currentDirectory = new File(".").getCanonicalFile();
+	        val outputPath = new File(currentDirectory + File.separator  + "output");
+	        targetLatexFile = new File(outputPath + File.separator + this.current_personname + "_Latex.tex");
 	        targetLatexFile.createNewFile(); 						// Datei erstellen
 	        latexStream = new FileOutputStream(targetLatexFile); 	// um Zeug in die Datei zu schreiben
 	        
 	        latexOutput = generateLatex(e).replaceAll("\"", ""); 	//TODO: mir noch unklar, warum \" ersetzt wird, vorallem warum "
 	        latexStream.write(latexOutput.getBytes()); 				// schreibt den generierten Code in die Datei
 	        latexStream.close(); 									// Stream schließen und Resourcen freigeben
+			val workingDirectory = outputPath;
+			GeneratePDF.latex2PDF(targetLatexFile, outputPath, workingDirectory);
 	        
 	        //--------------------HTML--------------------
 	        // ------ Ernährungsplan ------
