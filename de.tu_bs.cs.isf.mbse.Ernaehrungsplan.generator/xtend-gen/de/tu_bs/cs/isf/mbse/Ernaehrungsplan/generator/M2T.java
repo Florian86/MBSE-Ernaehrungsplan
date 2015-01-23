@@ -10,10 +10,19 @@ import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.ModelLoader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 
 @SuppressWarnings("all")
@@ -23,6 +32,8 @@ public class M2T {
   private List<Ernaehrungsplan> eplans;
   
   private List<Gericht> meals;
+  
+  private List<Gericht> salads;
   
   private EpElement epElement;
   
@@ -46,6 +57,14 @@ public class M2T {
   
   private String current_personname;
   
+  private List<Integer> mealsKcals;
+  
+  private List<Integer> saladsKcals;
+  
+  private int usedKcalWeek = 0;
+  
+  private Map<Zutat, Integer> amoutOfIngredients;
+  
   public Object M2T() {
     return null;
   }
@@ -62,7 +81,7 @@ public class M2T {
       boolean _fileExists = this.fileExists(folder, file);
       boolean _not = (!_fileExists);
       if (_not) {
-        InputOutput.<String>println((((("Datei nicht vorhanden " + folder) + "/") + file) + ".ep"));
+        InputOutput.<String>println(((("Datei nicht vorhanden " + folder) + "") + file));
         return;
       }
       EpElement _loadModel = this.loader.loadModel(folder, file);
@@ -71,11 +90,9 @@ public class M2T {
       this.eplans = _eplanElement;
       for (final Ernaehrungsplan e : this.eplans) {
         {
-          Person _personen = e.getPersonen();
-          String _name = _personen.getName();
-          this.current_personname = _name;
-          EList<Gericht> _gerichte = e.getGerichte();
-          this.meals = _gerichte;
+          this.preparations(e);
+          this.computeKcals();
+          this.computeAmount();
           File _file = new File(((("output" + File.separator) + this.current_personname) + "_Latex.tex"));
           this.targetLatexFile = _file;
           this.targetLatexFile.createNewFile();
@@ -114,9 +131,171 @@ public class M2T {
     }
   }
   
+  public void preparations(final Ernaehrungsplan e) {
+    Person _personen = e.getPersonen();
+    String _name = _personen.getName();
+    this.current_personname = _name;
+    ArrayList<Gericht> _arrayList = new ArrayList<Gericht>();
+    this.salads = _arrayList;
+    ArrayList<Gericht> _arrayList_1 = new ArrayList<Gericht>();
+    this.meals = _arrayList_1;
+    HashMap<Zutat, Integer> _hashMap = new HashMap<Zutat, Integer>();
+    this.amoutOfIngredients = _hashMap;
+    ArrayList<Integer> _arrayList_2 = new ArrayList<Integer>();
+    this.saladsKcals = _arrayList_2;
+    ArrayList<Integer> _arrayList_3 = new ArrayList<Integer>();
+    this.mealsKcals = _arrayList_3;
+    this.usedKcalWeek = 0;
+    String[] mealnameArray = null;
+    StringBuilder sb = null;
+    EList<Gericht> _gerichte = e.getGerichte();
+    for (final Gericht g : _gerichte) {
+      {
+        String _name_1 = g.getName();
+        String[] _split = _name_1.split("_");
+        mealnameArray = _split;
+        StringBuilder _stringBuilder = new StringBuilder();
+        sb = _stringBuilder;
+        for (final String s : mealnameArray) {
+          {
+            sb.append(s);
+            sb.append(" ");
+          }
+        }
+        String _string = sb.toString();
+        g.setName(_string);
+        boolean _isIstSalat = g.isIstSalat();
+        if (_isIstSalat) {
+          this.salads.add(g);
+        } else {
+          this.meals.add(g);
+        }
+      }
+    }
+    int _length = ((Object[])Conversions.unwrapArray(this.salads, Object.class)).length;
+    boolean _lessThan = (_length < 7);
+    if (_lessThan) {
+      for (int i = (((Object[])Conversions.unwrapArray(this.salads, Object.class)).length - 1); (i < 6); i++) {
+        this.salads.add(null);
+      }
+    }
+  }
+  
+  /**
+   * Kalenderwoche berechnen
+   */
+  public int getWeekOfYear() {
+    Calendar calendar = new GregorianCalendar();
+    Date trialTime = new Date();
+    calendar.setTime(trialTime);
+    return calendar.get(Calendar.WEEK_OF_YEAR);
+  }
+  
+  /**
+   * Berechnung der Kalorienanzahl der jeweiligen Gerichte
+   */
+  public void computeKcals() {
+    int kcal = 0;
+    int i = 0;
+    for (final Gericht g : this.meals) {
+      {
+        EList<Gericht2Zutat> _zutaten = g.getZutaten();
+        for (final Gericht2Zutat z : _zutaten) {
+          Zutat _zutat = z.getZutat();
+          int _kcal = _zutat.getKcal();
+          int _menge = z.getMenge();
+          int _multiply = (_kcal * _menge);
+          int _divide = (_multiply / 100);
+          int _plus = (kcal + _divide);
+          kcal = _plus;
+        }
+        if ((i <= 6)) {
+          this.mealsKcals.add(Integer.valueOf(kcal));
+          this.usedKcalWeek = (this.usedKcalWeek + kcal);
+          i++;
+        }
+        kcal = 0;
+      }
+    }
+    for (i = 0; (i < 7); i++) {
+      Gericht _get = this.salads.get(i);
+      boolean _notEquals = (!Objects.equal(_get, null));
+      if (_notEquals) {
+        Gericht _get_1 = this.salads.get(i);
+        EList<Gericht2Zutat> _zutaten = _get_1.getZutaten();
+        for (final Gericht2Zutat z : _zutaten) {
+          Zutat _zutat = z.getZutat();
+          int _kcal = _zutat.getKcal();
+          int _menge = z.getMenge();
+          int _multiply = (_kcal * _menge);
+          int _divide = (_multiply / 100);
+          int _plus = (kcal + _divide);
+          kcal = _plus;
+        }
+        this.saladsKcals.add(Integer.valueOf(kcal));
+        this.usedKcalWeek = (this.usedKcalWeek + kcal);
+        kcal = 0;
+      } else {
+        this.saladsKcals.add(Integer.valueOf(kcal));
+      }
+    }
+  }
+  
+  /**
+   * Menge der benötigten Zutaten für die Einkaufsliste berechnen
+   */
+  public void computeAmount() {
+    int amount = 0;
+    for (final Gericht g : this.meals) {
+      EList<Gericht2Zutat> _zutaten = g.getZutaten();
+      for (final Gericht2Zutat g2z : _zutaten) {
+        Zutat _zutat = g2z.getZutat();
+        boolean _containsKey = this.amoutOfIngredients.containsKey(_zutat);
+        boolean _not = (!_containsKey);
+        if (_not) {
+          Zutat _zutat_1 = g2z.getZutat();
+          int _menge = g2z.getMenge();
+          this.amoutOfIngredients.put(_zutat_1, Integer.valueOf(_menge));
+        } else {
+          Zutat _zutat_2 = g2z.getZutat();
+          Integer _get = this.amoutOfIngredients.get(_zutat_2);
+          int _menge_1 = g2z.getMenge();
+          int _plus = ((_get).intValue() + _menge_1);
+          amount = _plus;
+          Zutat _zutat_3 = g2z.getZutat();
+          this.amoutOfIngredients.replace(_zutat_3, Integer.valueOf(amount));
+        }
+      }
+    }
+    for (final Gericht s : this.salads) {
+      boolean _notEquals = (!Objects.equal(s, null));
+      if (_notEquals) {
+        EList<Gericht2Zutat> _zutaten_1 = s.getZutaten();
+        for (final Gericht2Zutat g2z_1 : _zutaten_1) {
+          Zutat _zutat_4 = g2z_1.getZutat();
+          boolean _containsKey_1 = this.amoutOfIngredients.containsKey(_zutat_4);
+          boolean _not_1 = (!_containsKey_1);
+          if (_not_1) {
+            Zutat _zutat_5 = g2z_1.getZutat();
+            int _menge_2 = g2z_1.getMenge();
+            this.amoutOfIngredients.put(_zutat_5, Integer.valueOf(_menge_2));
+          } else {
+            Zutat _zutat_6 = g2z_1.getZutat();
+            Integer _get_1 = this.amoutOfIngredients.get(_zutat_6);
+            int _menge_3 = g2z_1.getMenge();
+            int _plus_1 = ((_get_1).intValue() + _menge_3);
+            amount = _plus_1;
+            Zutat _zutat_7 = g2z_1.getZutat();
+            this.amoutOfIngredients.replace(_zutat_7, Integer.valueOf(amount));
+          }
+        }
+      }
+    }
+  }
+  
   /**
    * "Startmethode" der Latex-Generierung
-   * ohne p erstmal !!!!!!!!!!
+   * aktueller Ernährungsplan wird übergeben
    */
   public String generateLatex(final Ernaehrungsplan e) {
     StringConcatenation _builder = new StringConcatenation();
@@ -138,6 +317,9 @@ public class M2T {
     return _builder.toString();
   }
   
+  /**
+   * Latexkopf mit allen Einstellungen, Packages, ...
+   */
   public String generateLatexHead() {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("\\documentclass[10pt, a4paper]{article}");
@@ -179,389 +361,246 @@ public class M2T {
    * Generiert den Ernährungsplan für Latex.
    */
   public String generateLatexSchedule(final Ernaehrungsplan e) {
-    String _xblockexpression = null;
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.newLine();
+    _builder.append("\\begin{landscape}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("{\\Large \\textbf{Ernährungsplan}} \\medskip \\\\");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append(this.current_personname, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("\\\\ Empfohlener Energiebedarf pro Woche: ");
+    _builder.newLine();
+    _builder.append("\t");
+    Person _personen = e.getPersonen();
+    int _kcal = _personen.getKcal();
+    _builder.append(_kcal, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t ");
+    _builder.append("Kalorien $\\rightarrow$ ");
+    _builder.newLine();
+    _builder.append("\t");
+    Person _personen_1 = e.getPersonen();
+    int _kcal_1 = _personen_1.getKcal();
+    int _divide = (_kcal_1 / 7);
+    _builder.append(_divide, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("Kalorien pro Tag \\medskip \\\\");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\\renewcommand*{\\arraystretch}{1.2}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\\begin{tabularx}{\\linewidth}{|X|X|X|X|X|X|X|}\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("\\hline");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("\\Centering \\multirow{2}{*}{\\textbf{Montag}} & \\Centering \\multirow{2}{*}{\\textbf{Dienstag}} & \\Centering \\multirow{2}{*}{\\textbf{Mittwoch}} & \\Centering \\multirow{2}{*}{\\textbf{Donnerstag}} & \\Centering \\multirow{2}{*}{\\textbf{Freitag}} & \\Centering \\multirow{2}{*}{\\textbf{Samstag}} & \\Centering \\multirow{2}{*}{\\textbf{Sonntag}} \\\\");
+    _builder.newLine();
+    _builder.append("%\t\t&  &  &  &  &  &  \\\\");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("&  &  &  &  &  &  \\\\");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("\\hline");
+    _builder.newLine();
     {
-      int kcal = 0;
-      int[] kcal_array = new int[7];
-      String[] name_array = new String[7];
-      int i = 0;
-      for (final Gericht g : this.meals) {
+      ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, 7, true);
+      for(final Integer j : _doubleDotLessThan) {
+        _builder.append("\t\t");
+        Gericht _get = this.meals.get((j).intValue());
+        String _name = _get.getName();
+        _builder.append(_name, "\t\t");
+        _builder.append(" \\newline {\\scriptsize ");
+        Integer _get_1 = this.mealsKcals.get((j).intValue());
+        _builder.append(_get_1, "\t\t");
+        _builder.append(" kcal}");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("\\begin{small}");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("\t");
+        _builder.append("\\begin{itemize}");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("\t");
+        _builder.append("\\itemsep0pt");
+        _builder.newLine();
         {
-          EList<Gericht2Zutat> _zutaten = g.getZutaten();
-          for (final Gericht2Zutat z : _zutaten) {
-            Zutat _zutat = z.getZutat();
-            int _kcal = _zutat.getKcal();
-            int _menge = z.getMenge();
-            int _multiply = (_kcal * _menge);
-            int _divide = (_multiply / 100);
-            int _plus = (kcal + _divide);
-            kcal = _plus;
+          Gericht _get_2 = this.meals.get((j).intValue());
+          EList<Gericht2Zutat> _zutaten = _get_2.getZutaten();
+          for(final Gericht2Zutat g2z : _zutaten) {
+            _builder.append("\t\t");
+            _builder.append("\t\t");
+            _builder.append("\\item ");
+            int _menge = g2z.getMenge();
+            _builder.append(_menge, "\t\t\t\t");
+            _builder.append("g ");
+            Zutat _zutat = g2z.getZutat();
+            String _name_1 = _zutat.getName();
+            _builder.append(_name_1, "\t\t\t\t");
+            _builder.newLineIfNotEmpty();
           }
-          if ((i <= 6)) {
-            String _name = g.getName();
-            name_array[i] = _name;
-            kcal_array[i] = kcal;
-            i++;
+        }
+        _builder.append("\t\t");
+        _builder.append("\t");
+        _builder.append("\\end{itemize}");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("\\end{small}");
+        _builder.newLine();
+        {
+          Gericht _get_3 = this.meals.get((j).intValue());
+          String _kommentar = _get_3.getKommentar();
+          int _length = _kommentar.length();
+          boolean _greaterThan = (_length > 0);
+          if (_greaterThan) {
+            _builder.append("\t\t");
+            _builder.append("\\begin{scriptsize}");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("\t");
+            _builder.append("Anmerkung: ");
+            Gericht _get_4 = this.meals.get((j).intValue());
+            String _kommentar_1 = _get_4.getKommentar();
+            _builder.append(_kommentar_1, "\t\t\t");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("\\end{scriptsize}");
+            _builder.newLine();
           }
-          kcal = 0;
+        }
+        {
+          if (((j).intValue() < 6)) {
+            _builder.append("\t\t");
+            _builder.append("&");
+            _builder.newLine();
+          } else {
+            _builder.append("\t\t");
+            _builder.append("\\\\");
+            _builder.newLine();
+          }
         }
       }
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.newLine();
-      _builder.append("\\begin{landscape}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("{\\Large \\textbf{Ernährungsplan}} \\medskip \\\\");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append(this.current_personname, "\t");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t");
-      _builder.append("\\\\ Empfohlener Energiebedarf pro Woche: ");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("\t");
-      Person _personen = e.getPersonen();
-      int _kcal = _personen.getKcal();
-      _builder.append(_kcal, "\t");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t ");
-      _builder.append("Kalorien $\\rightarrow$ ");
-      _builder.newLine();
-      _builder.append("\t");
-      Person _personen_1 = e.getPersonen();
-      int _kcal_1 = _personen_1.getKcal();
-      int _divide = (_kcal_1 / 7);
-      _builder.append(_divide, "\t");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t");
-      _builder.append("Kalorien pro Tag \\medskip \\\\");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("\\renewcommand*{\\arraystretch}{1.2}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("\\begin{tabularx}{\\linewidth}{|X|X|X|X|X|X|X|}\t");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\hline");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\Centering \\multirow{2}{*}{\\textbf{Montag}} & \\Centering \\multirow{2}{*}{\\textbf{Dienstag}} & \\Centering \\multirow{2}{*}{\\textbf{Mittwoch}} & \\Centering \\multirow{2}{*}{\\textbf{Donnerstag}} & \\Centering \\multirow{2}{*}{\\textbf{Freitag}} & \\Centering \\multirow{2}{*}{\\textbf{Samstag}} & \\Centering \\multirow{2}{*}{\\textbf{Sonntag}} \\\\");
-      _builder.newLine();
-      _builder.append("%\t\t&  &  &  &  &  &  \\\\");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("&  &  &  &  &  &  \\\\");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\hline");
-      _builder.newLine();
-      _builder.append("\t\t");
-      String _get = name_array[0];
-      _builder.append(_get, "\t\t");
-      _builder.append("\t\\newline {\\scriptsize ");
-      int _get_1 = kcal_array[0];
-      _builder.append(_get_1, "\t\t");
-      _builder.append(" kcal} ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 100g Spaghetti");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 200g Bolognesesoße ");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\smallskip");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{scriptsize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("Anmerkung: Gericht ist in Buch blablabla auf S.30 zu finden.");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{scriptsize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("& ");
-      String _get_2 = name_array[1];
-      _builder.append(_get_2, "\t\t");
-      _builder.append(" \\newline {\\scriptsize ");
-      int _get_3 = kcal_array[1];
-      _builder.append(_get_3, "\t\t");
-      _builder.append(" kcal} ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 500g Kartoffeln");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 200g Rührei ");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 100g Spinat");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("& ");
-      String _get_4 = name_array[2];
-      _builder.append(_get_4, "\t\t");
-      _builder.append(" \\newline {\\scriptsize ");
-      int _get_5 = kcal_array[2];
-      _builder.append(_get_5, "\t\t");
-      _builder.append(" kcal}  ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 300g Pfannkuchen");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("&  ");
-      String _get_6 = name_array[3];
-      _builder.append(_get_6, "\t\t");
-      _builder.append(" \\newline {\\scriptsize ");
-      int _get_7 = kcal_array[3];
-      _builder.append(_get_7, "\t\t");
-      _builder.append(" kcal}  ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 500g Kartoffeln");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 200g Rührei ");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 100g Spinat");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("&  ");
-      String _get_8 = name_array[4];
-      _builder.append(_get_8, "\t\t");
-      _builder.append(" \\newline {\\scriptsize ");
-      int _get_9 = kcal_array[4];
-      _builder.append(_get_9, "\t\t");
-      _builder.append(" kcal}  ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 500g Kartoffelbrei");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 200g Rührei ");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 100g Spinat");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("&  ");
-      String _get_10 = name_array[5];
-      _builder.append(_get_10, "\t\t");
-      _builder.append(" \\newline {\\scriptsize ");
-      int _get_11 = kcal_array[5];
-      _builder.append(_get_11, "\t\t");
-      _builder.append(" kcal}  ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 500g Zungenragout");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 200g Rührei ");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 100g Spinat");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("&  ");
-      String _get_12 = name_array[6];
-      _builder.append(_get_12, "\t\t");
-      _builder.append(" \\newline {\\scriptsize ");
-      int _get_13 = kcal_array[6];
-      _builder.append(_get_13, "\t\t");
-      _builder.append(" kcal}  ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 500g Kartoffeln");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 200g Rührei ");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 100g Rotkohl ");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small} ");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\\\");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\hline");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("& & Salat \\newline {\\scriptsize 300 kcal} ");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 500g Salat");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 50ml Dressing");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("& & & & Salat \\newline {\\scriptsize 300 kcal}  ");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\begin{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\itemsep0pt");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 500g Salat");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("\\item 50ml Dressing");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{itemize}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\end{small}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\\\");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("\\hline");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("\\end{tabularx} \\medskip \\\\ ");
-      _builder.newLine();
-      _builder.append("Für diese Woche wurden xxxxx von 14.000 kcal verbraucht. ");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("\\end{landscape}");
-      _builder.newLine();
-      _xblockexpression = _builder.toString();
     }
-    return _xblockexpression;
+    _builder.append("\t\t");
+    _builder.append("\\hline");
+    _builder.newLine();
+    {
+      ExclusiveRange _doubleDotLessThan_1 = new ExclusiveRange(0, 7, true);
+      for(final Integer j_1 : _doubleDotLessThan_1) {
+        {
+          Gericht _get_5 = this.salads.get((j_1).intValue());
+          boolean _notEquals = (!Objects.equal(_get_5, null));
+          if (_notEquals) {
+            _builder.append("\t\t");
+            Gericht _get_6 = this.salads.get((j_1).intValue());
+            String _name_2 = _get_6.getName();
+            _builder.append(_name_2, "\t\t");
+            _builder.append(" \\newline {\\scriptsize ");
+            Integer _get_7 = this.saladsKcals.get((j_1).intValue());
+            _builder.append(_get_7, "\t\t");
+            _builder.append(" kcal}");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t");
+            _builder.append("\\begin{small}");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("\t");
+            _builder.append("\\begin{itemize}");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("\t");
+            _builder.append("\\itemsep0pt");
+            _builder.newLine();
+            {
+              Gericht _get_8 = this.salads.get((j_1).intValue());
+              EList<Gericht2Zutat> _zutaten_1 = _get_8.getZutaten();
+              for(final Gericht2Zutat g2z_1 : _zutaten_1) {
+                _builder.append("\t\t");
+                _builder.append("\t\t");
+                _builder.append("\\item ");
+                int _menge_1 = g2z_1.getMenge();
+                _builder.append(_menge_1, "\t\t\t\t");
+                _builder.append("g ");
+                Zutat _zutat_1 = g2z_1.getZutat();
+                String _name_3 = _zutat_1.getName();
+                _builder.append(_name_3, "\t\t\t\t");
+                _builder.newLineIfNotEmpty();
+              }
+            }
+            _builder.append("\t\t");
+            _builder.append("\t");
+            _builder.append("\\end{itemize}");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("\\end{small}");
+            _builder.newLine();
+            {
+              Gericht _get_9 = this.salads.get((j_1).intValue());
+              String _kommentar_2 = _get_9.getKommentar();
+              int _length_1 = _kommentar_2.length();
+              boolean _greaterThan_1 = (_length_1 > 0);
+              if (_greaterThan_1) {
+                _builder.append("\t\t");
+                _builder.append("\\begin{scriptsize}");
+                _builder.newLine();
+                _builder.append("\t\t");
+                _builder.append("\t");
+                _builder.append("Anmerkung: ");
+                Gericht _get_10 = this.salads.get((j_1).intValue());
+                String _kommentar_3 = _get_10.getKommentar();
+                _builder.append(_kommentar_3, "\t\t\t");
+                _builder.newLineIfNotEmpty();
+                _builder.append("\t\t");
+                _builder.append("\\end{scriptsize}");
+                _builder.newLine();
+              }
+            }
+          }
+        }
+        {
+          if (((j_1).intValue() < 6)) {
+            _builder.append("\t\t");
+            _builder.append("&");
+            _builder.newLine();
+          } else {
+            _builder.append("\t\t");
+            _builder.append("\\\\");
+            _builder.newLine();
+          }
+        }
+      }
+    }
+    _builder.append("\t\t");
+    _builder.append("\\hline");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\\end{tabularx} \\medskip \\\\ ");
+    _builder.newLine();
+    _builder.append("Diese Woche wurden ");
+    _builder.append(this.usedKcalWeek, "");
+    _builder.append(" von ");
+    _builder.newLineIfNotEmpty();
+    Person _personen_2 = e.getPersonen();
+    int _kcal_2 = _personen_2.getKcal();
+    _builder.append(_kcal_2, "");
+    _builder.newLineIfNotEmpty();
+    _builder.append("Kalorien verbraucht. ");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\end{landscape}");
+    _builder.newLine();
+    return _builder.toString();
   }
   
   /**
@@ -574,15 +613,19 @@ public class M2T {
     _builder.newLine();
     _builder.append("\\begin{itemize}");
     _builder.newLine();
-    _builder.append("\t");
-    _builder.append("\\item 100g Spaghetti ($\\rightarrow$ 100 = Mo + Di + Mi + ... + So)");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("\\item 500g Kartoffeln ");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("\\item ");
-    _builder.newLine();
+    {
+      Set<Zutat> _keySet = this.amoutOfIngredients.keySet();
+      for(final Zutat key : _keySet) {
+        _builder.append("\t");
+        _builder.append("\\item ");
+        Integer _get = this.amoutOfIngredients.get(key);
+        _builder.append(_get, "\t");
+        _builder.append("g ");
+        String _name = key.getName();
+        _builder.append(_name, "\t");
+        _builder.newLineIfNotEmpty();
+      }
+    }
     _builder.append("\\end{itemize}");
     _builder.newLine();
     return _builder.toString();
@@ -659,7 +702,18 @@ public class M2T {
     _builder.append("          ");
     _builder.append("<p>");
     _builder.append(this.current_personname, "          ");
-    _builder.append("<br />Empfohlener Energiebedarf pro Woche: 14.000 Kalorien &rarr; 2.000 Kalorien pro Tag</p>");
+    _builder.append("<br />Empfohlener Energiebedarf pro Woche:");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t \t\t");
+    Person _personen = e.getPersonen();
+    int _kcal = _personen.getKcal();
+    _builder.append(_kcal, "\t \t\t");
+    _builder.append(" Kalorien &rarr; ");
+    Person _personen_1 = e.getPersonen();
+    int _kcal_1 = _personen_1.getKcal();
+    int _divide = (_kcal_1 / 7);
+    _builder.append(_divide, "\t \t\t");
+    _builder.append(" Kalorien pro Tag</p>");
     _builder.newLineIfNotEmpty();
     _builder.append("          ");
     _builder.append("<table class=\"table table-bordered\">");
@@ -703,201 +757,129 @@ public class M2T {
     _builder.append("              ");
     _builder.append("<tr>");
     _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Spaghetti Bolognese <br /> <small>1000 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>100g Spaghetti</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>200g Bolognesesoße</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Gericht A <br /> <small>1000 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>500g Kartoffeln</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>200g Rührei</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>100g Spinat</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul> ");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Pfannkuchen <br /> <small>500 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul> ");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>300g Pfannkuchen</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Gericht A <br /> <small>1000 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>500g Kartoffeln</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>200g Rührei</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>100g Spinat</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul> ");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Gericht A <br /> <small>1000 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>500g Kartoffelbrei</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>200g Rührei</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>100g Spinat</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul> ");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Gericht A <br /> <small>1000 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>500g Zungenragout</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>200g Rührei</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>100g Spinat</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul> ");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Gericht A <br /> <small>1000 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>500g Kartoffeln</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>200g Rührei</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>100g Rotkohl</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul> ");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
+    {
+      ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, 7, true);
+      for(final Integer j : _doubleDotLessThan) {
+        _builder.append("              ");
+        _builder.append("<td>");
+        Gericht _get = this.meals.get((j).intValue());
+        String _name = _get.getName();
+        _builder.append(_name, "              ");
+        _builder.append(" <br /> <small>");
+        Integer _get_1 = this.mealsKcals.get((j).intValue());
+        _builder.append(_get_1, "              ");
+        _builder.append(" kcal</small><br /> ");
+        _builder.newLineIfNotEmpty();
+        _builder.append("              ");
+        _builder.append("  ");
+        _builder.append("<ul>");
+        _builder.newLine();
+        {
+          Gericht _get_2 = this.meals.get((j).intValue());
+          EList<Gericht2Zutat> _zutaten = _get_2.getZutaten();
+          for(final Gericht2Zutat g2z : _zutaten) {
+            _builder.append("<li>");
+            int _menge = g2z.getMenge();
+            _builder.append(_menge, "");
+            _builder.append("g ");
+            Zutat _zutat = g2z.getZutat();
+            String _name_1 = _zutat.getName();
+            _builder.append(_name_1, "");
+            _builder.append("</li>");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("              ");
+        _builder.append("  ");
+        _builder.append("</ul>");
+        _builder.newLine();
+        {
+          Gericht _get_3 = this.meals.get((j).intValue());
+          String _kommentar = _get_3.getKommentar();
+          int _length = _kommentar.length();
+          boolean _greaterThan = (_length > 0);
+          if (_greaterThan) {
+            _builder.append("<small>Anmerkung: ");
+            Gericht _get_4 = this.meals.get((j).intValue());
+            String _kommentar_1 = _get_4.getKommentar();
+            _builder.append(_kommentar_1, "");
+            _builder.append("</small>");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("              ");
+        _builder.append("</td>");
+        _builder.newLine();
+      }
+    }
     _builder.append("              ");
     _builder.append("</tr>");
     _builder.newLine();
     _builder.append("              ");
     _builder.append("<tr>");
     _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td></td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td></td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Salat <br /> <small>300 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>500g Salat</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>50ml Dressing</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td></td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td></td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td></td>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("<td>Salat <br /> <small>300 kcal</small><br /> ");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("<ul>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>500g Salat</li>");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.append("<li>50ml Dressing</li>");
-    _builder.newLine();
-    _builder.append("                  ");
-    _builder.append("</ul>");
-    _builder.newLine();
-    _builder.append("                ");
-    _builder.append("</td>");
-    _builder.newLine();
+    {
+      ExclusiveRange _doubleDotLessThan_1 = new ExclusiveRange(0, 7, true);
+      for(final Integer j_1 : _doubleDotLessThan_1) {
+        {
+          Gericht _get_5 = this.salads.get((j_1).intValue());
+          boolean _notEquals = (!Objects.equal(_get_5, null));
+          if (_notEquals) {
+            _builder.append("<td>");
+            Gericht _get_6 = this.salads.get((j_1).intValue());
+            String _name_2 = _get_6.getName();
+            _builder.append(_name_2, "");
+            _builder.append("<br /> <small>");
+            Integer _get_7 = this.saladsKcals.get((j_1).intValue());
+            _builder.append(_get_7, "");
+            _builder.append(" kcal</small><br /> ");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t\t\t\t\t\t\t");
+            _builder.append("<ul>");
+            _builder.newLine();
+            {
+              Gericht _get_8 = this.salads.get((j_1).intValue());
+              EList<Gericht2Zutat> _zutaten_1 = _get_8.getZutaten();
+              for(final Gericht2Zutat g2z_1 : _zutaten_1) {
+                _builder.append("\t\t\t\t\t\t\t");
+                _builder.append("<li>");
+                int _menge_1 = g2z_1.getMenge();
+                _builder.append(_menge_1, "\t\t\t\t\t\t\t");
+                _builder.append("g ");
+                Zutat _zutat_1 = g2z_1.getZutat();
+                String _name_3 = _zutat_1.getName();
+                _builder.append(_name_3, "\t\t\t\t\t\t\t");
+                _builder.append("</li>");
+                _builder.newLineIfNotEmpty();
+              }
+            }
+            _builder.append("\t\t                    ");
+            _builder.append("</ul>");
+            _builder.newLine();
+            {
+              Gericht _get_9 = this.meals.get((j_1).intValue());
+              String _kommentar_2 = _get_9.getKommentar();
+              int _length_1 = _kommentar_2.length();
+              boolean _greaterThan_1 = (_length_1 > 0);
+              if (_greaterThan_1) {
+                _builder.append("<small>Anmerkung: ");
+                Gericht _get_10 = this.salads.get((j_1).intValue());
+                String _kommentar_3 = _get_10.getKommentar();
+                _builder.append(_kommentar_3, "");
+                _builder.append("</small>");
+                _builder.newLineIfNotEmpty();
+              }
+            }
+            _builder.append("\t\t                  ");
+            _builder.append("</td>");
+            _builder.newLine();
+          } else {
+            _builder.append("<td></td>");
+            _builder.newLine();
+          }
+        }
+      }
+    }
     _builder.append("              ");
     _builder.append("</tr>");
     _builder.newLine();
@@ -908,8 +890,14 @@ public class M2T {
     _builder.append("</table>");
     _builder.newLine();
     _builder.append("          ");
-    _builder.append("<p>Für diese Woche wurden xxxxx von 14.000 kcal verbraucht.</p>");
-    _builder.newLine();
+    _builder.append("<p>Diese Woche wurden ");
+    _builder.append(this.usedKcalWeek, "          ");
+    _builder.append(" von ");
+    Person _personen_2 = e.getPersonen();
+    int _kcal_2 = _personen_2.getKcal();
+    _builder.append(_kcal_2, "          ");
+    _builder.append(" Kalorien verbraucht.</p>");
+    _builder.newLineIfNotEmpty();
     _builder.append("        ");
     _builder.append("</div>");
     _builder.newLine();
@@ -1009,12 +997,19 @@ public class M2T {
     _builder.append("        ");
     _builder.append("<ul>");
     _builder.newLine();
-    _builder.append("          ");
-    _builder.append("<li>100g Spaghetti</li>");
-    _builder.newLine();
-    _builder.append("          ");
-    _builder.append("<li>500g Kartoffeln</li>");
-    _builder.newLine();
+    {
+      Set<Zutat> _keySet = this.amoutOfIngredients.keySet();
+      for(final Zutat key : _keySet) {
+        _builder.append("<li> ");
+        Integer _get = this.amoutOfIngredients.get(key);
+        _builder.append(_get, "");
+        _builder.append("g ");
+        String _name = key.getName();
+        _builder.append(_name, "");
+        _builder.append(" </li>");
+        _builder.newLineIfNotEmpty();
+      }
+    }
     _builder.append("        ");
     _builder.append("</ul>");
     _builder.newLine();
@@ -1046,6 +1041,9 @@ public class M2T {
     return _builder.toString();
   }
   
+  /**
+   * Prüft, ob die Datei existiert
+   */
   public boolean fileExists(final String folder, final String file) {
     final StringBuffer path = new StringBuffer();
     path.append(folder);
