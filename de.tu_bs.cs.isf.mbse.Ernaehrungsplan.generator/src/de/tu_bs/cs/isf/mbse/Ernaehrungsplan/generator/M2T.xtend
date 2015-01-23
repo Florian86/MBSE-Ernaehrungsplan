@@ -7,6 +7,9 @@ import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat
 import java.io.File
 import java.io.FileOutputStream
 import java.util.ArrayList
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
 import java.util.HashMap
 import java.util.List
 import java.util.Map
@@ -72,52 +75,8 @@ class M2T {
         // alle in der ep-Datei vorhandenen Ernährungspläne durchlaufen
         for (e: this.eplans) {
         	
-        	// aktuellen Namen zwischenspeichern
-        	this.current_personname = e.personen.name
- 
-        	// alles hier initialisieren, damit jeder Ernährungsplan eigene Werte hat
-        	this.salads = new ArrayList<Gericht>
-        	this.meals = new ArrayList<Gericht>
-        	this.amoutOfIngredients = new HashMap<Zutat, Integer>()
-        	this.saladsKcals = new ArrayList<Integer>
-        	this.mealsKcals = new ArrayList<Integer>
-        	this.usedKcalWeek = 0	
-        	
-        	var String[] mealnameArray
-        	var StringBuilder sb
-        	
-        	// Aufteilung der Gerichte in normale Gerichte und Salate, um später die Tabelle 
-        	// einfacher aufbauen zu können
-        	for (g: e.gerichte) {
-        		mealnameArray = g.name.split("_")
-        		sb = new StringBuilder()
-        		for (String s : mealnameArray) {
-        			sb.append(s)
-        			sb.append(" ")
-        		}
-        		g.name = sb.toString
-        		if (g.isIstSalat) {
-        			this.salads.add(g)
-        		} 
-        		else {
-        			this.meals.add(g) 
-        		}
-        	} 
-        	
-			//TODO Zufällige Auswahl von sieben Gerichten und zwei Salaten
-			// d.h. this.meals enthält dann nur noch sieben Elemente und this.salads nur zwei
-			// this.salads braucht aber auch sieben Elemente, wegen des Tabellenaufbaus
-			// zufällige Auswahl, an welchem Tag es Salat gibt, bzw. so gewählt, dass in Kombination mit 
-			// einem Gericht, der Tagesbedarf nicht überschritten wird
-			// an einem Tag ohne Salat enthält this.salads ein null-Object
-			
-			// Notlösung: entsprechend viele Null-Objekte erst einmal hinten angefügt
-			if (this.salads.length < 7) {
-				for (var i = this.salads.length-1; i < 6; i++) {
-					this.salads.add(null)
-				}
-			}  	
-			
+ 			// Initialisiert, berechnet, speichert zwischen... 
+ 			this.preparations(e)
 			// die Anzahl der Kalorien für die Gerichte der Woche berechnen
         	this.computeKcals()
         	// die Mengenangaben für alle benötigten Zutaten berechnen
@@ -152,50 +111,65 @@ class M2T {
 	        htmlStream_EL.close();
 		}
     }
-     
-	//--------------------LaTeX--------------------
-	
-	/*
-	 * "Startmethode" der Latex-Generierung
-	 * aktueller Ernährungsplan wird übergeben
-	 */
-	def String generateLatex(Ernaehrungsplan e){
-        '''
-        «generateLatexHead()»
-        \begin{document}
-        «generateLatexSchedule(e)»
-        \newpage
-        «generateLatexShoppingList(e)»
-        \end{document}
-        '''
+    
+    def preparations(Ernaehrungsplan e) {
+    	
+    	// aktuellen Namen zwischenspeichern
+        this.current_personname = e.personen.name
+ 
+        // alles hier initialisieren, damit jeder Ernährungsplan eigene Werte hat
+    	this.salads = new ArrayList<Gericht>
+    	this.meals = new ArrayList<Gericht>
+    	this.amoutOfIngredients = new HashMap<Zutat, Integer>()
+    	this.saladsKcals = new ArrayList<Integer>
+    	this.mealsKcals = new ArrayList<Integer>
+    	this.usedKcalWeek = 0	
+    	
+    	var String[] mealnameArray
+    	var StringBuilder sb
+    	
+    	// Aufteilung der Gerichte in normale Gerichte und Salate, um später die Tabelle 
+    	// einfacher aufbauen zu können
+    	for (g: e.gerichte) {
+    		mealnameArray = g.name.split("_")
+    		sb = new StringBuilder()
+    		for (String s : mealnameArray) {
+    			sb.append(s)
+    			sb.append(" ")
+    		}
+    		g.name = sb.toString
+    		if (g.isIstSalat) {
+    			this.salads.add(g)
+    		} 
+    		else {
+    			this.meals.add(g) 
+    		}
+    	} 
+    	
+		//TODO Zufällige Auswahl von sieben Gerichten und zwei Salaten
+		// d.h. this.meals enthält dann nur noch sieben Elemente und this.salads nur zwei
+		// this.salads braucht aber auch sieben Elemente, wegen des Tabellenaufbaus
+		// zufällige Auswahl, an welchem Tag es Salat gibt, bzw. so gewählt, dass in Kombination mit 
+		// einem Gericht, der Tagesbedarf nicht überschritten wird
+		// an einem Tag ohne Salat enthält this.salads ein null-Object
+		
+		// Notlösung: entsprechend viele Null-Objekte erst einmal hinten angefügt
+		if (this.salads.length < 7) {
+			for (var i = this.salads.length-1; i < 6; i++) {
+				this.salads.add(null)
+			}
+		} 
     }
     
     /*
-     * Latexkopf mit allen Einstellungen, Packages, ... 
+     * Kalenderwoche berechnen
      */
-    def String generateLatexHead(){
-        
-        '''
-		\documentclass[10pt, a4paper]{article}
-		\usepackage[a4paper, bottom=2.0cm, top=2.0cm]{geometry}
-		
-		\usepackage[utf8]{inputenc}
-		\usepackage[ngerman]{babel}
-		
-		\pagestyle{empty}
-		\parindent0pt
-		
-		\usepackage{tabularx}
-		\usepackage{multirow}
-		\newcolumntype{C}{>{\centering\arraybackslash}X}
-		
-		\usepackage{pdflscape}
-		\usepackage{ragged2e}
-		
-		\usepackage{enumitem} 
-		\setitemize{leftmargin=*}
-		
-		'''
+    def int getWeekOfYear() {
+    	var Calendar calendar = new GregorianCalendar();
+		var Date trialTime = new Date();   
+		calendar.setTime(trialTime);     
+		// println(calendar.get(Calendar.WEEK_OF_YEAR));  
+		return calendar.get(Calendar.WEEK_OF_YEAR)
     }
     
     /*
@@ -283,6 +257,51 @@ class M2T {
 			}
 		}
 
+    }
+     
+	//--------------------LaTeX--------------------
+	
+	/*
+	 * "Startmethode" der Latex-Generierung
+	 * aktueller Ernährungsplan wird übergeben
+	 */
+	def String generateLatex(Ernaehrungsplan e){
+        '''
+        «generateLatexHead()»
+        \begin{document}
+        «generateLatexSchedule(e)»
+        \newpage
+        «generateLatexShoppingList(e)»
+        \end{document}
+        '''
+    }
+    
+    /*
+     * Latexkopf mit allen Einstellungen, Packages, ... 
+     */
+    def String generateLatexHead(){
+        
+        '''
+		\documentclass[10pt, a4paper]{article}
+		\usepackage[a4paper, bottom=2.0cm, top=2.0cm]{geometry}
+		
+		\usepackage[utf8]{inputenc}
+		\usepackage[ngerman]{babel}
+		
+		\pagestyle{empty}
+		\parindent0pt
+		
+		\usepackage{tabularx}
+		\usepackage{multirow}
+		\newcolumntype{C}{>{\centering\arraybackslash}X}
+		
+		\usepackage{pdflscape}
+		\usepackage{ragged2e}
+		
+		\usepackage{enumitem} 
+		\setitemize{leftmargin=*}
+		
+		'''
     }
     
 	/*
