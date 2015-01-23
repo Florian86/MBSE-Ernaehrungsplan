@@ -24,13 +24,13 @@ Ernaehrungsplan
 
 	Gericht 
 	{
-		name FleischMitKartoffeln
+		name Fleisch_Mit_Kartoffeln
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Kartoffeln, FleischMitKartoffeln)
-			zutat (500, Lammfleisch, FleischMitKartoffeln)
+			zutat (200, Kartoffeln, Fleisch_Mit_Kartoffeln)
+			zutat (500, Lammfleisch, Fleisch_Mit_Kartoffeln)
 			}
 	}
 	
@@ -47,51 +47,51 @@ Ernaehrungsplan
 	
 	Gericht 
 	{
-		name KartoffelnMitSpinatUndRuehrei
+		name Kartoffeln_Mit_Spinat_Und_Ruehrei
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Kartoffeln, KartoffelnMitSpinatUndRuehrei)
-			zutat (100, Spinat, KartoffelnMitSpinatUndRuehrei)
-			zutat (100, Ruehrei, KartoffelnMitSpinatUndRuehrei)
+			zutat (200, Kartoffeln, Kartoffeln_Mit_Spinat_Und_Ruehrei)
+			zutat (100, Spinat, Kartoffeln_Mit_Spinat_Und_Ruehrei)
+			zutat (100, Ruehrei, Kartoffeln_Mit_Spinat_Und_Ruehrei)
 			}
 	}
 	
 	Gericht 
 	{
-		name SpaghettiBolognese
+		name Spaghetti_Bolognese
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Nudeln, SpaghettiBolognese)
-			zutat (100, Bolognesesauce, SpaghettiBolognese)
+			zutat (200, Nudeln, Spaghetti_Bolognese)
+			zutat (100, Bolognesesauce, Spaghetti_Bolognese)
 			}
 	}
 	
 	Gericht 
 	{
-		name BunterSalat
+		name Bunter_Salat
 		kommentar "stuff dies das kochen machen"
 		istSalat ja
 		besteht aus 
 			{
-			zutat (200, Salat, BunterSalat)
-			zutat (100, Gemuese, BunterSalat)
-			zutat (100, Dressing, BunterSalat)
+			zutat (200, Salat, Bunter_Salat)
+			zutat (100, Gemuese, Bunter_Salat)
+			zutat (100, Dressing, Bunter_Salat)
 			}
 	}
 	
 	Gericht 
 	{
-		name CurryReis
+		name Curry_Reis
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Reis, CurryReis)
-			zutat (100, Currysauce, CurryReis)
+			zutat (200, Reis, Curry_Reis)
+			zutat (100, Currysauce, Curry_Reis)
 			}
 	}
 	
@@ -132,13 +132,13 @@ Ernaehrungsplan
 	eplan 
 	{
 		person (Marcel)
-		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
+		gerichte(Fleisch_Mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curry_Reis, Spaghetti_Bolognese, Kartoffeln_Mit_Spinat_Und_Ruehrei)
 	}
 	
 	eplan 
 	{
 		person (Tabea)
-		gerichte(FleischMitKartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, BunterSalat, CurryReis, SpaghettiBolognese, KartoffelnMitSpinatUndRuehrei)
+		gerichte(Fleisch_Mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curry_Reis, Spaghetti_Bolognese, Kartoffeln_Mit_Spinat_Und_Ruehrei)
 	}
 	
 }
