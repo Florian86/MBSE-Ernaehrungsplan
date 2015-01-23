@@ -276,7 +276,7 @@ public class M2T {
           int _plus = ((_get).intValue() + _menge_1);
           amount = _plus;
           Zutat _zutat_3 = g2z.getZutat();
-          this.amoutOfIngredients.replace(_zutat_3, Integer.valueOf(amount));
+          this.amoutOfIngredients.put(_zutat_3, Integer.valueOf(amount));
         }
       }
     }
@@ -299,7 +299,7 @@ public class M2T {
             int _plus_1 = ((_get_1).intValue() + _menge_3);
             amount = _plus_1;
             Zutat _zutat_7 = g2z_1.getZutat();
-            this.amoutOfIngredients.replace(_zutat_7, Integer.valueOf(amount));
+            this.amoutOfIngredients.put(_zutat_7, Integer.valueOf(amount));
           }
         }
       }

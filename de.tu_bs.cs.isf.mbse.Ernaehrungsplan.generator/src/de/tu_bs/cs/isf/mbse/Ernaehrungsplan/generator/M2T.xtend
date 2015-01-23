@@ -256,7 +256,7 @@ class M2T {
 						this.amoutOfIngredients.put(g2z.zutat, g2z.menge)				
 					} else {
 						amount = this.amoutOfIngredients.get(g2z.zutat) + g2z.menge
-                            return this.amoutOfIngredients.put(g2z.zutat, amount);
+                        this.amoutOfIngredients.put(g2z.zutat, amount);
 					}
 				}
 			}
