@@ -24,13 +24,13 @@ Ernaehrungsplan
 
 	Gericht 
 	{
-		name Fleisch_Mit_Kartoffeln
+		name Fleisch_mit_Kartoffeln
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Kartoffeln, Fleisch_Mit_Kartoffeln)
-			zutat (500, Lammfleisch, Fleisch_Mit_Kartoffeln)
+			zutat (200, Kartoffeln, Fleisch_mit_Kartoffeln)
+			zutat (500, Lammfleisch, Fleisch_mit_Kartoffeln)
 			}
 	}
 	
@@ -47,14 +47,14 @@ Ernaehrungsplan
 	
 	Gericht 
 	{
-		name Kartoffeln_Mit_Spinat_Und_Ruehrei
+		name Kartoffeln_mit_Spinat_und_Ruehrei
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Kartoffeln, Kartoffeln_Mit_Spinat_Und_Ruehrei)
-			zutat (100, Spinat, Kartoffeln_Mit_Spinat_Und_Ruehrei)
-			zutat (100, Ruehrei, Kartoffeln_Mit_Spinat_Und_Ruehrei)
+			zutat (200, Kartoffeln, Kartoffeln_mit_Spinat_und_Ruehrei)
+			zutat (100, Spinat, Kartoffeln_mit_Spinat_und_Ruehrei)
+			zutat (100, Ruehrei, Kartoffeln_mit_Spinat_und_Ruehrei)
 			}
 	}
 	
@@ -85,13 +85,13 @@ Ernaehrungsplan
 	
 	Gericht 
 	{
-		name Curry_Reis
+		name Curryreis
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Reis, Curry_Reis)
-			zutat (100, Currysauce, Curry_Reis)
+			zutat (200, Reis, Curryreis)
+			zutat (100, Currysauce, Curryreis)
 			}
 	}
 	
@@ -132,13 +132,13 @@ Ernaehrungsplan
 	eplan 
 	{
 		person (Marcel)
-		gerichte(Fleisch_Mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curry_Reis, Spaghetti_Bolognese, Kartoffeln_Mit_Spinat_Und_Ruehrei)
+		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei)
 	}
 	
 	eplan 
 	{
 		person (Tabea)
-		gerichte(Fleisch_Mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curry_Reis, Spaghetti_Bolognese, Kartoffeln_Mit_Spinat_Und_Ruehrei)
+		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei)
 	}
 	
 }
