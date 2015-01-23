@@ -104,6 +104,8 @@ public class M2T {
           String _plus_4 = (_plus_3 + "_Latex.tex");
           File _file_1 = new File(_plus_4);
           this.targetLatexFile = _file_1;
+          File _parentFile = this.targetLatexFile.getParentFile();
+          _parentFile.mkdirs();
           this.targetLatexFile.createNewFile();
           FileOutputStream _fileOutputStream = new FileOutputStream(this.targetLatexFile);
           this.latexStream = _fileOutputStream;

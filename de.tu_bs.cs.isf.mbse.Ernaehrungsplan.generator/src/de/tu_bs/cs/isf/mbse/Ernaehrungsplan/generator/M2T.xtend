@@ -80,12 +80,13 @@ class M2T {
 			// die Anzahl der Kalorien für die Gerichte der Woche berechnen
         	this.computeKcals()
         	// die Mengenangaben für alle benötigten Zutaten berechnen
-        	this.computeAmount()        	
+        	this.computeAmount()        	       
         	         
 	        //--------------------LaTeX--------------------
 	        val currentDirectory = new File(".").getCanonicalFile();
 	        val outputPath = new File(currentDirectory + File.separator  + "output");
 	        targetLatexFile = new File(outputPath + File.separator + this.current_personname + "_Latex.tex");
+	        targetLatexFile.getParentFile().mkdirs();				// Pfad zur Datei wird mit erstellt (weil output-Ordner fehlt, wenn leer)
 	        targetLatexFile.createNewFile(); 						// Datei erstellen
 	        latexStream = new FileOutputStream(targetLatexFile); 	// um Zeug in die Datei zu schreiben
 	        
