@@ -83,9 +83,19 @@ class M2T {
         	this.mealsKcals = new ArrayList<Integer>
         	this.usedKcalWeek = 0	
         	
+        	var String[] mealnameArray
+        	var StringBuilder sb
+        	
         	// Aufteilung der Gerichte in normale Gerichte und Salate, um später die Tabelle 
         	// einfacher aufbauen zu können
         	for (g: e.gerichte) {
+        		mealnameArray = g.name.split("_")
+        		sb = new StringBuilder()
+        		for (String s : mealnameArray) {
+        			sb.append(s)
+        			sb.append(" ")
+        		}
+        		g.name = sb.toString
         		if (g.isIstSalat) {
         			this.salads.add(g)
         		} 
@@ -111,7 +121,7 @@ class M2T {
 			// die Anzahl der Kalorien für die Gerichte der Woche berechnen
         	this.computeKcals()
         	// die Mengenangaben für alle benötigten Zutaten berechnen
-        	this.computeAmout()        	
+        	this.computeAmount()        	
         	         
 	        //--------------------LaTeX--------------------
 	        targetLatexFile = new File("output" + File.separator + this.current_personname + "_Latex.tex");
@@ -238,7 +248,7 @@ class M2T {
     /*
      * Menge der benötigten Zutaten für die Einkaufsliste berechnen
      */
-    def computeAmout() {
+    def computeAmount() {
     	
     	var amount = 0
     	
