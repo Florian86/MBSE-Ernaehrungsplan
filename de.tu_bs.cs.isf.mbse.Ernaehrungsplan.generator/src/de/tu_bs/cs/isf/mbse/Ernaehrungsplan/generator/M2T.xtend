@@ -95,7 +95,7 @@ class M2T {
 	        latexStream.write(latexOutput.getBytes()); 				// schreibt den generierten Code in die Datei
 	        latexStream.close(); 									// Stream schließen und Resourcen freigeben
 			val workingDirectory = outputPath;
-			GeneratePDF.latex2PDF(targetLatexFile, outputPath, workingDirectory);
+//			GeneratePDF.latex2PDF(targetLatexFile, outputPath, workingDirectory);
 	        
 	        //--------------------HTML--------------------
 	        // ------ Ernährungsplan ------
@@ -183,9 +183,9 @@ class M2T {
             Collections.shuffle(randomWeekdays)
             for(i: 0..< 7){
                 if(i == randomWeekdays.get(0)){
-                    this.salads.add(preSalads.get(0))
+                    this.salads.add(preSalads.get(randomSalads.get(0)))
                 }else if(i == randomWeekdays.get(1)){
-                    this.salads.add(preSalads.get(1))
+                    this.salads.add(preSalads.get(randomSalads.get(1)))
                 }else{
                     this.salads.add(null)
                 }
@@ -198,7 +198,7 @@ class M2T {
     	//Permutiere Zahlen, wähle die ersten sieben aus
     	Collections.shuffle(randomMeals)
     	for(i: 0..< 7){
-    	    this.meals.add(preMeals.get(i))
+    	    this.meals.add(preMeals.get(randomMeals.get(i)))
     	}
 
     }

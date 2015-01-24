@@ -7,7 +7,6 @@ import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat;
-import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.GeneratePDF;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.ModelLoader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -116,7 +115,6 @@ public class M2T {
           this.latexStream.write(_bytes);
           this.latexStream.close();
           final File workingDirectory = outputPath;
-          GeneratePDF.latex2PDF(this.targetLatexFile, outputPath, workingDirectory);
           File _file_2 = new File(((("output" + File.separator) + this.current_personname) + "_EP_HTML.html"));
           this.targetHtmlFile_EP = _file_2;
           this.targetHtmlFile_EP.createNewFile();
@@ -219,14 +217,16 @@ public class M2T {
         Integer _get = randomWeekdays.get(0);
         boolean _equals = Objects.equal(i_2, _get);
         if (_equals) {
-          Gericht _get_1 = preSalads.get(0);
-          this.salads.add(_get_1);
+          Integer _get_1 = randomSalads.get(0);
+          Gericht _get_2 = preSalads.get((_get_1).intValue());
+          this.salads.add(_get_2);
         } else {
-          Integer _get_2 = randomWeekdays.get(1);
-          boolean _equals_1 = Objects.equal(i_2, _get_2);
+          Integer _get_3 = randomWeekdays.get(1);
+          boolean _equals_1 = Objects.equal(i_2, _get_3);
           if (_equals_1) {
-            Gericht _get_3 = preSalads.get(1);
-            this.salads.add(_get_3);
+            Integer _get_4 = randomSalads.get(1);
+            Gericht _get_5 = preSalads.get((_get_4).intValue());
+            this.salads.add(_get_5);
           } else {
             this.salads.add(null);
           }
@@ -242,8 +242,9 @@ public class M2T {
     Collections.shuffle(randomMeals);
     ExclusiveRange _doubleDotLessThan_5 = new ExclusiveRange(0, 7, true);
     for (final Integer i_4 : _doubleDotLessThan_5) {
-      Gericht _get_4 = preMeals.get((i_4).intValue());
-      this.meals.add(_get_4);
+      Integer _get_6 = randomMeals.get((i_4).intValue());
+      Gericht _get_7 = preMeals.get((_get_6).intValue());
+      this.meals.add(_get_7);
     }
   }
   
