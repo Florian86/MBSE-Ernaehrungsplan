@@ -61,7 +61,7 @@ public interface Ernaehrungsplan extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Gerichte</em>' reference list.
 	 * @see de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage#getErnaehrungsplan_Gerichte()
-	 * @model required="true"
+	 * @model lower="7"
 	 * @generated
 	 */
 	EList<Gericht> getGerichte();
