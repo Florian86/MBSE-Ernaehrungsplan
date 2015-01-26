@@ -5,6 +5,14 @@ START EpElement
 OPTIONS{
 	reloadGeneratorModel = "true";
 	generateCodeFromGeneratorModel = "true";
+	usePredefinedTokens = "false";
+}
+
+TOKENS {
+	DEFINE TEXT  $('A'..'Z'|'a'..'z'|'_'|'-')+$;
+  	DEFINE LINEBREAK  $('\r\n'|'\r'|'\n')$;
+	DEFINE WHITESPACE $(' '|'\t'|'\f')$;
+	DEFINE INTEGER $('0'..'9')$;
 }
 
 
@@ -16,13 +24,13 @@ RULES {
 					eplanElement+
 				   "}";
 				   
-	Person ::= "Person" "(" name[] "," kcal[]?")";
+	Person ::= "Person" "(" name[] "," kcal[INTEGER]?")";
 	
-	Hauptbestandteil ::= "Hauptbestandteil" "(" name[] "," kcal[]?")";
+	Hauptbestandteil ::= "Hauptbestandteil" "(" name[] "," kcal[INTEGER]?")";
 	
-	Beilage ::= "Beilage" "(" name[] "," kcal[]?")";
+	Beilage ::= "Beilage" "(" name[] "," kcal[INTEGER]?")";
 	
-	Sauce ::= "Sauce" "(" name[] "," kcal[]?")";
+	Sauce ::= "Sauce" "(" name[] "," kcal[INTEGER]?")";
 	
 	Gericht ::= "Gericht" "{"
 				"name" name[]
@@ -42,6 +50,6 @@ RULES {
 							       "," gerichte[]+ ")"
 						"}";
 	
-	Gericht2Zutat ::= "zutat" "("menge[]"," zutat[] "," gericht[] ")";
+	Gericht2Zutat ::= "zutat" "("menge[INTEGER]"," zutat[] "," gericht[] ")";
 	
 }
