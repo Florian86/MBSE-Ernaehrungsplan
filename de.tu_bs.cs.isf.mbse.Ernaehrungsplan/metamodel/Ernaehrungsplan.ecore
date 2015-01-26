@@ -4,7 +4,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Ernaehrungsplan">
     <eStructuralFeatures xsi:type="ecore:EReference" name="personen" lowerBound="1"
         eType="#//Person"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="gerichte" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gerichte" lowerBound="7"
         upperBound="-1" eType="#//Gericht"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Person">

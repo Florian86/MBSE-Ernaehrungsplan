@@ -745,7 +745,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//Ernaehrungsplan/personen"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEgnoKJpEeSc3rWBdL-e6Q" description="_lEgAk6JpEeSc3rWBdL-e6Q" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEgnoaJpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEgnoqJpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEgnoqJpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEgno6JpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -756,12 +756,12 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC_EReference']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_lEhOsKJpEeSc3rWBdL-e6Q" name="[1..*] gerichte" sourceNode="_lD7_4KJpEeSc3rWBdL-e6Q" targetNode="_lD-cIKJpEeSc3rWBdL-e6Q">
+      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_lEhOsKJpEeSc3rWBdL-e6Q" name="[7..*] gerichte" sourceNode="_lD7_4KJpEeSc3rWBdL-e6Q" targetNode="_lD-cIKJpEeSc3rWBdL-e6Q">
         <target xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//Ernaehrungsplan/gerichte"/>
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//Ernaehrungsplan/gerichte"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEh1xaJpEeSc3rWBdL-e6Q" description="_lEh1waJpEeSc3rWBdL-e6Q" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEh1xqJpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEh1x6JpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEh1x6JpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEh1yKJpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -777,7 +777,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//Gericht/zutaten"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEjD4KJpEeSc3rWBdL-e6Q" description="_lEic0qJpEeSc3rWBdL-e6Q" sourceArrow="FillDiamond" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEjD4aJpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEjD4qJpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEjD4qJpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEjD46JpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -793,7 +793,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//Gericht2Zutat/gericht"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEjq9qJpEeSc3rWBdL-e6Q" description="_lEjq8qJpEeSc3rWBdL-e6Q" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEjq96JpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEjq-KJpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEjq-KJpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEjq-aJpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -809,7 +809,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//Gericht2Zutat/zutat"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEk5FqJpEeSc3rWBdL-e6Q" description="_lEk5EqJpEeSc3rWBdL-e6Q" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEk5F6JpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEk5GKJpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEk5GKJpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEk5GaJpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -825,7 +825,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//EpElement/eplanElement"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEmHMKJpEeSc3rWBdL-e6Q" description="_lElgI6JpEeSc3rWBdL-e6Q" sourceArrow="FillDiamond" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEmHMaJpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEmHMqJpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEmHMqJpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEmHM6JpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -841,7 +841,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//EpElement/personElement"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEn8YaJpEeSc3rWBdL-e6Q" description="_lEmuQqJpEeSc3rWBdL-e6Q" sourceArrow="FillDiamond" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEn8YqJpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEn8Y6JpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEn8Y6JpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEn8ZKJpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -857,7 +857,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//EpElement/zutatElement"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lEpxlqJpEeSc3rWBdL-e6Q" description="_lEpxkqJpEeSc3rWBdL-e6Q" sourceArrow="FillDiamond" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lEpxl6JpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEpxmKJpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lEpxmKJpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lEpxmaJpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>
@@ -873,7 +873,7 @@
         <semanticElements xmi:type="ecore:EReference" href="Ernaehrungsplan.ecore#//EpElement/gerichtElement"/>
         <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_lErmxqJpEeSc3rWBdL-e6Q" description="_lErmwqJpEeSc3rWBdL-e6Q" sourceArrow="FillDiamond" routingStyle="manhattan">
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_lErmx6JpEeSc3rWBdL-e6Q"/>
-          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lErmyKJpEeSc3rWBdL-e6Q" showIcon="false">
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_lErmyKJpEeSc3rWBdL-e6Q" labelFormat="bold" showIcon="false">
             <customFeatures>labelSize</customFeatures>
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_lErmyaJpEeSc3rWBdL-e6Q"/>
           </centerLabelStyle>

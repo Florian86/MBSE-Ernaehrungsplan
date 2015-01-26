@@ -33,7 +33,13 @@ RULES {
 	
 	Ernaehrungsplan ::= "eplan" "{"
 						"person" "(" personen[] ")"
-						"gerichte" "(" gerichte[] ("," gerichte[])* ")"
+						"gerichte" "(" gerichte[] 
+							       "," gerichte[]
+							       "," gerichte[]
+							       "," gerichte[]
+							       "," gerichte[]
+							       "," gerichte[]
+							       "," gerichte[]+ ")"
 						"}";
 	
 	Gericht2Zutat ::= "zutat" "("menge[]"," zutat[] "," gericht[] ")";
