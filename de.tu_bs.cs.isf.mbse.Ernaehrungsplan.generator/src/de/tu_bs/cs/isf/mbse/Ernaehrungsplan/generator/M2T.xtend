@@ -13,6 +13,7 @@ import java.util.GregorianCalendar
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import java.util.Collections
 
 class M2T {
 	
@@ -132,6 +133,11 @@ class M2T {
     	
     	var String[] mealnameArray
     	var StringBuilder sb
+    	var List<Gericht> preMeals = new ArrayList<Gericht>
+    	var List<Gericht> preSalads = new ArrayList<Gericht>
+    	var List<Integer> randomMeals = new ArrayList<Integer>
+    	var List<Integer> randomSalads = new ArrayList<Integer>
+    	var List<Integer> randomWeekdays = new ArrayList<Integer>
     	
     	// Aufteilung der Gerichte in normale Gerichte und Salate, um später die Tabelle 
     	// einfacher aufbauen zu können
@@ -144,26 +150,57 @@ class M2T {
     		}
     		g.name = sb.toString
     		if (g.isIstSalat) {
-    			this.salads.add(g)
+    			preSalads.add(g)
     		} 
     		else {
-    			this.meals.add(g) 
+    			preMeals.add(g) 
     		}
     	} 
     	
-		//TODO Zufällige Auswahl von sieben Gerichten und zwei Salaten
-		// d.h. this.meals enthält dann nur noch sieben Elemente und this.salads nur zwei
-		// this.salads braucht aber auch sieben Elemente, wegen des Tabellenaufbaus
-		// zufällige Auswahl, an welchem Tag es Salat gibt, bzw. so gewählt, dass in Kombination mit 
-		// einem Gericht, der Tagesbedarf nicht überschritten wird
-		// an einem Tag ohne Salat enthält this.salads ein null-Object
-		
-		// Notlösung: entsprechend viele Null-Objekte erst einmal hinten angefügt
-		if (this.salads.length < 7) {
-			for (var i = this.salads.length-1; i < 6; i++) {
-				this.salads.add(null)
-			}
-		} 
+    	//Zufallsauswahl der Gerichte
+    	
+    	//wenn zu wenig Gerichte, füge Salat zu den Gerichten und lösche Salate
+    	//TODO: evtl. Änderung im Meta-Modell?
+    	if(preMeals.size() < 7){
+    	    println("Pflanzenfresser entdeckt.")
+    	    preMeals.addAll(preSalads)
+    	    for(s: 0..< preSalads.size()){
+    	        preSalads.set(s,null)
+    	    }
+    	}else{
+            //Liste mit Zahlen für jeden Salat
+            for(i: 0..< preSalads.size()){
+                randomSalads.add(new Integer(i))
+            }
+            //Permutiere Zahlen
+            Collections.shuffle(randomSalads)
+            //Liste mit Zahlen für jeden Wochentag
+            for(i: 0..< 7){
+                randomWeekdays.add(new Integer(i))
+            }
+            //Permutiere Zahlen und wähle 2 aus
+            //TODO: 2 Salate pro Woche?
+            Collections.shuffle(randomWeekdays)
+            for(i: 0..< 7){
+                if(i == randomWeekdays.get(0)){
+                    this.salads.add(preSalads.get(randomSalads.get(0)))
+                }else if(i == randomWeekdays.get(1)){
+                    this.salads.add(preSalads.get(randomSalads.get(1)))
+                }else{
+                    this.salads.add(null)
+                }
+            }
+    	}
+    	//Liste mit Zahlen für jedes Gericht
+    	for(i: 0..< preMeals.size()){
+    	    randomMeals.add(new Integer(i))
+    	}
+    	//Permutiere Zahlen, wähle die ersten sieben aus
+    	Collections.shuffle(randomMeals)
+    	for(i: 0..< 7){
+    	    this.meals.add(preMeals.get(randomMeals.get(i)))
+    	}
+
     }
     
     /*
@@ -181,9 +218,7 @@ class M2T {
      * Berechnung der Kalorienanzahl der jeweiligen Gerichte
      */
     def computeKcals() {
-    	
-    	//TODO Listen sollten hier jeweils sieben Elemente enthalten 
-		
+    			
 		var kcal = 0		
 		var i = 0;
 		
@@ -194,15 +229,11 @@ class M2T {
 				// kcal für ein Gericht ausrechnen (kcal sind pro hundert gramm, also multiplizieren) 
 				kcal = kcal + (z.zutat.kcal * z.menge/100)
 			}
-			// TODO IF-Bedingung mit Zähler kann weg, wenn this.meals bereits nur sieben Elemente enthält
-			// hier: Notlösung, nur die ersten sieben Gerichte der Liste verwenden
-			if (i <= 6) {
-				// berechnete Kalorienanzahl für ein Gericht in die Liste speichern
-				this.mealsKcals.add(kcal)
-				// Kalorienanzahl zu den bereits gebrauchten zurechnen
-				this.usedKcalWeek = this.usedKcalWeek + kcal
-				i++
-			}
+			// berechnete Kalorienanzahl für ein Gericht in die Liste speichern
+			this.mealsKcals.add(kcal)
+			// Kalorienanzahl zu den bereits gebrauchten zurechnen
+			this.usedKcalWeek = this.usedKcalWeek + kcal
+
 			kcal = 0
 		}
 		
@@ -244,7 +275,7 @@ class M2T {
 					// gibt es den Key schonmal, müssen die Mengen addiert werden, 
 					// also alter + neuer Wert
 					amount = this.amoutOfIngredients.get(g2z.zutat) + g2z.menge
-					this.amoutOfIngredients.replace(g2z.zutat, amount)
+                    this.amoutOfIngredients.put(g2z.zutat, amount);
 				}
 			}
 		}
@@ -256,7 +287,7 @@ class M2T {
 						this.amoutOfIngredients.put(g2z.zutat, g2z.menge)				
 					} else {
 						amount = this.amoutOfIngredients.get(g2z.zutat) + g2z.menge
-						this.amoutOfIngredients.replace(g2z.zutat, amount)
+                        this.amoutOfIngredients.put(g2z.zutat, amount);
 					}
 				}
 			}
@@ -475,7 +506,7 @@ class M2T {
 		                <td>«this.meals.get(j).name» <br /> <small>«this.mealsKcals.get(j)» kcal</small><br /> 
 		                  <ul>
 		                  	«FOR g2z:this.meals.get(j).zutaten»
-								<li>«g2z.menge»g «g2z.zutat.name»</li>
+                                <li>«g2z.menge»g «g2z.zutat.name»</li>
 							«ENDFOR»
 		                  </ul>
 		                </td>

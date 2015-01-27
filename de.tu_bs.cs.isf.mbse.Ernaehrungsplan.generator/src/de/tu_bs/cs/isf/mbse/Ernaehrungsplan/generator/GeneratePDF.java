@@ -9,7 +9,11 @@ public class GeneratePDF {
 	public static void latex2PDF(File inputFile, File outputPath, File workingDirectory)
 	{
 		try {
-			File latex = new File("/usr/local/texlive/2013/bin/x86_64-darwin/pdflatex");
+			// Je nach Benutzer anzupassen
+			// Marcel
+			File latex = new File("/usr/local/texlive/2014/bin/x86_64-darwin/pdflatex");
+			// FloF, Tabea
+			// File latex = new File("/usr/local/texlive/2013/bin/x86_64-darwin/pdflatex");
 			
 			JLRGenerator pdfGen = new JLRGenerator();
 			// löscht temporäre Dateien

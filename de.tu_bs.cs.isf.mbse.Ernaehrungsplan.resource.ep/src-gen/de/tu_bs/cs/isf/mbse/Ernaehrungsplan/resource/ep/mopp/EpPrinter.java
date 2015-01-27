@@ -272,12 +272,12 @@ public class EpPrinter implements de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.
 		// DEFINITION PART BEGINS (CsString)
 		out.print(",");
 		out.print(" ");
-		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
 		count = printCountingMap.get("kcal");
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.PERSON__KCAL));
 			if (o != null) {
-				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.PERSON__KCAL), element));
 				out.print(" ");
@@ -325,12 +325,12 @@ public class EpPrinter implements de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.
 		// DEFINITION PART BEGINS (CsString)
 		out.print(",");
 		out.print(" ");
-		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
 		count = printCountingMap.get("kcal");
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.HAUPTBESTANDTEIL__KCAL));
 			if (o != null) {
-				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.HAUPTBESTANDTEIL__KCAL), element));
 				out.print(" ");
@@ -378,12 +378,12 @@ public class EpPrinter implements de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.
 		// DEFINITION PART BEGINS (CsString)
 		out.print(",");
 		out.print(" ");
-		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
 		count = printCountingMap.get("kcal");
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.BEILAGE__KCAL));
 			if (o != null) {
-				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.BEILAGE__KCAL), element));
 				out.print(" ");
@@ -431,12 +431,12 @@ public class EpPrinter implements de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.
 		// DEFINITION PART BEGINS (CsString)
 		out.print(",");
 		out.print(" ");
-		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
 		count = printCountingMap.get("kcal");
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.SAUCE__KCAL));
 			if (o != null) {
-				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.SAUCE__KCAL), element));
 				out.print(" ");
@@ -616,7 +616,118 @@ public class EpPrinter implements de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.
 			}
 			printCountingMap.put("gerichte", count - 1);
 		}
+		// DEFINITION PART BEGINS (CsString)
+		out.print(",");
+		out.print(" ");
+		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		count = printCountingMap.get("gerichte");
+		if (count > 0) {
+			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE));
+			List<?> list = (List<?>) o;
+			int index = list.size() - count;
+			if (index >= 0) {
+				o = list.get(index);
+			} else {
+				o = null;
+			}
+			if (o != null) {
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				resolver.setOptions(getOptions());
+				out.print(resolver.deResolve(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver().deResolve((de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht) o, element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE)), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), element));
+				out.print(" ");
+			}
+			printCountingMap.put("gerichte", count - 1);
+		}
+		// DEFINITION PART BEGINS (CsString)
+		out.print(",");
+		out.print(" ");
+		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		count = printCountingMap.get("gerichte");
+		if (count > 0) {
+			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE));
+			List<?> list = (List<?>) o;
+			int index = list.size() - count;
+			if (index >= 0) {
+				o = list.get(index);
+			} else {
+				o = null;
+			}
+			if (o != null) {
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				resolver.setOptions(getOptions());
+				out.print(resolver.deResolve(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver().deResolve((de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht) o, element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE)), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), element));
+				out.print(" ");
+			}
+			printCountingMap.put("gerichte", count - 1);
+		}
+		// DEFINITION PART BEGINS (CsString)
+		out.print(",");
+		out.print(" ");
+		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		count = printCountingMap.get("gerichte");
+		if (count > 0) {
+			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE));
+			List<?> list = (List<?>) o;
+			int index = list.size() - count;
+			if (index >= 0) {
+				o = list.get(index);
+			} else {
+				o = null;
+			}
+			if (o != null) {
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				resolver.setOptions(getOptions());
+				out.print(resolver.deResolve(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver().deResolve((de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht) o, element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE)), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), element));
+				out.print(" ");
+			}
+			printCountingMap.put("gerichte", count - 1);
+		}
+		// DEFINITION PART BEGINS (CsString)
+		out.print(",");
+		out.print(" ");
+		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		count = printCountingMap.get("gerichte");
+		if (count > 0) {
+			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE));
+			List<?> list = (List<?>) o;
+			int index = list.size() - count;
+			if (index >= 0) {
+				o = list.get(index);
+			} else {
+				o = null;
+			}
+			if (o != null) {
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				resolver.setOptions(getOptions());
+				out.print(resolver.deResolve(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver().deResolve((de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht) o, element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE)), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), element));
+				out.print(" ");
+			}
+			printCountingMap.put("gerichte", count - 1);
+		}
+		// DEFINITION PART BEGINS (CsString)
+		out.print(",");
+		out.print(" ");
+		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		count = printCountingMap.get("gerichte");
+		if (count > 0) {
+			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE));
+			List<?> list = (List<?>) o;
+			int index = list.size() - count;
+			if (index >= 0) {
+				o = list.get(index);
+			} else {
+				o = null;
+			}
+			if (o != null) {
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				resolver.setOptions(getOptions());
+				out.print(resolver.deResolve(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver().deResolve((de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht) o, element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE)), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), element));
+				out.print(" ");
+			}
+			printCountingMap.put("gerichte", count - 1);
+		}
 		// DEFINITION PART BEGINS (CompoundDefinition)
+		print_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan_0(element, localtab, out, printCountingMap);
 		iterate = true;
 		while (iterate) {
 			sWriter = new StringWriter();
@@ -690,12 +801,12 @@ public class EpPrinter implements de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.
 		// DEFINITION PART BEGINS (CsString)
 		out.print("(");
 		out.print(" ");
-		// DEFINITION PART BEGINS (PlaceholderUsingDefaultToken)
+		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
 		count = printCountingMap.get("menge");
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE));
 			if (o != null) {
-				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("TEXT");
+				de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE), element));
 				out.print(" ");

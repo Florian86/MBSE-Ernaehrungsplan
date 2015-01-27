@@ -96,7 +96,7 @@ public class EpGrammarInformationProvider {
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_1_0_0_4 = INSTANCE.getEP_1_0_0_4();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_1_0_0_4() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getPerson().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.PERSON__KCAL), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getPerson().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.PERSON__KCAL), "INTEGER", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_1_0_0_5 = INSTANCE.getEP_1_0_0_5();
@@ -141,7 +141,7 @@ public class EpGrammarInformationProvider {
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_2_0_0_4 = INSTANCE.getEP_2_0_0_4();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_2_0_0_4() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getHauptbestandteil().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.HAUPTBESTANDTEIL__KCAL), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getHauptbestandteil().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.HAUPTBESTANDTEIL__KCAL), "INTEGER", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_2_0_0_5 = INSTANCE.getEP_2_0_0_5();
@@ -186,7 +186,7 @@ public class EpGrammarInformationProvider {
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_3_0_0_4 = INSTANCE.getEP_3_0_0_4();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_3_0_0_4() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getBeilage().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.BEILAGE__KCAL), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getBeilage().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.BEILAGE__KCAL), "INTEGER", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_3_0_0_5 = INSTANCE.getEP_3_0_0_5();
@@ -231,7 +231,7 @@ public class EpGrammarInformationProvider {
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_4_0_0_4 = INSTANCE.getEP_4_0_0_4();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_4_0_0_4() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getSauce().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.SAUCE__KCAL), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getSauce().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.SAUCE__KCAL), "INTEGER", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.QUESTIONMARK, 0);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_4_0_0_5 = INSTANCE.getEP_4_0_0_5();
@@ -376,47 +376,97 @@ public class EpGrammarInformationProvider {
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_8 = INSTANCE.getEP_6_0_0_8();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_8() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 0);
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 6);
 	}
 	
-	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_9_0_0_0 = INSTANCE.getEP_6_0_0_9_0_0_0();
-	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_9_0_0_0() {
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_9 = INSTANCE.getEP_6_0_0_9();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_9() {
 		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(",", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
 	}
 	
-	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_9_0_0_1 = INSTANCE.getEP_6_0_0_9_0_0_1();
-	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_9_0_0_1() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 0);
-	}
-	
-	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence EP_6_0_0_9_0_0 = INSTANCE.getEP_6_0_0_9_0_0();
-	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence getEP_6_0_0_9_0_0() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, EP_6_0_0_9_0_0_0, EP_6_0_0_9_0_0_1);
-	}
-	
-	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpChoice EP_6_0_0_9_0 = INSTANCE.getEP_6_0_0_9_0();
-	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpChoice getEP_6_0_0_9_0() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpChoice(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, EP_6_0_0_9_0_0);
-	}
-	
-	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCompound EP_6_0_0_9 = INSTANCE.getEP_6_0_0_9();
-	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCompound getEP_6_0_0_9() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCompound(EP_6_0_0_9_0, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.STAR);
-	}
-	
-	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_10 = INSTANCE.getEP_6_0_0_10();
-	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_10() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(")", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_10 = INSTANCE.getEP_6_0_0_10();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_10() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 5);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_11 = INSTANCE.getEP_6_0_0_11();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_11() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(",", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_12 = INSTANCE.getEP_6_0_0_12();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_12() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 4);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_13 = INSTANCE.getEP_6_0_0_13();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_13() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(",", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_14 = INSTANCE.getEP_6_0_0_14();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_14() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 3);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_15 = INSTANCE.getEP_6_0_0_15();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_15() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(",", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_16 = INSTANCE.getEP_6_0_0_16();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_16() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 2);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_17 = INSTANCE.getEP_6_0_0_17();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_17() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(",", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_18 = INSTANCE.getEP_6_0_0_18();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_18() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 1);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_19_0_0_0 = INSTANCE.getEP_6_0_0_19_0_0_0();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_19_0_0_0() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(",", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_6_0_0_19_0_0_1 = INSTANCE.getEP_6_0_0_19_0_0_1();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_6_0_0_19_0_0_1() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 0);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence EP_6_0_0_19_0_0 = INSTANCE.getEP_6_0_0_19_0_0();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence getEP_6_0_0_19_0_0() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, EP_6_0_0_19_0_0_0, EP_6_0_0_19_0_0_1);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpChoice EP_6_0_0_19_0 = INSTANCE.getEP_6_0_0_19_0();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpChoice getEP_6_0_0_19_0() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpChoice(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, EP_6_0_0_19_0_0);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCompound EP_6_0_0_19 = INSTANCE.getEP_6_0_0_19();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCompound getEP_6_0_0_19() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCompound(EP_6_0_0_19_0, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.PLUS);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_20 = INSTANCE.getEP_6_0_0_20();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_20() {
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword(")", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
+	}
+	
+	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_6_0_0_21 = INSTANCE.getEP_6_0_0_21();
+	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword getEP_6_0_0_21() {
 		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword("}", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence EP_6_0_0 = INSTANCE.getEP_6_0_0();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence getEP_6_0_0() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, EP_6_0_0_0, EP_6_0_0_1, EP_6_0_0_2, EP_6_0_0_3, EP_6_0_0_4, EP_6_0_0_5, EP_6_0_0_6, EP_6_0_0_7, EP_6_0_0_8, EP_6_0_0_9, EP_6_0_0_10, EP_6_0_0_11);
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpSequence(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, EP_6_0_0_0, EP_6_0_0_1, EP_6_0_0_2, EP_6_0_0_3, EP_6_0_0_4, EP_6_0_0_5, EP_6_0_0_6, EP_6_0_0_7, EP_6_0_0_8, EP_6_0_0_9, EP_6_0_0_10, EP_6_0_0_11, EP_6_0_0_12, EP_6_0_0_13, EP_6_0_0_14, EP_6_0_0_15, EP_6_0_0_16, EP_6_0_0_17, EP_6_0_0_18, EP_6_0_0_19, EP_6_0_0_20, EP_6_0_0_21);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpChoice EP_6_0 = INSTANCE.getEP_6_0();
@@ -441,7 +491,7 @@ public class EpGrammarInformationProvider {
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder EP_7_0_0_2 = INSTANCE.getEP_7_0_0_2();
 	private de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder getEP_7_0_0_2() {
-		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getGericht2Zutat().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE), "TEXT", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 0);
+		return new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpPlaceholder(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getGericht2Zutat().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.GERICHT2_ZUTAT__MENGE), "INTEGER", de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpCardinality.ONE, 0);
 	}
 	
 	public final static de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpKeyword EP_7_0_0_3 = INSTANCE.getEP_7_0_0_3();

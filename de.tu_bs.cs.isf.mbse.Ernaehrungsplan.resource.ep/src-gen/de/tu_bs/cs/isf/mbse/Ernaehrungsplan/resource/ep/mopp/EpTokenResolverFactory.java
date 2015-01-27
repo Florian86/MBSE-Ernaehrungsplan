@@ -27,6 +27,7 @@ public class EpTokenResolverFactory implements de.tu_bs.cs.isf.mbse.Ernaehrungsp
 		tokenName2TokenResolver = new LinkedHashMap<String, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver>();
 		featureName2CollectInTokenResolver = new LinkedHashMap<String, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver>();
 		registerTokenResolver("TEXT", new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.analysis.EpTEXTTokenResolver());
+		registerTokenResolver("INTEGER", new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.analysis.EpINTEGERTokenResolver());
 		registerTokenResolver("QUOTED_34_34", new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.analysis.EpQUOTED_34_34TokenResolver());
 	}
 	

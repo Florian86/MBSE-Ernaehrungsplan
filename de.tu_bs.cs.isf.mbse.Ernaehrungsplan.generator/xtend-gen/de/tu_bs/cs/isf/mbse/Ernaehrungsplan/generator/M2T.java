@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -21,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.eclipse.xtext.xbase.lib.InputOutput;
@@ -161,6 +161,11 @@ public class M2T {
     this.usedKcalWeek = 0;
     String[] mealnameArray = null;
     StringBuilder sb = null;
+    List<Gericht> preMeals = new ArrayList<Gericht>();
+    List<Gericht> preSalads = new ArrayList<Gericht>();
+    List<Integer> randomMeals = new ArrayList<Integer>();
+    List<Integer> randomSalads = new ArrayList<Integer>();
+    List<Integer> randomWeekdays = new ArrayList<Integer>();
     EList<Gericht> _gerichte = e.getGerichte();
     for (final Gericht g : _gerichte) {
       {
@@ -179,18 +184,69 @@ public class M2T {
         g.setName(_string);
         boolean _isIstSalat = g.isIstSalat();
         if (_isIstSalat) {
-          this.salads.add(g);
+          preSalads.add(g);
         } else {
-          this.meals.add(g);
+          preMeals.add(g);
         }
       }
     }
-    int _length = ((Object[])Conversions.unwrapArray(this.salads, Object.class)).length;
-    boolean _lessThan = (_length < 7);
+    int _size = preMeals.size();
+    boolean _lessThan = (_size < 7);
     if (_lessThan) {
-      for (int i = (((Object[])Conversions.unwrapArray(this.salads, Object.class)).length - 1); (i < 6); i++) {
-        this.salads.add(null);
+      InputOutput.<String>println("Pflanzenfresser entdeckt.");
+      preMeals.addAll(preSalads);
+      int _size_1 = preSalads.size();
+      ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, _size_1, true);
+      for (final Integer s : _doubleDotLessThan) {
+        preSalads.set((s).intValue(), null);
       }
+    } else {
+      int _size_2 = preSalads.size();
+      ExclusiveRange _doubleDotLessThan_1 = new ExclusiveRange(0, _size_2, true);
+      for (final Integer i : _doubleDotLessThan_1) {
+        Integer _integer = new Integer((i).intValue());
+        randomSalads.add(_integer);
+      }
+      Collections.shuffle(randomSalads);
+      ExclusiveRange _doubleDotLessThan_2 = new ExclusiveRange(0, 7, true);
+      for (final Integer i_1 : _doubleDotLessThan_2) {
+        Integer _integer_1 = new Integer((i_1).intValue());
+        randomWeekdays.add(_integer_1);
+      }
+      Collections.shuffle(randomWeekdays);
+      ExclusiveRange _doubleDotLessThan_3 = new ExclusiveRange(0, 7, true);
+      for (final Integer i_2 : _doubleDotLessThan_3) {
+        Integer _get = randomWeekdays.get(0);
+        boolean _equals = Objects.equal(i_2, _get);
+        if (_equals) {
+          Integer _get_1 = randomSalads.get(0);
+          Gericht _get_2 = preSalads.get((_get_1).intValue());
+          this.salads.add(_get_2);
+        } else {
+          Integer _get_3 = randomWeekdays.get(1);
+          boolean _equals_1 = Objects.equal(i_2, _get_3);
+          if (_equals_1) {
+            Integer _get_4 = randomSalads.get(1);
+            Gericht _get_5 = preSalads.get((_get_4).intValue());
+            this.salads.add(_get_5);
+          } else {
+            this.salads.add(null);
+          }
+        }
+      }
+    }
+    int _size_3 = preMeals.size();
+    ExclusiveRange _doubleDotLessThan_4 = new ExclusiveRange(0, _size_3, true);
+    for (final Integer i_3 : _doubleDotLessThan_4) {
+      Integer _integer_2 = new Integer((i_3).intValue());
+      randomMeals.add(_integer_2);
+    }
+    Collections.shuffle(randomMeals);
+    ExclusiveRange _doubleDotLessThan_5 = new ExclusiveRange(0, 7, true);
+    for (final Integer i_4 : _doubleDotLessThan_5) {
+      Integer _get_6 = randomMeals.get((i_4).intValue());
+      Gericht _get_7 = preMeals.get((_get_6).intValue());
+      this.meals.add(_get_7);
     }
   }
   
@@ -222,11 +278,8 @@ public class M2T {
           int _plus = (kcal + _divide);
           kcal = _plus;
         }
-        if ((i <= 6)) {
-          this.mealsKcals.add(Integer.valueOf(kcal));
-          this.usedKcalWeek = (this.usedKcalWeek + kcal);
-          i++;
-        }
+        this.mealsKcals.add(Integer.valueOf(kcal));
+        this.usedKcalWeek = (this.usedKcalWeek + kcal);
         kcal = 0;
       }
     }
@@ -276,7 +329,7 @@ public class M2T {
           int _plus = ((_get).intValue() + _menge_1);
           amount = _plus;
           Zutat _zutat_3 = g2z.getZutat();
-          this.amoutOfIngredients.replace(_zutat_3, Integer.valueOf(amount));
+          this.amoutOfIngredients.put(_zutat_3, Integer.valueOf(amount));
         }
       }
     }
@@ -299,7 +352,7 @@ public class M2T {
             int _plus_1 = ((_get_1).intValue() + _menge_3);
             amount = _plus_1;
             Zutat _zutat_7 = g2z_1.getZutat();
-            this.amoutOfIngredients.replace(_zutat_7, Integer.valueOf(amount));
+            this.amoutOfIngredients.put(_zutat_7, Integer.valueOf(amount));
           }
         }
       }
