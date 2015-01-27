@@ -306,6 +306,14 @@ class M2T {
 		\usepackage{enumitem} 
 		\setitemize{leftmargin=*}
 		
+		\usepackage{helvet}
+		\renewcommand{\familydefault}{\sfdefault}
+		\fontfamily{phv}\selectfont
+		
+		\usepackage{colortbl}
+		\usepackage{xcolor}
+		\definecolor{hellgrau}{rgb}{0.95,0.95,0.95}
+		
 		'''
     }
     
@@ -317,20 +325,20 @@ class M2T {
 		'''
 		
 		\begin{landscape}
-		
-			{\Large \textbf{Ernährungsplan}} \medskip \\
-			«this.current_personname»
-			\\ Empfohlener Energiebedarf pro Woche: 
-			«e.personen.kcal»
-			 Kalorien $\rightarrow$ 
-			«e.personen.kcal/7»
-			Kalorien pro Tag \medskip \\
-			\renewcommand*{\arraystretch}{1.2}
+			\begin{center}
+				{\Huge \textbf{Ernährungsplan}} \bigskip \\
+				«this.current_personname» \\
+				«this.getWeekOfYear() + 1». Kalenderwoche \bigskip \\
+				Empfohlener Energiebedarf pro Woche: «e.personen.kcal» Kalorien $\rightarrow$ «e.personen.kcal/7» Kalorien pro Tag \medskip \\
+			\end{center}
+			\renewcommand*{\arraystretch}{1.5}
 			\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|X|}	
 				\hline
-				\Centering \multirow{2}{*}{\textbf{Montag}} & \Centering \multirow{2}{*}{\textbf{Dienstag}} & \Centering \multirow{2}{*}{\textbf{Mittwoch}} & \Centering \multirow{2}{*}{\textbf{Donnerstag}} & \Centering \multirow{2}{*}{\textbf{Freitag}} & \Centering \multirow{2}{*}{\textbf{Samstag}} & \Centering \multirow{2}{*}{\textbf{Sonntag}} \\
-		%		&  &  &  &  &  &  \\
-				&  &  &  &  &  &  \\
+				\rowcolor{hellgrau} & & & & & & \\
+				\rowcolor{hellgrau}\Centering \multirow{-2}{*}{\textbf{Montag}} & 
+					\Centering \multirow{-2}{*}{\textbf{Dienstag}} & \Centering \multirow{-2}{*}{\textbf{Mittwoch}} & 
+					\Centering \multirow{-2}{*}{\textbf{Donnerstag}} & \Centering \multirow{-2}{*}{\textbf{Freitag}} & 
+					\Centering \multirow{-2}{*}{\textbf{Samstag}} & \Centering \multirow{-2}{*}{\textbf{Sonntag}} \\
 				\hline
 				«FOR j : 0 ..< 7»
 					«this.meals.get(j).name» \newline {\scriptsize «this.mealsKcals.get(j)» kcal}
@@ -342,10 +350,15 @@ class M2T {
 							«ENDFOR»
 						\end{itemize}
 					\end{small}
+					«IF j < 6»
+						&
+					«ELSE»
+						\\ [-15pt]
+					«ENDIF»	
+				«ENDFOR»
+				«FOR j : 0 ..< 7»
 					«IF this.meals.get(j).kommentar.length > 0»
-						\begin{scriptsize}
-							Anmerkung: «this.meals.get(j).kommentar»
-						\end{scriptsize}
+						\scriptsize Anmerkung: «this.meals.get(j).kommentar»
 					«ENDIF»
 					«IF j < 6»
 						&
@@ -365,17 +378,22 @@ class M2T {
 								«ENDFOR»
 							\end{itemize}
 						\end{small}
-						«IF this.salads.get(j).kommentar.length > 0»
-							\begin{scriptsize}
-								Anmerkung: «this.salads.get(j).kommentar»
-							\end{scriptsize}
-						«ENDIF»
+					«ENDIF»
+					«IF j < 6»
+						&
+					«ELSE»
+						\\ [-15pt]
+					«ENDIF»
+				«ENDFOR»
+				«FOR j : 0 ..< 7»
+					«IF this.salads.get(j) != null && this.salads.get(j).kommentar.length > 0»
+						\scriptsize Anmerkung: «this.salads.get(j).kommentar»
 					«ENDIF»
 					«IF j < 6»
 						&
 					«ELSE»
 						\\
-					«ENDIF»
+					«ENDIF»	
 				«ENDFOR»
 				\hline
 			\end{tabularx} \medskip \\ 
@@ -434,9 +452,11 @@ class M2T {
 		    <body>
 		      <div class="container">
 		        <div class="row">
-		          <h1>Ernährungsplan</h1>
-		          <p>«this.current_personname»<br />Empfohlener Energiebedarf pro Woche:
-			 		«e.personen.kcal» Kalorien &rarr; «e.personen.kcal/7» Kalorien pro Tag</p>
+		        	<div class="head">
+			          <h1>Ernährungsplan</h1>
+			          <p>«this.current_personname»<br /> «this.getWeekOfYear() + 1». Kalenderwoche <br />Empfohlener Energiebedarf pro Woche:
+				 		«e.personen.kcal» Kalorien &rarr; «e.personen.kcal/7» Kalorien pro Tag</p>
+			 		</div>
 		          <table class="table table-bordered">
 		            <thead>
 		              <tr>
@@ -450,7 +470,7 @@ class M2T {
 		              </tr>
 		            </thead>
 		            <tbody>
-		              <tr>
+		              <tr class="anmerkung_drueber">
 		              «FOR j : 0 ..< 7»
 		                <td>«this.meals.get(j).name» <br /> <small>«this.mealsKcals.get(j)» kcal</small><br /> 
 		                  <ul>
@@ -458,13 +478,17 @@ class M2T {
 								<li>«g2z.menge»g «g2z.zutat.name»</li>
 							«ENDFOR»
 		                  </ul>
-		                  «IF this.meals.get(j).kommentar.length > 0»
-							<small>Anmerkung: «this.meals.get(j).kommentar»</small>
-						  «ENDIF»
 		                </td>
 		              «ENDFOR»
 		              </tr>
-		              <tr>
+		              <tr class="anmerkung">
+		              	«FOR j : 0 ..< 7»
+		              		«IF this.meals.get(j).kommentar.length > 0»
+								<td>«this.meals.get(j).kommentar»</td>
+							«ENDIF»
+		              	«ENDFOR»
+		              </tr>
+		               <tr class="anmerkung_drueber">
 		              «FOR j : 0 ..< 7»
 						«IF this.salads.get(j) != null»
 						  <td>«this.salads.get(j).name»<br /> <small>«this.saladsKcals.get(j)» kcal</small><br /> 
@@ -473,14 +497,20 @@ class M2T {
 								<li>«g2z.menge»g «g2z.zutat.name»</li>
 							«ENDFOR»
 		                    </ul>
-		                    «IF this.meals.get(j).kommentar.length > 0»
-								<small>Anmerkung: «this.salads.get(j).kommentar»</small>
-						  	«ENDIF»
 		                  </td>
 						«ELSE»
 							<td></td>
 						«ENDIF»
 					  «ENDFOR»
+		              </tr>
+		              <tr class="anmerkung">
+		              	«FOR j : 0 ..< 7»
+		              		«IF this.salads.get(j) != null && this.salads.get(j).kommentar.length > 0»
+								<td>«this.salads.get(j).kommentar»</td>
+							«ELSE»
+								<td></td>
+							«ENDIF»
+		              	«ENDFOR»
 		              </tr>
 		            </tbody>
 		          </table>
