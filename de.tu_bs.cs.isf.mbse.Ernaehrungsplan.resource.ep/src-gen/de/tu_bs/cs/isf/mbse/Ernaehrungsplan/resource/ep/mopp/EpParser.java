@@ -438,7 +438,7 @@ public class EpParser extends EpANTLRParserBase {
     				break;
     			}
     		}
-    		int followSetID = 76;
+    		int followSetID = 77;
     		int i;
     		for (i = tokenIndexOfLastCompleteElement; i < tokenStream.size(); i++) {
     			CommonToken nextToken = (CommonToken) tokenStream.get(i);
@@ -2295,7 +2295,7 @@ public class EpParser extends EpANTLRParserBase {
 
 
     // $ANTLR start "parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan"
-    // Ep.g:1520:1: parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan returns [de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan element = null] : a0= 'eplan' a1= '{' a2= 'person' a3= '(' (a4= TEXT ) a5= ')' a6= 'gerichte' a7= '(' (a8= TEXT ) a9= ',' (a10= TEXT ) a11= ',' (a12= TEXT ) a13= ',' (a14= TEXT ) a15= ',' (a16= TEXT ) a17= ',' (a18= TEXT ) a19= ',' ( (a20= TEXT ) )+ a21= ')' a22= '}' ;
+    // Ep.g:1520:1: parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan returns [de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan element = null] : a0= 'eplan' a1= '{' a2= 'person' a3= '(' (a4= TEXT ) a5= ')' a6= 'gerichte' a7= '(' (a8= TEXT ) a9= ',' (a10= TEXT ) a11= ',' (a12= TEXT ) a13= ',' (a14= TEXT ) a15= ',' (a16= TEXT ) a17= ',' (a18= TEXT ) ( (a19= ',' (a20= TEXT ) ) )+ a21= ')' a22= '}' ;
     public final de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan() throws RecognitionException {
         de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan element =  null;
 
@@ -2330,8 +2330,8 @@ public class EpParser extends EpANTLRParserBase {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 8) ) { return element; }
 
-            // Ep.g:1523:2: (a0= 'eplan' a1= '{' a2= 'person' a3= '(' (a4= TEXT ) a5= ')' a6= 'gerichte' a7= '(' (a8= TEXT ) a9= ',' (a10= TEXT ) a11= ',' (a12= TEXT ) a13= ',' (a14= TEXT ) a15= ',' (a16= TEXT ) a17= ',' (a18= TEXT ) a19= ',' ( (a20= TEXT ) )+ a21= ')' a22= '}' )
-            // Ep.g:1524:2: a0= 'eplan' a1= '{' a2= 'person' a3= '(' (a4= TEXT ) a5= ')' a6= 'gerichte' a7= '(' (a8= TEXT ) a9= ',' (a10= TEXT ) a11= ',' (a12= TEXT ) a13= ',' (a14= TEXT ) a15= ',' (a16= TEXT ) a17= ',' (a18= TEXT ) a19= ',' ( (a20= TEXT ) )+ a21= ')' a22= '}'
+            // Ep.g:1523:2: (a0= 'eplan' a1= '{' a2= 'person' a3= '(' (a4= TEXT ) a5= ')' a6= 'gerichte' a7= '(' (a8= TEXT ) a9= ',' (a10= TEXT ) a11= ',' (a12= TEXT ) a13= ',' (a14= TEXT ) a15= ',' (a16= TEXT ) a17= ',' (a18= TEXT ) ( (a19= ',' (a20= TEXT ) ) )+ a21= ')' a22= '}' )
+            // Ep.g:1524:2: a0= 'eplan' a1= '{' a2= 'person' a3= '(' (a4= TEXT ) a5= ')' a6= 'gerichte' a7= '(' (a8= TEXT ) a9= ',' (a10= TEXT ) a11= ',' (a12= TEXT ) a13= ',' (a14= TEXT ) a15= ',' (a16= TEXT ) a17= ',' (a18= TEXT ) ( (a19= ',' (a20= TEXT ) ) )+ a21= ')' a22= '}'
             {
             a0=(Token)match(input,19,FOLLOW_19_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1153); if (state.failed) return element;
 
@@ -2859,75 +2859,87 @@ public class EpParser extends EpANTLRParserBase {
             		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[90]);
             	}
 
-            a19=(Token)match(input,11,FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1496); if (state.failed) return element;
-
-            if ( state.backtracking==0 ) {
-            		if (element == null) {
-            			element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
-            			startIncompleteElement(element);
-            		}
-            		collectHiddenTokens(element);
-            		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19, null, true);
-            		copyLocalizationInfos((CommonToken)a19, element);
-            	}
-
-            if ( state.backtracking==0 ) {
-            		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[91]);
-            	}
-
-            // Ep.g:1986:2: ( (a20= TEXT ) )+
+            // Ep.g:1972:2: ( (a19= ',' (a20= TEXT ) ) )+
             int cnt13=0;
             loop13:
             do {
                 int alt13=2;
                 int LA13_0 = input.LA(1);
 
-                if ( (LA13_0==TEXT) ) {
+                if ( (LA13_0==11) ) {
                     alt13=1;
                 }
 
 
                 switch (alt13) {
             	case 1 :
-            	    // Ep.g:1987:3: (a20= TEXT )
+            	    // Ep.g:1973:3: (a19= ',' (a20= TEXT ) )
             	    {
-            	    // Ep.g:1987:3: (a20= TEXT )
-            	    // Ep.g:1988:4: a20= TEXT
+            	    // Ep.g:1973:3: (a19= ',' (a20= TEXT ) )
+            	    // Ep.g:1974:4: a19= ',' (a20= TEXT )
             	    {
-            	    a20=(Token)match(input,TEXT,FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1519); if (state.failed) return element;
+            	    a19=(Token)match(input,11,FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1505); if (state.failed) return element;
 
             	    if ( state.backtracking==0 ) {
-            	    				if (terminateParsing) {
-            	    					throw new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpTerminateParsingException();
-            	    				}
             	    				if (element == null) {
             	    					element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
             	    					startIncompleteElement(element);
             	    				}
-            	    				if (a20 != null) {
-            	    					de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("TEXT");
-            	    					tokenResolver.setOptions(getOptions());
-            	    					de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolveResult result = getFreshTokenResolveResult();
-            	    					tokenResolver.resolve(a20.getText(), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
-            	    					Object resolvedObject = result.getResolvedToken();
-            	    					if (resolvedObject == null) {
-            	    						addErrorToResource(result.getErrorMessage(), ((CommonToken) a20).getLine(), ((CommonToken) a20).getCharPositionInLine(), ((CommonToken) a20).getStartIndex(), ((CommonToken) a20).getStopIndex());
+            	    				collectHiddenTokens(element);
+            	    				retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19_0_0_0, null, true);
+            	    				copyLocalizationInfos((CommonToken)a19, element);
+            	    			}
+
+            	    if ( state.backtracking==0 ) {
+            	    				// expected elements (follow set)
+            	    				addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[91]);
+            	    			}
+
+            	    // Ep.g:1988:4: (a20= TEXT )
+            	    // Ep.g:1989:5: a20= TEXT
+            	    {
+            	    a20=(Token)match(input,TEXT,FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1531); if (state.failed) return element;
+
+            	    if ( state.backtracking==0 ) {
+            	    					if (terminateParsing) {
+            	    						throw new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpTerminateParsingException();
             	    					}
-            	    					String resolved = (String) resolvedObject;
-            	    					de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht proxy = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createGericht();
-            	    					collectHiddenTokens(element);
-            	    					registerContextDependentProxy(new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpContextDependentURIFragmentFactory<de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
-            	    					if (proxy != null) {
-            	    						Object value = proxy;
-            	    						addObjectToList(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE, value);
-            	    						completedElement(value, false);
+            	    					if (element == null) {
+            	    						element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
+            	    						startIncompleteElement(element);
             	    					}
-            	    					collectHiddenTokens(element);
-            	    					retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_20, proxy, true);
-            	    					copyLocalizationInfos((CommonToken) a20, element);
-            	    					copyLocalizationInfos((CommonToken) a20, proxy);
+            	    					if (a20 != null) {
+            	    						de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("TEXT");
+            	    						tokenResolver.setOptions(getOptions());
+            	    						de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolveResult result = getFreshTokenResolveResult();
+            	    						tokenResolver.resolve(a20.getText(), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
+            	    						Object resolvedObject = result.getResolvedToken();
+            	    						if (resolvedObject == null) {
+            	    							addErrorToResource(result.getErrorMessage(), ((CommonToken) a20).getLine(), ((CommonToken) a20).getCharPositionInLine(), ((CommonToken) a20).getStartIndex(), ((CommonToken) a20).getStopIndex());
+            	    						}
+            	    						String resolved = (String) resolvedObject;
+            	    						de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht proxy = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createGericht();
+            	    						collectHiddenTokens(element);
+            	    						registerContextDependentProxy(new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpContextDependentURIFragmentFactory<de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
+            	    						if (proxy != null) {
+            	    							Object value = proxy;
+            	    							addObjectToList(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE, value);
+            	    							completedElement(value, false);
+            	    						}
+            	    						collectHiddenTokens(element);
+            	    						retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19_0_0_1, proxy, true);
+            	    						copyLocalizationInfos((CommonToken) a20, element);
+            	    						copyLocalizationInfos((CommonToken) a20, proxy);
+            	    					}
             	    				}
+
+            	    }
+
+
+            	    if ( state.backtracking==0 ) {
+            	    				// expected elements (follow set)
+            	    				addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[92]);
+            	    				addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[93]);
             	    			}
 
             	    }
@@ -2949,11 +2961,28 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[92]);
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[93]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[94]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[95]);
             	}
 
-            a21=(Token)match(input,10,FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1549); if (state.failed) return element;
+            a21=(Token)match(input,10,FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1577); if (state.failed) return element;
+
+            if ( state.backtracking==0 ) {
+            		if (element == null) {
+            			element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
+            			startIncompleteElement(element);
+            		}
+            		collectHiddenTokens(element);
+            		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_20, null, true);
+            		copyLocalizationInfos((CommonToken)a21, element);
+            	}
+
+            if ( state.backtracking==0 ) {
+            		// expected elements (follow set)
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[96]);
+            	}
+
+            a22=(Token)match(input,29,FOLLOW_29_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1591); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             		if (element == null) {
@@ -2962,30 +2991,13 @@ public class EpParser extends EpANTLRParserBase {
             		}
             		collectHiddenTokens(element);
             		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_21, null, true);
-            		copyLocalizationInfos((CommonToken)a21, element);
-            	}
-
-            if ( state.backtracking==0 ) {
-            		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[94]);
-            	}
-
-            a22=(Token)match(input,29,FOLLOW_29_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1563); if (state.failed) return element;
-
-            if ( state.backtracking==0 ) {
-            		if (element == null) {
-            			element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
-            			startIncompleteElement(element);
-            		}
-            		collectHiddenTokens(element);
-            		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_22, null, true);
             		copyLocalizationInfos((CommonToken)a22, element);
             	}
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getEpElement(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[95]);
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[96]);
+            		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getEpElement(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[97]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[98]);
             	}
 
             }
@@ -3008,7 +3020,7 @@ public class EpParser extends EpANTLRParserBase {
 
 
     // $ANTLR start "parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat"
-    // Ep.g:2060:1: parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat element = null] : a0= 'zutat' a1= '(' (a2= INTEGER ) a3= ',' (a4= TEXT ) a5= ',' (a6= TEXT ) a7= ')' ;
+    // Ep.g:2068:1: parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat element = null] : a0= 'zutat' a1= '(' (a2= INTEGER ) a3= ',' (a4= TEXT ) a5= ',' (a6= TEXT ) a7= ')' ;
     public final de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat() throws RecognitionException {
         de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat element =  null;
 
@@ -3028,10 +3040,10 @@ public class EpParser extends EpANTLRParserBase {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 9) ) { return element; }
 
-            // Ep.g:2063:2: (a0= 'zutat' a1= '(' (a2= INTEGER ) a3= ',' (a4= TEXT ) a5= ',' (a6= TEXT ) a7= ')' )
-            // Ep.g:2064:2: a0= 'zutat' a1= '(' (a2= INTEGER ) a3= ',' (a4= TEXT ) a5= ',' (a6= TEXT ) a7= ')'
+            // Ep.g:2071:2: (a0= 'zutat' a1= '(' (a2= INTEGER ) a3= ',' (a4= TEXT ) a5= ',' (a6= TEXT ) a7= ')' )
+            // Ep.g:2072:2: a0= 'zutat' a1= '(' (a2= INTEGER ) a3= ',' (a4= TEXT ) a5= ',' (a6= TEXT ) a7= ')'
             {
-            a0=(Token)match(input,27,FOLLOW_27_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1592); if (state.failed) return element;
+            a0=(Token)match(input,27,FOLLOW_27_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1620); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             		if (element == null) {
@@ -3045,10 +3057,10 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[97]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[99]);
             	}
 
-            a1=(Token)match(input,9,FOLLOW_9_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1606); if (state.failed) return element;
+            a1=(Token)match(input,9,FOLLOW_9_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1634); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             		if (element == null) {
@@ -3062,13 +3074,13 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[98]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[100]);
             	}
 
-            // Ep.g:2092:2: (a2= INTEGER )
-            // Ep.g:2093:3: a2= INTEGER
+            // Ep.g:2100:2: (a2= INTEGER )
+            // Ep.g:2101:3: a2= INTEGER
             {
-            a2=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1624); if (state.failed) return element;
+            a2=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1652); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             			if (terminateParsing) {
@@ -3104,10 +3116,10 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[99]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[101]);
             	}
 
-            a3=(Token)match(input,11,FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1645); if (state.failed) return element;
+            a3=(Token)match(input,11,FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1673); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             		if (element == null) {
@@ -3121,13 +3133,13 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[100]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[102]);
             	}
 
-            // Ep.g:2142:2: (a4= TEXT )
-            // Ep.g:2143:3: a4= TEXT
+            // Ep.g:2150:2: (a4= TEXT )
+            // Ep.g:2151:3: a4= TEXT
             {
-            a4=(Token)match(input,TEXT,FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1663); if (state.failed) return element;
+            a4=(Token)match(input,TEXT,FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1691); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             			if (terminateParsing) {
@@ -3167,10 +3179,10 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[101]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[103]);
             	}
 
-            a5=(Token)match(input,11,FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1684); if (state.failed) return element;
+            a5=(Token)match(input,11,FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1712); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             		if (element == null) {
@@ -3184,13 +3196,13 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[102]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[104]);
             	}
 
-            // Ep.g:2196:2: (a6= TEXT )
-            // Ep.g:2197:3: a6= TEXT
+            // Ep.g:2204:2: (a6= TEXT )
+            // Ep.g:2205:3: a6= TEXT
             {
-            a6=(Token)match(input,TEXT,FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1702); if (state.failed) return element;
+            a6=(Token)match(input,TEXT,FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1730); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             			if (terminateParsing) {
@@ -3230,10 +3242,10 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[103]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[105]);
             	}
 
-            a7=(Token)match(input,10,FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1723); if (state.failed) return element;
+            a7=(Token)match(input,10,FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1751); if (state.failed) return element;
 
             if ( state.backtracking==0 ) {
             		if (element == null) {
@@ -3247,8 +3259,8 @@ public class EpParser extends EpANTLRParserBase {
 
             if ( state.backtracking==0 ) {
             		// expected elements (follow set)
-            		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getGericht(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[104]);
-            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[105]);
+            		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getGericht(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[106]);
+            		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[107]);
             	}
 
             }
@@ -3271,7 +3283,7 @@ public class EpParser extends EpANTLRParserBase {
 
 
     // $ANTLR start "parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat"
-    // Ep.g:2253:1: parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat returns [de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat element = null] : (c0= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil |c1= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage |c2= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce );
+    // Ep.g:2261:1: parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat returns [de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat element = null] : (c0= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil |c1= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage |c2= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce );
     public final de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat() throws RecognitionException {
         de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat element =  null;
 
@@ -3287,7 +3299,7 @@ public class EpParser extends EpANTLRParserBase {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 10) ) { return element; }
 
-            // Ep.g:2254:2: (c0= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil |c1= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage |c2= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce )
+            // Ep.g:2262:2: (c0= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil |c1= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage |c2= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce )
             int alt14=3;
             switch ( input.LA(1) ) {
             case 15:
@@ -3316,9 +3328,9 @@ public class EpParser extends EpANTLRParserBase {
 
             switch (alt14) {
                 case 1 :
-                    // Ep.g:2255:2: c0= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil
+                    // Ep.g:2263:2: c0= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil
                     {
-                    pushFollow(FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1748);
+                    pushFollow(FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1776);
                     c0=parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil();
 
                     state._fsp--;
@@ -3329,9 +3341,9 @@ public class EpParser extends EpANTLRParserBase {
                     }
                     break;
                 case 2 :
-                    // Ep.g:2256:4: c1= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage
+                    // Ep.g:2264:4: c1= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage
                     {
-                    pushFollow(FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1758);
+                    pushFollow(FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1786);
                     c1=parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage();
 
                     state._fsp--;
@@ -3342,9 +3354,9 @@ public class EpParser extends EpANTLRParserBase {
                     }
                     break;
                 case 3 :
-                    // Ep.g:2257:4: c2= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce
+                    // Ep.g:2265:4: c2= parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce
                     {
-                    pushFollow(FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1768);
+                    pushFollow(FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1796);
                     c2=parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce();
 
                     state._fsp--;
@@ -3442,20 +3454,20 @@ public class EpParser extends EpANTLRParserBase {
     public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1436 = new BitSet(new long[]{0x0000000000000800L});
     public static final BitSet FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1457 = new BitSet(new long[]{0x0000000000000080L});
     public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1475 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1496 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1519 = new BitSet(new long[]{0x0000000000000480L});
-    public static final BitSet FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1549 = new BitSet(new long[]{0x0000000020000000L});
-    public static final BitSet FOLLOW_29_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1563 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_27_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1592 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_9_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1606 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_INTEGER_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1624 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1645 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1663 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1684 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1702 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1723 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1748 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1758 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1768 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1505 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1531 = new BitSet(new long[]{0x0000000000000C00L});
+    public static final BitSet FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1577 = new BitSet(new long[]{0x0000000020000000L});
+    public static final BitSet FOLLOW_29_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan1591 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_27_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1620 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_9_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1634 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_INTEGER_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1652 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1673 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1691 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1712 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_TEXT_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1730 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_10_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat1751 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Hauptbestandteil_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1776 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Beilage_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1786 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Sauce_in_parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Zutat1796 = new BitSet(new long[]{0x0000000000000002L});
 
 }

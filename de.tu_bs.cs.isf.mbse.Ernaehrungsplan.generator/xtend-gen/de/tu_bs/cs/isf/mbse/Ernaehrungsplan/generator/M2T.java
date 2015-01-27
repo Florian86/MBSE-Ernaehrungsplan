@@ -7,6 +7,7 @@ import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.GeneratePDF;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.ModelLoader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -115,6 +116,7 @@ public class M2T {
           this.latexStream.write(_bytes);
           this.latexStream.close();
           final File workingDirectory = outputPath;
+          GeneratePDF.latex2PDF(this.targetLatexFile, outputPath, workingDirectory);
           File _file_2 = new File(((("output" + File.separator) + this.current_personname) + "_EP_HTML.html"));
           this.targetHtmlFile_EP = _file_2;
           this.targetHtmlFile_EP.createNewFile();

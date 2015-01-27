@@ -82,10 +82,10 @@ public class EpFollowSetProvider {
 		TERMINALS[56] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_16);
 		TERMINALS[57] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_17);
 		TERMINALS[58] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_18);
-		TERMINALS[59] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19);
-		TERMINALS[60] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_20);
-		TERMINALS[61] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_21);
-		TERMINALS[62] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_22);
+		TERMINALS[59] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19_0_0_0);
+		TERMINALS[60] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19_0_0_1);
+		TERMINALS[61] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_20);
+		TERMINALS[62] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_21);
 		TERMINALS[63] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_1);
 		TERMINALS[64] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_2);
 		TERMINALS[65] = new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectedCsString(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_7_0_0_3);
@@ -230,7 +230,7 @@ public class EpFollowSetProvider {
 		TERMINALS[57].addFollower(TERMINALS[58], EMPTY_LINK_ARRAY);
 		TERMINALS[58].addFollower(TERMINALS[59], EMPTY_LINK_ARRAY);
 		TERMINALS[59].addFollower(TERMINALS[60], EMPTY_LINK_ARRAY);
-		TERMINALS[60].addFollower(TERMINALS[60], EMPTY_LINK_ARRAY);
+		TERMINALS[60].addFollower(TERMINALS[59], EMPTY_LINK_ARRAY);
 		TERMINALS[60].addFollower(TERMINALS[61], EMPTY_LINK_ARRAY);
 		TERMINALS[61].addFollower(TERMINALS[62], EMPTY_LINK_ARRAY);
 		TERMINALS[62].addFollower(TERMINALS[7], new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpContainedFeature[] {new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpContainedFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getErnaehrungsplan(), FEATURES[4]), });

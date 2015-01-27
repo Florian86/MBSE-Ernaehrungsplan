@@ -12,7 +12,7 @@ package de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp;
  */
 public class EpExpectationConstants {
 	
-	public final static int EXPECTATIONS[][] = new int[106][];
+	public final static int EXPECTATIONS[][] = new int[108][];
 	
 	public static void initialize0() {
 		EXPECTATIONS[0] = new int[2];
@@ -324,49 +324,55 @@ public class EpExpectationConstants {
 		EXPECTATIONS[91][0] = 60;
 		EXPECTATIONS[91][1] = 64;
 		EXPECTATIONS[92] = new int[2];
-		EXPECTATIONS[92][0] = 60;
+		EXPECTATIONS[92][0] = 59;
 		EXPECTATIONS[92][1] = 65;
 		EXPECTATIONS[93] = new int[2];
 		EXPECTATIONS[93][0] = 61;
 		EXPECTATIONS[93][1] = 65;
 		EXPECTATIONS[94] = new int[2];
-		EXPECTATIONS[94][0] = 62;
+		EXPECTATIONS[94][0] = 59;
 		EXPECTATIONS[94][1] = 66;
-		EXPECTATIONS[95] = new int[3];
-		EXPECTATIONS[95][0] = 7;
-		EXPECTATIONS[95][1] = 67;
-		EXPECTATIONS[95][2] = 32;
+		EXPECTATIONS[95] = new int[2];
+		EXPECTATIONS[95][0] = 61;
+		EXPECTATIONS[95][1] = 66;
 		EXPECTATIONS[96] = new int[2];
-		EXPECTATIONS[96][0] = 8;
+		EXPECTATIONS[96][0] = 62;
 		EXPECTATIONS[96][1] = 67;
-		EXPECTATIONS[97] = new int[2];
-		EXPECTATIONS[97][0] = 63;
+		EXPECTATIONS[97] = new int[3];
+		EXPECTATIONS[97][0] = 7;
 		EXPECTATIONS[97][1] = 68;
+		EXPECTATIONS[97][2] = 32;
 		EXPECTATIONS[98] = new int[2];
-		EXPECTATIONS[98][0] = 64;
-		EXPECTATIONS[98][1] = 69;
+		EXPECTATIONS[98][0] = 8;
+		EXPECTATIONS[98][1] = 68;
 		EXPECTATIONS[99] = new int[2];
-		EXPECTATIONS[99][0] = 65;
-		EXPECTATIONS[99][1] = 70;
+		EXPECTATIONS[99][0] = 63;
+		EXPECTATIONS[99][1] = 69;
 		EXPECTATIONS[100] = new int[2];
-		EXPECTATIONS[100][0] = 66;
-		EXPECTATIONS[100][1] = 71;
+		EXPECTATIONS[100][0] = 64;
+		EXPECTATIONS[100][1] = 70;
 		EXPECTATIONS[101] = new int[2];
-		EXPECTATIONS[101][0] = 67;
-		EXPECTATIONS[101][1] = 72;
+		EXPECTATIONS[101][0] = 65;
+		EXPECTATIONS[101][1] = 71;
 		EXPECTATIONS[102] = new int[2];
-		EXPECTATIONS[102][0] = 68;
-		EXPECTATIONS[102][1] = 73;
+		EXPECTATIONS[102][0] = 66;
+		EXPECTATIONS[102][1] = 72;
 		EXPECTATIONS[103] = new int[2];
-		EXPECTATIONS[103][0] = 69;
-		EXPECTATIONS[103][1] = 74;
-		EXPECTATIONS[104] = new int[3];
-		EXPECTATIONS[104][0] = 38;
-		EXPECTATIONS[104][1] = 75;
-		EXPECTATIONS[104][2] = 33;
+		EXPECTATIONS[103][0] = 67;
+		EXPECTATIONS[103][1] = 73;
+		EXPECTATIONS[104] = new int[2];
+		EXPECTATIONS[104][0] = 68;
+		EXPECTATIONS[104][1] = 74;
 		EXPECTATIONS[105] = new int[2];
-		EXPECTATIONS[105][0] = 39;
+		EXPECTATIONS[105][0] = 69;
 		EXPECTATIONS[105][1] = 75;
+		EXPECTATIONS[106] = new int[3];
+		EXPECTATIONS[106][0] = 38;
+		EXPECTATIONS[106][1] = 76;
+		EXPECTATIONS[106][2] = 33;
+		EXPECTATIONS[107] = new int[2];
+		EXPECTATIONS[107][0] = 39;
+		EXPECTATIONS[107][1] = 76;
 	}
 	
 	public static void initialize() {

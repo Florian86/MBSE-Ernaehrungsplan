@@ -95,7 +95,7 @@ class M2T {
 	        latexStream.write(latexOutput.getBytes()); 				// schreibt den generierten Code in die Datei
 	        latexStream.close(); 									// Stream schließen und Resourcen freigeben
 			val workingDirectory = outputPath;
-//			GeneratePDF.latex2PDF(targetLatexFile, outputPath, workingDirectory);
+			GeneratePDF.latex2PDF(targetLatexFile, outputPath, workingDirectory);
 	        
 	        //--------------------HTML--------------------
 	        // ------ Ernährungsplan ------

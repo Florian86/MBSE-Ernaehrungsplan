@@ -12,7 +12,7 @@ TOKENS {
 	DEFINE TEXT  $('A'..'Z'|'a'..'z'|'_'|'-')+$;
   	DEFINE LINEBREAK  $('\r\n'|'\r'|'\n')$;
 	DEFINE WHITESPACE $(' '|'\t'|'\f')$;
-	DEFINE INTEGER $('0'..'9')$;
+	DEFINE INTEGER $('0'..'9')+$;
 }
 
 
@@ -47,7 +47,7 @@ RULES {
 							       "," gerichte[]
 							       "," gerichte[]
 							       "," gerichte[]
-							       "," gerichte[]+ ")"
+							       ("," gerichte[])+ ")"
 						"}";
 	
 	Gericht2Zutat ::= "zutat" "("menge[INTEGER]"," zutat[] "," gericht[] ")";

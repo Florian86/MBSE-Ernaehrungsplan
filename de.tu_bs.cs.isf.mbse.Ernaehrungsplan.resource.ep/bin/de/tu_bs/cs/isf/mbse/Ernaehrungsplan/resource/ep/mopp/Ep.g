@@ -401,7 +401,7 @@ import org.eclipse.emf.ecore.EReference;
 				break;
 			}
 		}
-		int followSetID = 76;
+		int followSetID = 77;
 		int i;
 		for (i = tokenIndexOfLastCompleteElement; i < tokenStream.size(); i++) {
 			CommonToken nextToken = (CommonToken) tokenStream.get(i);
@@ -1969,61 +1969,69 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan returns [de.tu_bs
 		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[90]);
 	}
 	
-	a19 = ',' {
-		if (element == null) {
-			element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
-			startIncompleteElement(element);
-		}
-		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19, null, true);
-		copyLocalizationInfos((CommonToken)a19, element);
-	}
-	{
-		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[91]);
-	}
-	
 	(
 		(
-			a20 = TEXT			
-			{
-				if (terminateParsing) {
-					throw new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpTerminateParsingException();
-				}
+			a19 = ',' {
 				if (element == null) {
 					element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
 					startIncompleteElement(element);
 				}
-				if (a20 != null) {
-					de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("TEXT");
-					tokenResolver.setOptions(getOptions());
-					de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolveResult result = getFreshTokenResolveResult();
-					tokenResolver.resolve(a20.getText(), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
-					Object resolvedObject = result.getResolvedToken();
-					if (resolvedObject == null) {
-						addErrorToResource(result.getErrorMessage(), ((CommonToken) a20).getLine(), ((CommonToken) a20).getCharPositionInLine(), ((CommonToken) a20).getStartIndex(), ((CommonToken) a20).getStopIndex());
-					}
-					String resolved = (String) resolvedObject;
-					de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht proxy = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createGericht();
-					collectHiddenTokens(element);
-					registerContextDependentProxy(new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpContextDependentURIFragmentFactory<de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
-					if (proxy != null) {
-						Object value = proxy;
-						addObjectToList(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE, value);
-						completedElement(value, false);
-					}
-					collectHiddenTokens(element);
-					retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_20, proxy, true);
-					copyLocalizationInfos((CommonToken) a20, element);
-					copyLocalizationInfos((CommonToken) a20, proxy);
-				}
+				collectHiddenTokens(element);
+				retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19_0_0_0, null, true);
+				copyLocalizationInfos((CommonToken)a19, element);
 			}
+			{
+				// expected elements (follow set)
+				addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[91]);
+			}
+			
+			(
+				a20 = TEXT				
+				{
+					if (terminateParsing) {
+						throw new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpTerminateParsingException();
+					}
+					if (element == null) {
+						element = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createErnaehrungsplan();
+						startIncompleteElement(element);
+					}
+					if (a20 != null) {
+						de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("TEXT");
+						tokenResolver.setOptions(getOptions());
+						de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.IEpTokenResolveResult result = getFreshTokenResolveResult();
+						tokenResolver.resolve(a20.getText(), element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), result);
+						Object resolvedObject = result.getResolvedToken();
+						if (resolvedObject == null) {
+							addErrorToResource(result.getErrorMessage(), ((CommonToken) a20).getLine(), ((CommonToken) a20).getCharPositionInLine(), ((CommonToken) a20).getStartIndex(), ((CommonToken) a20).getStopIndex());
+						}
+						String resolved = (String) resolvedObject;
+						de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht proxy = de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanFactory.eINSTANCE.createGericht();
+						collectHiddenTokens(element);
+						registerContextDependentProxy(new de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpContextDependentURIFragmentFactory<de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Ernaehrungsplan, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht>(getReferenceResolverSwitch() == null ? null : getReferenceResolverSwitch().getErnaehrungsplanGerichteReferenceResolver()), element, (EReference) element.eClass().getEStructuralFeature(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE), resolved, proxy);
+						if (proxy != null) {
+							Object value = proxy;
+							addObjectToList(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.ERNAEHRUNGSPLAN__GERICHTE, value);
+							completedElement(value, false);
+						}
+						collectHiddenTokens(element);
+						retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_19_0_0_1, proxy, true);
+						copyLocalizationInfos((CommonToken) a20, element);
+						copyLocalizationInfos((CommonToken) a20, proxy);
+					}
+				}
+			)
+			{
+				// expected elements (follow set)
+				addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[92]);
+				addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[93]);
+			}
+			
 		)
 		
 	)+	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[92]);
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[93]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[94]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[95]);
 	}
 	
 	a21 = ')' {
@@ -2032,12 +2040,12 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan returns [de.tu_bs
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_21, null, true);
+		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_20, null, true);
 		copyLocalizationInfos((CommonToken)a21, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[94]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[96]);
 	}
 	
 	a22 = '}' {
@@ -2046,13 +2054,13 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Ernaehrungsplan returns [de.tu_bs
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_22, null, true);
+		retrieveLayoutInformation(element, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.grammar.EpGrammarInformationProvider.EP_6_0_0_21, null, true);
 		copyLocalizationInfos((CommonToken)a22, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getEpElement(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[95]);
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[96]);
+		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getEpElement(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[97]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[98]);
 	}
 	
 ;
@@ -2072,7 +2080,7 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[97]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[99]);
 	}
 	
 	a1 = '(' {
@@ -2086,7 +2094,7 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[98]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[100]);
 	}
 	
 	(
@@ -2122,7 +2130,7 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[99]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[101]);
 	}
 	
 	a3 = ',' {
@@ -2136,7 +2144,7 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[100]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[102]);
 	}
 	
 	(
@@ -2176,7 +2184,7 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[101]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[103]);
 	}
 	
 	a5 = ',' {
@@ -2190,7 +2198,7 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[102]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[104]);
 	}
 	
 	(
@@ -2230,7 +2238,7 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[103]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[105]);
 	}
 	
 	a7 = ')' {
@@ -2244,8 +2252,8 @@ parse_de_tu_005fbs_cs_isf_mbse_Ernaehrungsplan_Gericht2Zutat returns [de.tu_bs.c
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getGericht(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[104]);
-		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[105]);
+		addExpectedElement(de.tu_bs.cs.isf.mbse.Ernaehrungsplan.ErnaehrungsplanPackage.eINSTANCE.getGericht(), de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[106]);
+		addExpectedElement(null, de.tu_bs.cs.isf.mbse.Ernaehrungsplan.resource.ep.mopp.EpExpectationConstants.EXPECTATIONS[107]);
 	}
 	
 ;
@@ -2270,7 +2278,7 @@ WHITESPACE:
 	{ _channel = 99; }
 ;
 INTEGER:
-	(('0'..'9'))
+	(('0'..'9')+)
 ;
 QUOTED_34_34:
 	(('"')(~('"'))*('"'))
