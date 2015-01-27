@@ -469,7 +469,7 @@ class M2T {
 		  <title>Ernährungsplan</title>
 		
 		  <!-- Bootstrap -->
-		  <link href="../html/css/bootstrap.min.css" rel="stylesheet">
+    	  <link href="../html/css/bootstrap.min.css" rel="stylesheet">
 		  <link href="../html/css/style_EP.css" rel="stylesheet">
 		
 		  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -477,8 +477,8 @@ class M2T {
 		    <!--[if lt IE 9]>
 		      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		      <![endif]-->
-		    </head>
+		    <![endif]-->
+		</head>
 		
 		    <body>
 		      <div class="container">
@@ -565,42 +565,58 @@ class M2T {
 		'''
 		<!DOCTYPE html>
 		<html lang="en">
-		<head>
-			<meta charset="utf-8">
-			<meta http-equiv="X-UA-Compatible" content="IE=edge">
-			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>Einkaufsliste</title>
+		  <head>
+		    <meta charset="utf-8">
+		    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		    <meta name="viewport" content="width=device-width, initial-scale=1">
+		    <title>Einkaufsliste</title>
 		
-			<!-- Bootstrap -->
-			<link href="../html/css/bootstrap.min.css" rel="stylesheet">
-			<link href="../html/css/style_EL.css" rel="stylesheet">
+		    <!-- Bootstrap -->
+		    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 		
-			<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-			<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		    <!--[if lt IE 9]>
 		      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		      <![endif]-->
+		    <![endif]-->
+		
+		    <style type="text/css">
+		    <!--
+		    td:nth-child(1) {
+		      width: 30px;
+		    }
+		    -->
+		    </style>
 		  </head>
-		
 		  <body>
-		  	<div class="container">
-		  		<div class="row">
-		  			<h1>Einkaufsliste</h1>
-		        <ul>
-		        «FOR Zutat key : this.amoutOfIngredients.keySet()»
-					<li> «this.amoutOfIngredients.get(key)»g «key.name» </li>
-				«ENDFOR»
-		        </ul>
-		  		</div>
-		  	</div>
 		
-		  	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		  	<!-- Include all compiled plugins (below), or include individual files as needed -->
-		  	<script src="../html/js/bootstrap.min.js"></script>
+		    <div class="container">
+		      <div class="row">
+		        <div class="col-md-6 col-md-offset-2">
+		          <h1>Einkaufsliste</h1>
+		          <table class="table table-bordered table-striped">
+		            <tbody>
+		            	«FOR Zutat key : this.amoutOfIngredients.keySet()»
+		            		<tr>
+		            			<td><input type="checkbox"></td>
+		            			<td>«this.amoutOfIngredients.get(key)»g «key.name»</td>
+		            		</tr>
+				  		«ENDFOR»
+				  	</tbody>
+		          </table>
+		        </div>
+		      </div>
+		    </div>
+		    
+		    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		    <!-- Include all compiled plugins (below), or include individual files as needed -->
+		    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+		
+		    <script src="../html/js/einkaufszettel.js"></script>
 		  </body>
-		  </html>
+		</html>
 		'''
 	}
 	

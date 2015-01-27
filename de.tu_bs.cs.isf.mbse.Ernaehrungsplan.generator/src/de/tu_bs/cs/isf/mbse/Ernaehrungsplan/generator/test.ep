@@ -1,18 +1,22 @@
 Ernaehrungsplan 
 	{
-	Person(Marcel,1200)
-	Person(Tabea, 1000)
-	Person(FloH, 1000)
-	Person(FloF, 1000)
-	Person(Rudi,1000)
+	Person(Marcel,21000)
+	Person(Tabea, 16800)
+	Person(FloH, 21000)
+	Person(FloF, 21000)
+	Person(Rudi,21000)
 	Hauptbestandteil (Lammfleisch,73)
 	Hauptbestandteil (Rindersteak, 30)
 	Hauptbestandteil (Nudelauflauf, 200)
 	Hauptbestandteil (Kartoffelauflauf, 200)
 	Hauptbestandteil (Salat, 200)
 	Hauptbestandteil (Pfannkuchen, 200)
+	Hauptbestandteil (Pizza, 200)
+	Hauptbestandteil (Tortellini, 200)
 	Sauce (Bechamelsauce, 100)
 	Sauce (Bolognesesauce, 100)
+	Sauce (Carbonarasauce, 100)
+	Sauce (Tomatensauce, 100)
 	Sauce (Dressing, 100)
 	Sauce (Currysauce, 100)
 	Beilage (Kartoffeln, 73)
@@ -24,6 +28,29 @@ Ernaehrungsplan
 
 	Gericht 
 	{
+		name Pizza
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (400, Pizza, Pizza)
+			}
+	}
+	
+	Gericht 
+	{
+		name Pikante_Tortellini
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (250, Tortellini, Pikante_Tortellini)
+			zutat (100, Tomatensauce, Pikante_Tortellini)
+			}
+	}
+
+	Gericht 
+	{
 		name Fleisch_mit_Kartoffeln
 		kommentar "stuff dies das kochen machen"
 		istSalat nein
@@ -31,6 +58,19 @@ Ernaehrungsplan
 			{
 			zutat (200, Kartoffeln, Fleisch_mit_Kartoffeln)
 			zutat (500, Lammfleisch, Fleisch_mit_Kartoffeln)
+			}
+	}
+	
+	Gericht 
+	{
+		name Fleisch_mit_Kartoffeln_und_Gemuese
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (200, Kartoffeln, Fleisch_mit_Kartoffeln_und_Gemuese)
+			zutat (200, Rindersteak, Fleisch_mit_Kartoffeln_und_Gemuese)
+			zutat (100, Gemuese, Fleisch_mit_Kartoffeln_und_Gemuese)
 			}
 	}
 	
@@ -67,6 +107,18 @@ Ernaehrungsplan
 			{
 			zutat (200, Nudeln, Spaghetti_Bolognese)
 			zutat (100, Bolognesesauce, Spaghetti_Bolognese)
+			}
+	}
+	
+	Gericht 
+	{
+		name Spaghetti_Carbonara
+		kommentar "stuff dies das kochen machen"
+		istSalat nein
+		besteht aus 
+			{
+			zutat (200, Nudeln, Spaghetti_Carbonara)
+			zutat (100, Carbonarasauce, Spaghetti_Carbonara)
 			}
 	}
 	
@@ -132,13 +184,13 @@ Ernaehrungsplan
 	eplan 
 	{
 		person (Marcel)
-		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei)
+		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Pikante_Tortellini, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei, Fleisch_mit_Kartoffeln_und_Gemuese, Spaghetti_Carbonara, Pizza)
 	}
 	
 	eplan 
 	{
 		person (Tabea)
-		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei)
+		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Pikante_Tortellini, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei, Fleisch_mit_Kartoffeln_und_Gemuese, Spaghetti_Carbonara, Pizza)
 	}
 	
 }
