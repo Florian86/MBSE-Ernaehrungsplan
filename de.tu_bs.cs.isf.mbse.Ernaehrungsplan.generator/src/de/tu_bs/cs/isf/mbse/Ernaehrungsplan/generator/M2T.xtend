@@ -8,12 +8,12 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.ArrayList
 import java.util.Calendar
+import java.util.Collections
 import java.util.Date
 import java.util.GregorianCalendar
 import java.util.HashMap
 import java.util.List
 import java.util.Map
-import java.util.Collections
 
 class M2T {
 	
@@ -28,14 +28,19 @@ class M2T {
 	File targetLatexFile;
 	File targetHtmlFile_EP;
 	File targetHtmlFile_EL;
+	File targetPhpFile_EL;
 	
 	FileOutputStream latexStream; 	
 	FileOutputStream htmlStream_EP;
 	FileOutputStream htmlStream_EL;
+	FileOutputStream phpStream_EL;
 	
 	String latexOutput;
 	String htmlOutput_EP;
 	String htmlOutput_EL;
+	String phpOutput_EL;
+	
+	File[] filesToUpload;
 	
 	// Name der aktuellen Person eines Ernährungsplans
 	String current_personname;						
@@ -112,9 +117,25 @@ class M2T {
 	        targetHtmlFile_EL.createNewFile();
 	        htmlStream_EL = new FileOutputStream(targetHtmlFile_EL);
 	        
-	        htmlOutput_EL = generateHtmlShoppingList(e);
+	        htmlOutput_EL = generateHtmlShoppingList(e, false);
 	        htmlStream_EL.write(htmlOutput_EL.getBytes());
 	        htmlStream_EL.close();
+	        
+	        // --------- php --------
+	        targetPhpFile_EL = new File("output" + File.separator + this.current_personname + ".php");
+	        targetPhpFile_EL.createNewFile();
+	        phpStream_EL = new FileOutputStream(targetPhpFile_EL);
+	        
+	        phpOutput_EL = generateHtmlShoppingList(e, true);
+	        phpStream_EL.write(phpOutput_EL.getBytes());
+	        phpStream_EL.close();
+	        
+	        filesToUpload = newArrayOfSize(1)
+ 			filesToUpload.set(0, targetPhpFile_EL)
+ 			FTPUpload.upload(this.current_personname, filesToUpload);
+ 			
+ 			targetPhpFile_EL.delete()
+ 			println("Einkaufszettel ist erreichbar unter:\n\thttp://uni.florianfranke.net/" + this.current_personname + ".php")
 		}
     }
     
@@ -561,7 +582,7 @@ class M2T {
 	/*
 	 * Generiert die Einkaufsliste für HTML.
 	 */
-	def String generateHtmlShoppingList(Ernaehrungsplan e){
+	def String generateHtmlShoppingList(Ernaehrungsplan e, boolean php){
 		'''
 		<!DOCTYPE html>
 		<html lang="en">
@@ -590,7 +611,11 @@ class M2T {
 		    </style>
 		  </head>
 		  <body>
-		
+		«IF php »
+			<input id="user" type="hidden" value="«this.current_personname»" />
+ 			<input id="dec_value" type="hidden" value="<?php 
+ 				echo file_get_contents("http://uni.florianfranke.net/read.php?user=«this.current_personname»"); ?>" />
+		«ENDIF»
 		    <div class="container">
 		      <div class="row">
 		        <div class="col-md-6 col-md-offset-2">
@@ -614,7 +639,11 @@ class M2T {
 		    <!-- Include all compiled plugins (below), or include individual files as needed -->
 		    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		
-		    <script src="../html/js/einkaufszettel.js"></script>
+			«IF !php»	
+		    	<script src="../html/js/einkaufszettel.js"></script>
+		    «ELSE»
+		    	<script src="einkaufszettel.js"></script>
+		    «ENDIF»
 		  </body>
 		</html>
 		'''

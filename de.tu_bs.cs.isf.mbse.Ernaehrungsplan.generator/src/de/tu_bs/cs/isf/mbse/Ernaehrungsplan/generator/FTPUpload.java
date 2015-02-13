@@ -13,28 +13,19 @@ public class FTPUpload {
 		FTPClient client = new FTPClient();
 		FileInputStream fis = null;
 		
-		String remotePath = user;
-		
 		try {
 			client.connect("florianfranke.net");
 		    client.login("uni", "renn/yij<rogh&ay=que");
 		    
-
-		    //
 		    // Store file to server
-		    //
-		    
-		    // Ordner erstellen
-		    client.mkd(remotePath);
 		    for (File f : filesToUpload)
 		    {
 		    	if (f.exists())
 		    	{
 		    		fis = new FileInputStream(f.getAbsoluteFile());
-		    		client.storeFile(remotePath + File.separator + f.getName(), fis);
-		    	}
+		    		client.storeFile(f.getName(), fis);
+		    	} 
 		    }
-		    
 		    client.logout();
 		} catch (IOException e) {
 		    e.printStackTrace();

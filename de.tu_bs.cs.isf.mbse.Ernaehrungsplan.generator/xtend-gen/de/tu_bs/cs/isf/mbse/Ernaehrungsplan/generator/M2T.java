@@ -7,6 +7,7 @@ import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Gericht2Zutat;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Person;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.Zutat;
+import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.FTPUpload;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.GeneratePDF;
 import de.tu_bs.cs.isf.mbse.Ernaehrungsplan.generator.ModelLoader;
 import java.io.File;
@@ -44,17 +45,25 @@ public class M2T {
   
   private File targetHtmlFile_EL;
   
+  private File targetPhpFile_EL;
+  
   private FileOutputStream latexStream;
   
   private FileOutputStream htmlStream_EP;
   
   private FileOutputStream htmlStream_EL;
   
+  private FileOutputStream phpStream_EL;
+  
   private String latexOutput;
   
   private String htmlOutput_EP;
   
   private String htmlOutput_EL;
+  
+  private String phpOutput_EL;
+  
+  private File[] filesToUpload;
   
   private String current_personname;
   
@@ -132,11 +141,27 @@ public class M2T {
           this.targetHtmlFile_EL.createNewFile();
           FileOutputStream _fileOutputStream_2 = new FileOutputStream(this.targetHtmlFile_EL);
           this.htmlStream_EL = _fileOutputStream_2;
-          String _generateHtmlShoppingList = this.generateHtmlShoppingList(e);
+          String _generateHtmlShoppingList = this.generateHtmlShoppingList(e, false);
           this.htmlOutput_EL = _generateHtmlShoppingList;
           byte[] _bytes_2 = this.htmlOutput_EL.getBytes();
           this.htmlStream_EL.write(_bytes_2);
           this.htmlStream_EL.close();
+          File _file_4 = new File(((("output" + File.separator) + this.current_personname) + ".php"));
+          this.targetPhpFile_EL = _file_4;
+          this.targetPhpFile_EL.createNewFile();
+          FileOutputStream _fileOutputStream_3 = new FileOutputStream(this.targetPhpFile_EL);
+          this.phpStream_EL = _fileOutputStream_3;
+          String _generateHtmlShoppingList_1 = this.generateHtmlShoppingList(e, true);
+          this.phpOutput_EL = _generateHtmlShoppingList_1;
+          byte[] _bytes_3 = this.phpOutput_EL.getBytes();
+          this.phpStream_EL.write(_bytes_3);
+          this.phpStream_EL.close();
+          File[] _newArrayOfSize = new File[1];
+          this.filesToUpload = _newArrayOfSize;
+          this.filesToUpload[0] = this.targetPhpFile_EL;
+          FTPUpload.upload(this.current_personname, this.filesToUpload);
+          this.targetPhpFile_EL.delete();
+          InputOutput.<String>println((("Einkaufszettel ist erreichbar unter:\n\thttp://uni.florianfranke.net/" + this.current_personname) + ".php"));
         }
       }
     } catch (Throwable _e) {
@@ -420,6 +445,20 @@ public class M2T {
     _builder.append("\\setitemize{leftmargin=*}");
     _builder.newLine();
     _builder.newLine();
+    _builder.append("\\usepackage{helvet}");
+    _builder.newLine();
+    _builder.append("\\renewcommand{\\familydefault}{\\sfdefault}");
+    _builder.newLine();
+    _builder.append("\\fontfamily{phv}\\selectfont");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\usepackage{colortbl}");
+    _builder.newLine();
+    _builder.append("\\usepackage{xcolor}");
+    _builder.newLine();
+    _builder.append("\\definecolor{hellgrau}{rgb}{0.95,0.95,0.95}");
+    _builder.newLine();
+    _builder.newLine();
     return _builder.toString();
   }
   
@@ -431,35 +470,39 @@ public class M2T {
     _builder.newLine();
     _builder.append("\\begin{landscape}");
     _builder.newLine();
-    _builder.newLine();
     _builder.append("\t");
-    _builder.append("{\\Large \\textbf{Ernährungsplan}} \\medskip \\\\");
+    _builder.append("\\begin{center}");
     _builder.newLine();
-    _builder.append("\t");
-    _builder.append(this.current_personname, "\t");
+    _builder.append("\t\t");
+    _builder.append("{\\Huge \\textbf{Ernährungsplan}} \\bigskip \\\\");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(this.current_personname, "\t\t");
+    _builder.append(" \\\\");
     _builder.newLineIfNotEmpty();
-    _builder.append("\t");
-    _builder.append("\\\\ Empfohlener Energiebedarf pro Woche: ");
-    _builder.newLine();
-    _builder.append("\t");
+    _builder.append("\t\t");
+    int _weekOfYear = this.getWeekOfYear();
+    int _plus = (_weekOfYear + 1);
+    _builder.append(_plus, "\t\t");
+    _builder.append(". Kalenderwoche \\bigskip \\\\");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("Empfohlener Energiebedarf pro Woche: ");
     Person _personen = e.getPersonen();
     int _kcal = _personen.getKcal();
-    _builder.append(_kcal, "\t");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t ");
-    _builder.append("Kalorien $\\rightarrow$ ");
-    _builder.newLine();
-    _builder.append("\t");
+    _builder.append(_kcal, "\t\t");
+    _builder.append(" Kalorien $\\rightarrow$ ");
     Person _personen_1 = e.getPersonen();
     int _kcal_1 = _personen_1.getKcal();
     int _divide = (_kcal_1 / 7);
-    _builder.append(_divide, "\t");
+    _builder.append(_divide, "\t\t");
+    _builder.append(" Kalorien pro Tag \\medskip \\\\");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
-    _builder.append("Kalorien pro Tag \\medskip \\\\");
+    _builder.append("\\end{center}");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("\\renewcommand*{\\arraystretch}{1.2}");
+    _builder.append("\\renewcommand*{\\arraystretch}{1.5}");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("\\begin{tabularx}{\\linewidth}{|X|X|X|X|X|X|X|}\t");
@@ -468,12 +511,19 @@ public class M2T {
     _builder.append("\\hline");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("\\Centering \\multirow{2}{*}{\\textbf{Montag}} & \\Centering \\multirow{2}{*}{\\textbf{Dienstag}} & \\Centering \\multirow{2}{*}{\\textbf{Mittwoch}} & \\Centering \\multirow{2}{*}{\\textbf{Donnerstag}} & \\Centering \\multirow{2}{*}{\\textbf{Freitag}} & \\Centering \\multirow{2}{*}{\\textbf{Samstag}} & \\Centering \\multirow{2}{*}{\\textbf{Sonntag}} \\\\");
-    _builder.newLine();
-    _builder.append("%\t\t&  &  &  &  &  &  \\\\");
+    _builder.append("\\rowcolor{hellgrau} & & & & & & \\\\");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("&  &  &  &  &  &  \\\\");
+    _builder.append("\\rowcolor{hellgrau}\\Centering \\multirow{-2}{*}{\\textbf{Montag}} & ");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\\Centering \\multirow{-2}{*}{\\textbf{Dienstag}} & \\Centering \\multirow{-2}{*}{\\textbf{Mittwoch}} & ");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\\Centering \\multirow{-2}{*}{\\textbf{Donnerstag}} & \\Centering \\multirow{-2}{*}{\\textbf{Freitag}} & ");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\\Centering \\multirow{-2}{*}{\\textbf{Samstag}} & \\Centering \\multirow{-2}{*}{\\textbf{Sonntag}} \\\\");
     _builder.newLine();
     _builder.append("\t\t");
     _builder.append("\\hline");
@@ -525,28 +575,37 @@ public class M2T {
         _builder.append("\\end{small}");
         _builder.newLine();
         {
-          Gericht _get_3 = this.meals.get((j).intValue());
+          if (((j).intValue() < 6)) {
+            _builder.append("\t\t");
+            _builder.append("&");
+            _builder.newLine();
+          } else {
+            _builder.append("\t\t");
+            _builder.append("\\\\ [-15pt]");
+            _builder.newLine();
+          }
+        }
+      }
+    }
+    {
+      ExclusiveRange _doubleDotLessThan_1 = new ExclusiveRange(0, 7, true);
+      for(final Integer j_1 : _doubleDotLessThan_1) {
+        {
+          Gericht _get_3 = this.meals.get((j_1).intValue());
           String _kommentar = _get_3.getKommentar();
           int _length = _kommentar.length();
           boolean _greaterThan = (_length > 0);
           if (_greaterThan) {
             _builder.append("\t\t");
-            _builder.append("\\begin{scriptsize}");
-            _builder.newLine();
-            _builder.append("\t\t");
-            _builder.append("\t");
-            _builder.append("Anmerkung: ");
-            Gericht _get_4 = this.meals.get((j).intValue());
+            _builder.append("\\scriptsize Anmerkung: ");
+            Gericht _get_4 = this.meals.get((j_1).intValue());
             String _kommentar_1 = _get_4.getKommentar();
-            _builder.append(_kommentar_1, "\t\t\t");
+            _builder.append(_kommentar_1, "\t\t");
             _builder.newLineIfNotEmpty();
-            _builder.append("\t\t");
-            _builder.append("\\end{scriptsize}");
-            _builder.newLine();
           }
         }
         {
-          if (((j).intValue() < 6)) {
+          if (((j_1).intValue() < 6)) {
             _builder.append("\t\t");
             _builder.append("&");
             _builder.newLine();
@@ -562,18 +621,18 @@ public class M2T {
     _builder.append("\\hline");
     _builder.newLine();
     {
-      ExclusiveRange _doubleDotLessThan_1 = new ExclusiveRange(0, 7, true);
-      for(final Integer j_1 : _doubleDotLessThan_1) {
+      ExclusiveRange _doubleDotLessThan_2 = new ExclusiveRange(0, 7, true);
+      for(final Integer j_2 : _doubleDotLessThan_2) {
         {
-          Gericht _get_5 = this.salads.get((j_1).intValue());
+          Gericht _get_5 = this.salads.get((j_2).intValue());
           boolean _notEquals = (!Objects.equal(_get_5, null));
           if (_notEquals) {
             _builder.append("\t\t");
-            Gericht _get_6 = this.salads.get((j_1).intValue());
+            Gericht _get_6 = this.salads.get((j_2).intValue());
             String _name_2 = _get_6.getName();
             _builder.append(_name_2, "\t\t");
             _builder.append(" \\newline {\\scriptsize ");
-            Integer _get_7 = this.saladsKcals.get((j_1).intValue());
+            Integer _get_7 = this.saladsKcals.get((j_2).intValue());
             _builder.append(_get_7, "\t\t");
             _builder.append(" kcal}");
             _builder.newLineIfNotEmpty();
@@ -589,7 +648,7 @@ public class M2T {
             _builder.append("\\itemsep0pt");
             _builder.newLine();
             {
-              Gericht _get_8 = this.salads.get((j_1).intValue());
+              Gericht _get_8 = this.salads.get((j_2).intValue());
               EList<Gericht2Zutat> _zutaten_1 = _get_8.getZutaten();
               for(final Gericht2Zutat g2z_1 : _zutaten_1) {
                 _builder.append("\t\t");
@@ -611,31 +670,48 @@ public class M2T {
             _builder.append("\t\t");
             _builder.append("\\end{small}");
             _builder.newLine();
-            {
-              Gericht _get_9 = this.salads.get((j_1).intValue());
-              String _kommentar_2 = _get_9.getKommentar();
-              int _length_1 = _kommentar_2.length();
-              boolean _greaterThan_1 = (_length_1 > 0);
-              if (_greaterThan_1) {
-                _builder.append("\t\t");
-                _builder.append("\\begin{scriptsize}");
-                _builder.newLine();
-                _builder.append("\t\t");
-                _builder.append("\t");
-                _builder.append("Anmerkung: ");
-                Gericht _get_10 = this.salads.get((j_1).intValue());
-                String _kommentar_3 = _get_10.getKommentar();
-                _builder.append(_kommentar_3, "\t\t\t");
-                _builder.newLineIfNotEmpty();
-                _builder.append("\t\t");
-                _builder.append("\\end{scriptsize}");
-                _builder.newLine();
-              }
-            }
           }
         }
         {
-          if (((j_1).intValue() < 6)) {
+          if (((j_2).intValue() < 6)) {
+            _builder.append("\t\t");
+            _builder.append("&");
+            _builder.newLine();
+          } else {
+            _builder.append("\t\t");
+            _builder.append("\\\\ [-15pt]");
+            _builder.newLine();
+          }
+        }
+      }
+    }
+    {
+      ExclusiveRange _doubleDotLessThan_3 = new ExclusiveRange(0, 7, true);
+      for(final Integer j_3 : _doubleDotLessThan_3) {
+        {
+          boolean _and = false;
+          Gericht _get_9 = this.salads.get((j_3).intValue());
+          boolean _notEquals_1 = (!Objects.equal(_get_9, null));
+          if (!_notEquals_1) {
+            _and = false;
+          } else {
+            Gericht _get_10 = this.salads.get((j_3).intValue());
+            String _kommentar_2 = _get_10.getKommentar();
+            int _length_1 = _kommentar_2.length();
+            boolean _greaterThan_1 = (_length_1 > 0);
+            _and = _greaterThan_1;
+          }
+          if (_and) {
+            _builder.append("\t\t");
+            _builder.append("\\scriptsize Anmerkung: ");
+            Gericht _get_11 = this.salads.get((j_3).intValue());
+            String _kommentar_3 = _get_11.getKommentar();
+            _builder.append(_kommentar_3, "\t\t");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        {
+          if (((j_3).intValue() < 6)) {
             _builder.append("\t\t");
             _builder.append("&");
             _builder.newLine();
@@ -724,7 +800,7 @@ public class M2T {
     _builder.append("  ");
     _builder.append("<!-- Bootstrap -->");
     _builder.newLine();
-    _builder.append("  ");
+    _builder.append("    \t  ");
     _builder.append("<link href=\"../html/css/bootstrap.min.css\" rel=\"stylesheet\">");
     _builder.newLine();
     _builder.append("  ");
@@ -746,10 +822,9 @@ public class M2T {
     _builder.append("      ");
     _builder.append("<script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>");
     _builder.newLine();
-    _builder.append("      ");
+    _builder.append("    ");
     _builder.append("<![endif]-->");
     _builder.newLine();
-    _builder.append("    ");
     _builder.append("</head>");
     _builder.newLine();
     _builder.newLine();
@@ -762,25 +837,35 @@ public class M2T {
     _builder.append("        ");
     _builder.append("<div class=\"row\">");
     _builder.newLine();
-    _builder.append("          ");
+    _builder.append("        \t");
+    _builder.append("<div class=\"head\">");
+    _builder.newLine();
+    _builder.append("\t          ");
     _builder.append("<h1>Ernährungsplan</h1>");
     _builder.newLine();
-    _builder.append("          ");
+    _builder.append("\t          ");
     _builder.append("<p>");
-    _builder.append(this.current_personname, "          ");
-    _builder.append("<br />Empfohlener Energiebedarf pro Woche:");
+    _builder.append(this.current_personname, "\t          ");
+    _builder.append("<br /> ");
+    int _weekOfYear = this.getWeekOfYear();
+    int _plus = (_weekOfYear + 1);
+    _builder.append(_plus, "\t          ");
+    _builder.append(". Kalenderwoche <br />Empfohlener Energiebedarf pro Woche:");
     _builder.newLineIfNotEmpty();
-    _builder.append("\t \t\t");
+    _builder.append("\t\t \t\t");
     Person _personen = e.getPersonen();
     int _kcal = _personen.getKcal();
-    _builder.append(_kcal, "\t \t\t");
+    _builder.append(_kcal, "\t\t \t\t");
     _builder.append(" Kalorien &rarr; ");
     Person _personen_1 = e.getPersonen();
     int _kcal_1 = _personen_1.getKcal();
     int _divide = (_kcal_1 / 7);
-    _builder.append(_divide, "\t \t\t");
+    _builder.append(_divide, "\t\t \t\t");
     _builder.append(" Kalorien pro Tag</p>");
     _builder.newLineIfNotEmpty();
+    _builder.append("\t \t\t");
+    _builder.append("</div>");
+    _builder.newLine();
     _builder.append("          ");
     _builder.append("<table class=\"table table-bordered\">");
     _builder.newLine();
@@ -821,7 +906,7 @@ public class M2T {
     _builder.append("<tbody>");
     _builder.newLine();
     _builder.append("              ");
-    _builder.append("<tr>");
+    _builder.append("<tr class=\"anmerkung_drueber\">");
     _builder.newLine();
     {
       ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, 7, true);
@@ -859,20 +944,6 @@ public class M2T {
         _builder.append("  ");
         _builder.append("</ul>");
         _builder.newLine();
-        {
-          Gericht _get_3 = this.meals.get((j).intValue());
-          String _kommentar = _get_3.getKommentar();
-          int _length = _kommentar.length();
-          boolean _greaterThan = (_length > 0);
-          if (_greaterThan) {
-            _builder.append("<small>Anmerkung: ");
-            Gericht _get_4 = this.meals.get((j).intValue());
-            String _kommentar_1 = _get_4.getKommentar();
-            _builder.append(_kommentar_1, "");
-            _builder.append("</small>");
-            _builder.newLineIfNotEmpty();
-          }
-        }
         _builder.append("              ");
         _builder.append("</td>");
         _builder.newLine();
@@ -882,21 +953,46 @@ public class M2T {
     _builder.append("</tr>");
     _builder.newLine();
     _builder.append("              ");
-    _builder.append("<tr>");
+    _builder.append("<tr class=\"anmerkung\">");
     _builder.newLine();
     {
       ExclusiveRange _doubleDotLessThan_1 = new ExclusiveRange(0, 7, true);
       for(final Integer j_1 : _doubleDotLessThan_1) {
         {
-          Gericht _get_5 = this.salads.get((j_1).intValue());
+          Gericht _get_3 = this.meals.get((j_1).intValue());
+          String _kommentar = _get_3.getKommentar();
+          int _length = _kommentar.length();
+          boolean _greaterThan = (_length > 0);
+          if (_greaterThan) {
+            _builder.append("<td>");
+            Gericht _get_4 = this.meals.get((j_1).intValue());
+            String _kommentar_1 = _get_4.getKommentar();
+            _builder.append(_kommentar_1, "");
+            _builder.append("</td>");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    _builder.append("              ");
+    _builder.append("</tr>");
+    _builder.newLine();
+    _builder.append("               ");
+    _builder.append("<tr class=\"anmerkung_drueber\">");
+    _builder.newLine();
+    {
+      ExclusiveRange _doubleDotLessThan_2 = new ExclusiveRange(0, 7, true);
+      for(final Integer j_2 : _doubleDotLessThan_2) {
+        {
+          Gericht _get_5 = this.salads.get((j_2).intValue());
           boolean _notEquals = (!Objects.equal(_get_5, null));
           if (_notEquals) {
             _builder.append("<td>");
-            Gericht _get_6 = this.salads.get((j_1).intValue());
+            Gericht _get_6 = this.salads.get((j_2).intValue());
             String _name_2 = _get_6.getName();
             _builder.append(_name_2, "");
             _builder.append("<br /> <small>");
-            Integer _get_7 = this.saladsKcals.get((j_1).intValue());
+            Integer _get_7 = this.saladsKcals.get((j_2).intValue());
             _builder.append(_get_7, "");
             _builder.append(" kcal</small><br /> ");
             _builder.newLineIfNotEmpty();
@@ -904,7 +1000,7 @@ public class M2T {
             _builder.append("<ul>");
             _builder.newLine();
             {
-              Gericht _get_8 = this.salads.get((j_1).intValue());
+              Gericht _get_8 = this.salads.get((j_2).intValue());
               EList<Gericht2Zutat> _zutaten_1 = _get_8.getZutaten();
               for(final Gericht2Zutat g2z_1 : _zutaten_1) {
                 _builder.append("\t\t\t\t\t\t\t");
@@ -922,23 +1018,45 @@ public class M2T {
             _builder.append("\t\t                    ");
             _builder.append("</ul>");
             _builder.newLine();
-            {
-              Gericht _get_9 = this.meals.get((j_1).intValue());
-              String _kommentar_2 = _get_9.getKommentar();
-              int _length_1 = _kommentar_2.length();
-              boolean _greaterThan_1 = (_length_1 > 0);
-              if (_greaterThan_1) {
-                _builder.append("<small>Anmerkung: ");
-                Gericht _get_10 = this.salads.get((j_1).intValue());
-                String _kommentar_3 = _get_10.getKommentar();
-                _builder.append(_kommentar_3, "");
-                _builder.append("</small>");
-                _builder.newLineIfNotEmpty();
-              }
-            }
             _builder.append("\t\t                  ");
             _builder.append("</td>");
             _builder.newLine();
+          } else {
+            _builder.append("<td></td>");
+            _builder.newLine();
+          }
+        }
+      }
+    }
+    _builder.append("              ");
+    _builder.append("</tr>");
+    _builder.newLine();
+    _builder.append("              ");
+    _builder.append("<tr class=\"anmerkung\">");
+    _builder.newLine();
+    {
+      ExclusiveRange _doubleDotLessThan_3 = new ExclusiveRange(0, 7, true);
+      for(final Integer j_3 : _doubleDotLessThan_3) {
+        {
+          boolean _and = false;
+          Gericht _get_9 = this.salads.get((j_3).intValue());
+          boolean _notEquals_1 = (!Objects.equal(_get_9, null));
+          if (!_notEquals_1) {
+            _and = false;
+          } else {
+            Gericht _get_10 = this.salads.get((j_3).intValue());
+            String _kommentar_2 = _get_10.getKommentar();
+            int _length_1 = _kommentar_2.length();
+            boolean _greaterThan_1 = (_length_1 > 0);
+            _and = _greaterThan_1;
+          }
+          if (_and) {
+            _builder.append("<td>");
+            Gericht _get_11 = this.salads.get((j_3).intValue());
+            String _kommentar_3 = _get_11.getKommentar();
+            _builder.append(_kommentar_3, "");
+            _builder.append("</td>");
+            _builder.newLineIfNotEmpty();
           } else {
             _builder.append("<td></td>");
             _builder.newLine();
@@ -995,41 +1113,39 @@ public class M2T {
   /**
    * Generiert die Einkaufsliste für HTML.
    */
-  public String generateHtmlShoppingList(final Ernaehrungsplan e) {
+  public String generateHtmlShoppingList(final Ernaehrungsplan e, final boolean php) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<!DOCTYPE html>");
     _builder.newLine();
     _builder.append("<html lang=\"en\">");
     _builder.newLine();
+    _builder.append("  ");
     _builder.append("<head>");
     _builder.newLine();
-    _builder.append("\t");
+    _builder.append("    ");
     _builder.append("<meta charset=\"utf-8\">");
     _builder.newLine();
-    _builder.append("\t");
+    _builder.append("    ");
     _builder.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">");
     _builder.newLine();
-    _builder.append("\t");
+    _builder.append("    ");
     _builder.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
     _builder.newLine();
-    _builder.append("\t");
+    _builder.append("    ");
     _builder.append("<title>Einkaufsliste</title>");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("\t");
+    _builder.append("    ");
     _builder.append("<!-- Bootstrap -->");
     _builder.newLine();
-    _builder.append("\t");
-    _builder.append("<link href=\"../html/css/bootstrap.min.css\" rel=\"stylesheet\">");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("<link href=\"../html/css/style_EL.css\" rel=\"stylesheet\">");
+    _builder.append("    ");
+    _builder.append("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css\">");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("\t");
+    _builder.append("    ");
     _builder.append("<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->");
     _builder.newLine();
-    _builder.append("\t");
+    _builder.append("    ");
     _builder.append("<!-- WARNING: Respond.js doesn\'t work if you view the page via file:// -->");
     _builder.newLine();
     _builder.append("    ");
@@ -1041,67 +1157,138 @@ public class M2T {
     _builder.append("      ");
     _builder.append("<script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>");
     _builder.newLine();
-    _builder.append("      ");
+    _builder.append("    ");
     _builder.append("<![endif]-->");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("<style type=\"text/css\">");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("<!--");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("td:nth-child(1) {");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("width: 30px;");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("-->");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("</style>");
     _builder.newLine();
     _builder.append("  ");
     _builder.append("</head>");
     _builder.newLine();
-    _builder.newLine();
     _builder.append("  ");
     _builder.append("<body>");
     _builder.newLine();
-    _builder.append("  \t");
+    {
+      if (php) {
+        _builder.append("<input id=\"user\" type=\"hidden\" value=\"");
+        _builder.append(this.current_personname, "");
+        _builder.append("\" />");
+        _builder.newLineIfNotEmpty();
+        _builder.append(" \t\t\t");
+        _builder.append("<input id=\"dec_value\" type=\"hidden\" value=\"<?php ");
+        _builder.newLine();
+        _builder.append(" \t\t\t\t");
+        _builder.append("echo file_get_contents(\"http://uni.florianfranke.net/read.php?user=");
+        _builder.append(this.current_personname, " \t\t\t\t");
+        _builder.append("\"); ?>\" />");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("    ");
     _builder.append("<div class=\"container\">");
     _builder.newLine();
-    _builder.append("  \t\t");
+    _builder.append("      ");
     _builder.append("<div class=\"row\">");
     _builder.newLine();
-    _builder.append("  \t\t\t");
+    _builder.append("        ");
+    _builder.append("<div class=\"col-md-6 col-md-offset-2\">");
+    _builder.newLine();
+    _builder.append("          ");
     _builder.append("<h1>Einkaufsliste</h1>");
     _builder.newLine();
-    _builder.append("        ");
-    _builder.append("<ul>");
+    _builder.append("          ");
+    _builder.append("<table class=\"table table-bordered table-striped\">");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("<tbody>");
     _builder.newLine();
     {
       Set<Zutat> _keySet = this.amoutOfIngredients.keySet();
       for(final Zutat key : _keySet) {
-        _builder.append("<li> ");
+        _builder.append("            \t");
+        _builder.append("<tr>");
+        _builder.newLine();
+        _builder.append("            \t");
+        _builder.append("\t");
+        _builder.append("<td><input type=\"checkbox\"></td>");
+        _builder.newLine();
+        _builder.append("            \t");
+        _builder.append("\t");
+        _builder.append("<td>");
         Integer _get = this.amoutOfIngredients.get(key);
-        _builder.append(_get, "");
+        _builder.append(_get, "            \t\t");
         _builder.append("g ");
         String _name = key.getName();
-        _builder.append(_name, "");
-        _builder.append(" </li>");
+        _builder.append(_name, "            \t\t");
+        _builder.append("</td>");
         _builder.newLineIfNotEmpty();
+        _builder.append("            \t");
+        _builder.append("</tr>");
+        _builder.newLine();
       }
     }
+    _builder.append("\t\t  \t");
+    _builder.append("</tbody>");
+    _builder.newLine();
+    _builder.append("          ");
+    _builder.append("</table>");
+    _builder.newLine();
     _builder.append("        ");
-    _builder.append("</ul>");
-    _builder.newLine();
-    _builder.append("  \t\t");
     _builder.append("</div>");
     _builder.newLine();
-    _builder.append("  \t");
+    _builder.append("      ");
     _builder.append("</div>");
     _builder.newLine();
+    _builder.append("    ");
+    _builder.append("</div>");
     _builder.newLine();
-    _builder.append("  \t");
+    _builder.append("    ");
+    _builder.newLine();
+    _builder.append("    ");
     _builder.append("<!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->");
     _builder.newLine();
-    _builder.append("  \t");
-    _builder.append("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>");
+    _builder.append("    ");
+    _builder.append("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js\"></script>");
     _builder.newLine();
-    _builder.append("  \t");
+    _builder.append("    ");
     _builder.append("<!-- Include all compiled plugins (below), or include individual files as needed -->");
     _builder.newLine();
-    _builder.append("  \t");
-    _builder.append("<script src=\"../html/js/bootstrap.min.js\"></script>");
+    _builder.append("    ");
+    _builder.append("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js\"></script>");
     _builder.newLine();
+    _builder.newLine();
+    {
+      if ((!php)) {
+        _builder.append("<script src=\"../html/js/einkaufszettel.js\"></script>");
+        _builder.newLine();
+      } else {
+        _builder.append("<script src=\"einkaufszettel.js\"></script>");
+        _builder.newLine();
+      }
+    }
     _builder.append("  ");
     _builder.append("</body>");
     _builder.newLine();
-    _builder.append("  ");
     _builder.append("</html>");
     _builder.newLine();
     return _builder.toString();
