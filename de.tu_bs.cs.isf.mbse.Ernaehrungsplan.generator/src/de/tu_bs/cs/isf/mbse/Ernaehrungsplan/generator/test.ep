@@ -1,35 +1,36 @@
 Ernaehrungsplan 
 	{
-	Person(Marcel,21000)
-	Person(Tabea, 16800)
-	Person(FloH, 21000)
-	Person(FloF, 21000)
-	Person(Rudi,21000)
-	Hauptbestandteil (Lammfleisch,73)
-	Hauptbestandteil (Rindersteak, 30)
-	Hauptbestandteil (Nudelauflauf, 200)
-	Hauptbestandteil (Kartoffelauflauf, 200)
-	Hauptbestandteil (Salat, 200)
-	Hauptbestandteil (Pfannkuchen, 200)
-	Hauptbestandteil (Pizza, 200)
-	Hauptbestandteil (Tortellini, 200)
-	Sauce (Bechamelsauce, 100)
-	Sauce (Bolognesesauce, 100)
-	Sauce (Carbonarasauce, 100)
-	Sauce (Tomatensauce, 100)
-	Sauce (Dressing, 100)
-	Sauce (Currysauce, 100)
+		
+	Person(Homer,30000)
+	Person(Marge, 12000)
+	
+	Hauptbestandteil (Lammfleisch,114)
+	Hauptbestandteil (Rindersteak, 104)
+	Hauptbestandteil (Nudelauflauf, 156)
+	Hauptbestandteil (Kartoffelauflauf, 155)
+	Hauptbestandteil (Salat, 13)
+	Hauptbestandteil (Pfannkuchen, 187)
+	Hauptbestandteil (Pizza, 224)
+	Hauptbestandteil (Tortellini, 270)
+	
+	Sauce (Bechamelsauce, 383)
+	Sauce (Bolognesesauce, 112)
+	Sauce (Carbonarasauce, 160)
+	Sauce (Tomatensauce, 41)
+	Sauce (Dressing, 200)
+	Sauce (Currysauce, 155)
+	
 	Beilage (Kartoffeln, 73)
-	Beilage (Reis, 20)
-	Beilage (Nudeln, 50)
-	Beilage (Spinat, 50)
-	Beilage (Gemuese, 50)
-	Beilage (Ruehrei, 50)	
+	Beilage (Reis, 120)
+	Beilage (Nudeln, 352)
+	Beilage (Spinat, 49)
+	Beilage (Gemuese, 26)
+	Beilage (Ruehrei, 186)		
 
 	Gericht 
 	{
 		name Pizza
-		kommentar "stuff dies das kochen machen"
+		kommentar "Zunächst die Tomaten aus dem Glas abtropfen lassen und das Öl..."
 		istSalat nein
 		besteht aus 
 			{
@@ -40,11 +41,11 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Pikante_Tortellini
-		kommentar "stuff dies das kochen machen"
+		kommentar "Tortellini kochen, Wasser abgießen und nach belieben pikant Würzen..."
 		istSalat nein
 		besteht aus 
 			{
-			zutat (250, Tortellini, Pikante_Tortellini)
+			zutat (150, Tortellini, Pikante_Tortellini)
 			zutat (100, Tomatensauce, Pikante_Tortellini)
 			}
 	}
@@ -52,7 +53,7 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Fleisch_mit_Kartoffeln
-		kommentar "stuff dies das kochen machen"
+		kommentar "Kartoffeln kochen, Fleisch gut durchgaren ..."
 		istSalat nein
 		besteht aus 
 			{
@@ -64,7 +65,7 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Fleisch_mit_Kartoffeln_und_Gemuese
-		kommentar "stuff dies das kochen machen"
+		kommentar "Kartoffeln kochen, Fleisch gut durchgaren, Gemüse auftauen ..."
 		istSalat nein
 		besteht aus 
 			{
@@ -77,7 +78,7 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Pfannkuchen
-		kommentar "stuff dies das kochen machen"
+		kommentar "Apfelsaft, Milch und Mehl vermischen, Backpulver und Zucker hinzufügen..."
 		istSalat nein
 		besteht aus 
 			{
@@ -88,24 +89,24 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Kartoffeln_mit_Spinat_und_Ruehrei
-		kommentar "stuff dies das kochen machen"
+		kommentar "Kartoffeln und Spinat kochen, eventuell mit Sahne und Zwiebeln verfeinern..."
 		istSalat nein
 		besteht aus 
 			{
 			zutat (200, Kartoffeln, Kartoffeln_mit_Spinat_und_Ruehrei)
 			zutat (100, Spinat, Kartoffeln_mit_Spinat_und_Ruehrei)
-			zutat (100, Ruehrei, Kartoffeln_mit_Spinat_und_Ruehrei)
+			zutat (80, Ruehrei, Kartoffeln_mit_Spinat_und_Ruehrei)
 			}
 	}
 	
 	Gericht 
 	{
 		name Spaghetti_Bolognese
-		kommentar "stuff dies das kochen machen"
+		kommentar "Zwiebeln in Scheiben schneiden, in eine Pfanne geben, salzen..."
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Nudeln, Spaghetti_Bolognese)
+			zutat (150, Nudeln, Spaghetti_Bolognese)
 			zutat (100, Bolognesesauce, Spaghetti_Bolognese)
 			}
 	}
@@ -113,11 +114,11 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Spaghetti_Carbonara
-		kommentar "stuff dies das kochen machen"
+		kommentar "Spaghetti in Salzwasser 8-10 Minuten kochen, zuvor Soße zubereiten nach folgendem..."
 		istSalat nein
 		besteht aus 
 			{
-			zutat (200, Nudeln, Spaghetti_Carbonara)
+			zutat (150, Nudeln, Spaghetti_Carbonara)
 			zutat (100, Carbonarasauce, Spaghetti_Carbonara)
 			}
 	}
@@ -125,7 +126,7 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Bunter_Salat
-		kommentar "stuff dies das kochen machen"
+		kommentar "Salat waschen und gut abtropfen lassen. Dressing kurz vor dem servieren untermischen."
 		istSalat ja
 		besteht aus 
 			{
@@ -138,7 +139,7 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Curryreis
-		kommentar "stuff dies das kochen machen"
+		kommentar "1 Teil Reis mit 2 Teilen Wasser solange kochen, bis das Wasser verdampft ist ..."
 		istSalat nein
 		besteht aus 
 			{
@@ -150,19 +151,19 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Salat
-		kommentar "stuff dies das kochen machen"
+		kommentar "Salat waschen und gut abtropfen lassen. Dressing kurz vor dem servieren untermischen."
 		istSalat ja
 		besteht aus 
 			{
 			zutat (200, Salat, Salat)
-			zutat (100, Dressing, Salat)
+			zutat (150, Dressing, Salat)
 			}
 	}
 	
 	Gericht 
 	{
 		name Nudelauflauf
-		kommentar "stuff dies das kochen machen"
+		kommentar "Tomaten schneiden, Käse raspeln ..."
 		istSalat nein
 		besteht aus 
 			{
@@ -173,7 +174,7 @@ Ernaehrungsplan
 	Gericht 
 	{
 		name Kartoffelauflauf
-		kommentar "stuff dies das kochen machen"
+		kommentar "Kartoffeln 20 Minuten vorgaren und kleinschneiden, dann mit dem Gemüse und dem Käse ..."
 		istSalat nein
 		besteht aus 
 			{
@@ -183,13 +184,13 @@ Ernaehrungsplan
 	
 	eplan 
 	{
-		person (Marcel)
+		person (Homer)
 		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Pikante_Tortellini, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei, Fleisch_mit_Kartoffeln_und_Gemuese, Spaghetti_Carbonara, Pizza)
 	}
 	
 	eplan 
 	{
-		person (Tabea)
+		person (Marge)
 		gerichte(Fleisch_mit_Kartoffeln, Pfannkuchen, Pikante_Tortellini, Kartoffelauflauf, Nudelauflauf, Salat, Bunter_Salat, Curryreis, Spaghetti_Bolognese, Kartoffeln_mit_Spinat_und_Ruehrei, Fleisch_mit_Kartoffeln_und_Gemuese, Spaghetti_Carbonara, Pizza)
 	}
 	
